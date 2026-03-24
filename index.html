@@ -5,12 +5,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tom Parandyk — Full Stack Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800;900&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap"
     rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="preload" href="macintosh_classic_2048x2048-1024x1024.jpg" as="image">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <style>
     *,
     *::before,
@@ -81,6 +84,8 @@
     .container {
       max-width: 1536px;
       margin: 0 auto;
+      padding-left: 2rem;
+      padding-right: 2rem;
     }
 
     /* Custom cursor */
@@ -225,11 +230,13 @@
 
     /* Sections */
     .section-pad {
-      padding: 10rem 2rem;
+      padding-top: 10rem;
+      padding-bottom: 10rem;
     }
 
     .section-pad-sm {
-      padding: 6rem 2rem;
+      padding-top: 6rem;
+      padding-bottom: 6rem;
     }
 
     /* Hero */
@@ -455,7 +462,7 @@
     /* Status */
     .status-section {
       background: white;
-      padding: 6rem 2rem;
+      padding: 6rem 0;
       border-top: 1px solid rgba(0, 0, 0, 0.05);
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
@@ -590,7 +597,7 @@
     .past-work-section {
       background: black;
       color: white;
-      padding: 10rem 2rem;
+      padding: 10rem 0;
       overflow: hidden;
     }
 
@@ -627,6 +634,35 @@
 
     .pw-role {
       color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Past work hover preview */
+    .pw-preview {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 420px;
+      height: 270px;
+      border-radius: 8px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transform: translate3d(0,0,0) scale(0.85);
+      transition: opacity 0.25s ease;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      will-change: transform, opacity;
+    }
+
+    .pw-preview.visible {
+      opacity: 1;
+    }
+
+    .pw-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .pw-desc {
@@ -718,14 +754,57 @@
       aspect-ratio: 1;
       border: 1px solid rgba(0, 0, 0, 0.05);
       background: var(--color-surface-low);
+      border-radius: 3px;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
 
     .year-cell.shipped {
-      background: var(--color-accent);
+      background: black;
+      cursor: pointer;
+    }
+
+    .year-cell.shipped:hover {
+      transform: scale(1.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .year-cell.current {
-      background: black;
+      background: var(--color-surface-low);
+      cursor: pointer;
+    }
+
+    .year-cell.current:hover {
+      transform: scale(1.1);
+    }
+
+    .year-cell.active {
+      background: var(--color-accent);
+      transform: scale(1.15);
+      box-shadow: 0 2px 8px rgba(255, 99, 33, 0.3);
+    }
+
+    #week-tabs-container {
+      position: relative;
+    }
+
+    .week-tab-panel {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .week-tab-panel.active {
+      opacity: 1;
+      transform: translateY(0);
+      position: relative;
+      pointer-events: auto;
+      visibility: visible;
     }
 
     .week-detail {
@@ -759,6 +838,8 @@
       background: black;
       color: white;
       padding: 1.5rem;
+      position: relative;
+      cursor: pointer;
       font-family: monospace;
       font-size: 0.875rem;
       margin-bottom: 2rem;
@@ -766,6 +847,35 @@
 
     .terminal-prompt {
       color: rgba(255, 255, 255, 0.4);
+    }
+
+    .terminal-copy {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.5);
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .terminal-copy:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .terminal-copy.copied {
+      background: var(--color-accent);
+      color: white;
+      border-color: var(--color-accent);
     }
 
     .week-links {
@@ -824,7 +934,7 @@
     /* Words */
     .words-section {
       background: var(--color-surface-low);
-      padding: 10rem 2rem;
+      padding: 10rem 0;
       overflow: hidden;
     }
 
@@ -863,7 +973,7 @@
     /* Process */
     .process-section {
       background: white;
-      padding: 10rem 2rem;
+      padding: 10rem 0;
       border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
 
@@ -1319,7 +1429,7 @@
         <div class="container">
           <h2 class="section-heading-lg section-heading" style="color: white;">Past Work</h2>
           <div class="space-y-12">
-            <div class="past-work-item gs-reveal">
+            <div class="past-work-item gs-reveal" data-preview="neon.jpg">
               <div><span class="text-annotation pw-tag">$1B+ acquisition</span></div>
               <div>
                 <h3 class="pw-title">Neon</h3>
@@ -1331,7 +1441,7 @@
                   actually was.</p>
               </div>
             </div>
-            <div class="past-work-item gs-reveal">
+            <div class="past-work-item gs-reveal" data-preview="koyeb.jpg">
               <div><span class="text-annotation pw-tag">acquired by Mistral</span></div>
               <div>
                 <h3 class="pw-title">Koyeb</h3>
@@ -1342,7 +1452,7 @@
                   you rip out the foundation and rebuild while the building stays standing.</p>
               </div>
             </div>
-            <div class="past-work-item gs-reveal">
+            <div class="past-work-item gs-reveal" data-preview="qodo.jpg">
               <div><span class="text-annotation pw-tag">founding designer</span></div>
               <div>
                 <h3 class="pw-title">Qodo</h3>
@@ -1353,7 +1463,7 @@
                   it. I designed the bridge between machine intelligence and human intent.</p>
               </div>
             </div>
-            <div class="past-work-item gs-reveal">
+            <div class="past-work-item gs-reveal" data-preview="greyfinch.jpg">
               <div><span class="text-annotation pw-tag">acquired</span></div>
               <div>
                 <h3 class="pw-title">Greyfinch</h3>
@@ -1386,56 +1496,73 @@
             </div>
             <div class="stats-grid">
               <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">stat-shipped</span>
+                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Weeks shipped</span>
                 <div class="stat-value">1</div>
-                <span class="stat-label">weeks_shipped</span>
               </div>
               <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">stat-streak</span>
+                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Streak</span>
                 <div class="stat-value">1</div>
-                <span class="stat-label">current_streak</span>
               </div>
               <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">—</span>
+                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Goal</span>
                 <div class="stat-value">52</div>
-                <span class="stat-label">year_goal</span>
               </div>
               <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">stat-pct</span>
+                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Complete</span>
                 <div class="stat-value">2%</div>
-                <span class="stat-label">complete</span>
               </div>
             </div>
           </div>
           <div class="ship-log-right ship-log-content gs-reveal">
             <div>
-              <span class="text-annotation" style="display: block; margin-bottom: 1rem;">Year grid: Week 1 = shipped ·
-                Week 2 = current · Weeks 3–52 = upcoming</span>
+              <span class="text-annotation" style="display: block; margin-bottom: 1rem;">Year grid: black = shipped ·
+                orange = selected · grey = upcoming</span>
               <div class="year-grid" id="year-grid"></div>
             </div>
-            <div class="week-detail">
-              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
-                <span class="text-annotation">// Week 01</span>
-                <span class="text-annotation">Mar 17–23 / 2026</span>
+            <div id="week-tabs-container">
+              <!-- Week 01 -->
+              <div class="week-tab-panel active" data-week="0">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 01</span>
+                    <span class="text-annotation">Mar 17–23 / 2026</span>
+                  </div>
+                  <h3 class="week-title">debug-toolkit</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">//
+                    npm_package · mcp_server · typescript · 3451_loc</span>
+                  <div class="week-body space-y-6">
+                    <p>1. AI agents are great at writing code. They're terrible at seeing it run.</p>
+                    <p>2. When an agent hits a bug, it reads code and guesses a fix. You run it, paste the error back, the
+                      agent guesses again. Repeat 5–8 times. I built the exit ramp: an MCP server giving agents a
+                      closed-loop debugging system. Investigate → instrument → capture → verify → remember.</p>
+                    <p>3. <strong>15 files · 3,451 lines of TypeScript · 4 npm dependencies · JS/TS, Python, Go,
+                        Rust/Tauri.</strong></p>
+                  </div>
+                  <div class="terminal-box" data-command="npx debug-toolkit init">
+                    <span class="terminal-prompt">$</span> npx debug-toolkit init
+                    <button class="terminal-copy" aria-label="Copy command">copy</button>
+                  </div>
+                  <div class="week-links">
+                    <a href="https://github.com/tombrewsviews/debug-toolkit" class="text-annotation">github →</a>
+                    <a href="https://www.npmjs.com/package/debug-toolkit" class="text-annotation">npm →</a>
+                    <a href="https://github.com/tombrewsviews/debug-toolkit#readme" class="text-annotation">docs →</a>
+                  </div>
+                </div>
               </div>
-              <h3 class="week-title">debug-toolkit</h3>
-              <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">//
-                npm_package · mcp_server · typescript · 3451_loc</span>
-              <div class="week-body space-y-6">
-                <p>1. AI agents are great at writing code. They're terrible at seeing it run.</p>
-                <p>2. When an agent hits a bug, it reads code and guesses a fix. You run it, paste the error back, the
-                  agent guesses again. Repeat 5–8 times. I built the exit ramp: an MCP server giving agents a
-                  closed-loop debugging system. Investigate → instrument → capture → verify → remember.</p>
-                <p>3. <strong>15 files · 3,451 lines of TypeScript · 4 npm dependencies · JS/TS, Python, Go,
-                    Rust/Tauri.</strong></p>
-              </div>
-              <div class="terminal-box">
-                <span class="terminal-prompt">$</span> npx debug-toolkit init
-              </div>
-              <div class="week-links">
-                <a href="https://github.com/tombrewsviews/debug-toolkit" class="text-annotation">github →</a>
-                <a href="https://www.npmjs.com/package/debug-toolkit" class="text-annotation">npm →</a>
-                <a href="https://github.com/tombrewsviews/debug-toolkit#readme" class="text-annotation">docs →</a>
+
+              <!-- Week 02 (current — placeholder) -->
+              <div class="week-tab-panel" data-week="1">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 02</span>
+                    <span class="text-annotation">Mar 24–30 / 2026</span>
+                  </div>
+                  <h3 class="week-title">In progress...</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// currently building</span>
+                  <div class="week-body space-y-6">
+                    <p>This week's ship is underway. Check back soon.</p>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="community-box">
@@ -1444,7 +1571,7 @@
                 Creating a community for people who ship. Weekly commits. Public progress. Accountability that actually
                 works. If you build things — you're in the right place.
               </p>
-              <a href="#contact" class="btn-community">join the community →</a>
+              <a target="_blank" href="https://github.com/tombrewsviews/straw-hat-collective/discussions" class="btn-community">join the collective →</a>
             </div>
           </div>
         </div>
@@ -1470,11 +1597,11 @@
               <p class="words-body">
                 A predictive exploration of the post-platform future, where users buy results instead of tools.
               </p>
-              <a href="https://ai.plainenglish.io/the-outcome-economy-how-agent-networks-will-replace-saas-and-redefine-software-0b26f9bb9699"
+              <a target="_blank" href="https://ai.plainenglish.io/the-outcome-economy-how-agent-networks-will-replace-saas-and-redefine-software-0b26f9bb9699"
                 class="text-annotation" style="color: var(--color-accent);">Read on AI Plain English →</a>
             </div>
             <div class="words-item gs-reveal">
-              <a href="https://tomparandyk.medium.com/" class="words-link-big">Read more on Medium →</a>
+              <a target="_blank" href="https://tomparandyk.medium.com/" class="words-link-big">Read more on Medium →</a>
             </div>
           </div>
         </div>
@@ -1498,13 +1625,13 @@
             </div>
             <div class="process-item gs-reveal">
               <span class="process-num">02</span>
-              <h5 class="process-item-title">Rapid Proto</h5>
+              <h5 class="process-item-title">Rapid Prototyping</h5>
               <p class="process-desc">Figma, code, AI assistants — I sketch in whatever tool fits the moment. The goal
                 isn't a good product. It's a fast lesson.</p>
             </div>
             <div class="process-item gs-reveal">
               <span class="process-num">03</span>
-              <h5 class="process-item-title">AI-Augmented</h5>
+              <h5 class="process-item-title">AI-Augmented design</h5>
               <p class="process-desc">Cursor, Claude, custom agents — collaborators, not replacements. I used to build.
                 Now I orchestrate.</p>
             </div>
@@ -1653,17 +1780,76 @@
   </div>
 
   <script>
+  document.addEventListener('DOMContentLoaded', function() {
     // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
-    // Generate year grid cells
+    // Generate year grid cells with interactive tabs
     (function () {
       var grid = document.getElementById('year-grid');
+      var panels = document.querySelectorAll('.week-tab-panel');
+      var cells = [];
+      var lastShippedWeek = -1;
+
+      // Define week statuses: 'shipped', 'current', or null
+      var weekStatuses = [];
+      for (var i = 0; i < 52; i++) {
+        if (i === 0) { weekStatuses.push('shipped'); lastShippedWeek = i; }
+        else if (i === 1) weekStatuses.push('current');
+        else weekStatuses.push(null);
+      }
+
+      // Default: last shipped week, or override via data-default-week on grid
+      var defaultWeek = grid.getAttribute('data-default-week');
+      var activeWeek = defaultWeek !== null ? parseInt(defaultWeek, 10) : lastShippedWeek;
+
+      function selectWeek(weekIndex) {
+        if (weekIndex === activeWeek && cells[weekIndex] && cells[weekIndex].classList.contains('active')) return;
+        activeWeek = weekIndex;
+
+        // Animate grid cells
+        for (var i = 0; i < cells.length; i++) {
+          cells[i].classList.remove('active');
+        }
+        cells[weekIndex].classList.add('active');
+
+        // Fade out current panel, then fade in new one
+        var currentPanel = document.querySelector('.week-tab-panel.active');
+        var targetPanel = document.querySelector('.week-tab-panel[data-week="' + weekIndex + '"]');
+
+        if (currentPanel && currentPanel !== targetPanel) {
+          currentPanel.classList.remove('active');
+          // Small delay so the fade-out starts before fade-in
+          setTimeout(function () {
+            if (targetPanel) targetPanel.classList.add('active');
+          }, 50);
+        } else if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
+      }
+
       for (var i = 0; i < 52; i++) {
         var cell = document.createElement('div');
-        cell.className = 'year-cell' + (i === 0 ? ' shipped' : i === 1 ? ' current' : '');
+        var status = weekStatuses[i];
+        cell.className = 'year-cell';
+        if (status === 'shipped') cell.classList.add('shipped');
+        else if (status === 'current') cell.classList.add('current');
+        cell.setAttribute('data-week', i);
+
+        // Only shipped and current weeks are clickable
+        if (status === 'shipped' || status === 'current') {
+          (function (idx) {
+            cell.addEventListener('click', function () {
+              selectWeek(idx);
+            });
+          })(i);
+        }
+
         grid.appendChild(cell);
+        cells.push(cell);
       }
+
+      selectWeek(activeWeek);
     })();
 
     // Split hero title into chars for animation
@@ -1799,26 +1985,97 @@
       { start: 'top 70%' }
     );
 
+    // ===== TERMINAL COPY =====
+    (function () {
+      document.querySelectorAll('.terminal-box[data-command]').forEach(function (box) {
+        var btn = box.querySelector('.terminal-copy');
+        var cmd = box.getAttribute('data-command');
+
+        function doCopy() {
+          navigator.clipboard.writeText(cmd).then(function () {
+            btn.textContent = 'copied!';
+            btn.classList.add('copied');
+            setTimeout(function () {
+              btn.textContent = 'copy';
+              btn.classList.remove('copied');
+            }, 2000);
+          });
+        }
+
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          doCopy();
+        });
+
+        box.addEventListener('click', doCopy);
+      });
+    })();
+
+    // ===== PAST WORK HOVER PREVIEW =====
+    (function () {
+      var preview = document.createElement('div');
+      preview.className = 'pw-preview';
+      preview.innerHTML = '<img src="" alt="">';
+      document.body.appendChild(preview);
+      var img = preview.querySelector('img');
+      var items = document.querySelectorAll('.past-work-item[data-preview]');
+      var isVisible = false;
+
+      items.forEach(function (item) {
+        item.addEventListener('mouseenter', function () {
+          var src = item.getAttribute('data-preview');
+          if (src) {
+            img.src = src;
+            isVisible = true;
+            preview.classList.add('visible');
+          }
+        });
+
+        item.addEventListener('mouseleave', function () {
+          isVisible = false;
+          preview.classList.remove('visible');
+        });
+
+        item.addEventListener('mousemove', function (e) {
+          if (!isVisible) return;
+          var x = e.clientX + 20;
+          var y = e.clientY - 135;
+          if (x + 440 > window.innerWidth) x = e.clientX - 440;
+          if (y < 10) y = 10;
+          if (y + 270 > window.innerHeight) y = window.innerHeight - 280;
+          preview.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) scale(1)';
+        }, { passive: true });
+      });
+    })();
+
     // ===== CUSTOM CURSOR =====
     (function () {
       var dot = document.getElementById('cursor-dot');
       var follower = document.getElementById('cursor-follower');
-      if (!dot || !follower) return;
+      if (!dot || !follower || window.innerWidth < 768) return;
+
+      var mouseX = 0, mouseY = 0;
+      var dotX = 0, dotY = 0, followerX = 0, followerY = 0;
+      var rafId = null;
 
       window.addEventListener('mousemove', function (e) {
-        gsap.to(dot, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 0.1,
-          ease: 'power2.out'
-        });
-        gsap.to(follower, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      });
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!rafId) rafId = requestAnimationFrame(updateCursor);
+      }, { passive: true });
+
+      function updateCursor() {
+        dotX += (mouseX - dotX) * 0.5;
+        dotY += (mouseY - dotY) * 0.5;
+        followerX += (mouseX - followerX) * 0.15;
+        followerY += (mouseY - followerY) * 0.15;
+
+        dot.style.transform = 'translate(' + dotX + 'px, ' + dotY + 'px) translate(-50%, -50%)';
+        follower.style.transform = 'translate(' + followerX + 'px, ' + followerY + 'px) translate(-50%, -50%)';
+
+        rafId = requestAnimationFrame(updateCursor);
+      }
+      rafId = requestAnimationFrame(updateCursor);
 
       // Hover effects on interactive elements
       document.querySelectorAll('a, button, .experiment-row, .oss-item, .process-item').forEach(function (el) {
@@ -2156,9 +2413,9 @@
         var r = container.getBoundingClientRect();
         targetMouse.x = (e.clientX - r.left) / r.width;
         targetMouse.y = 1.0 - (e.clientY - r.top) / r.height;
-      });
-      heroSection.addEventListener('mouseenter', function () { hoverTarget = 1; });
-      heroSection.addEventListener('mouseleave', function () { hoverTarget = 0; });
+      }, { passive: true });
+      heroSection.addEventListener('mouseenter', function () { hoverTarget = 1; }, { passive: true });
+      heroSection.addEventListener('mouseleave', function () { hoverTarget = 0; }, { passive: true });
 
       // Touch support
       heroSection.addEventListener('touchmove', function (e) {
@@ -2170,9 +2427,18 @@
       }, { passive: true });
       heroSection.addEventListener('touchend', function () { hoverTarget = 0; });
 
+      // Pause rendering when hero is off-screen
+      var isHeroVisible = true;
+      var observer = new IntersectionObserver(function (entries) {
+        isHeroVisible = entries[0].isIntersecting;
+      }, { threshold: 0 });
+      observer.observe(heroSection);
+
       // Animation loop
       function tick() {
         requestAnimationFrame(tick);
+
+        if (!isHeroVisible) return;
 
         uniforms.uTime.value += 0.01;
 
@@ -2192,14 +2458,18 @@
       }
       tick();
 
-      // Resize
+      // Resize (debounced)
+      var resizeTimer;
       window.addEventListener('resize', function () {
-        var r = container.getBoundingClientRect();
-        var w = r.width;
-        var h = r.height;
-        renderer.setSize(w, h);
-        uniforms.uAspect.value = w / h;
-        uniforms.uResolution.value.set(w * pixelRatio, h * pixelRatio);
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          var r = container.getBoundingClientRect();
+          var w = r.width;
+          var h = r.height;
+          renderer.setSize(w, h);
+          uniforms.uAspect.value = w / h;
+          uniforms.uResolution.value.set(w * pixelRatio, h * pixelRatio);
+        }, 150);
       });
 
       // --- Controls panel wiring ---
@@ -2255,6 +2525,7 @@
         wireRange('ctrl-glow', 'val-glow', 'uGlowIntensity', f2);
       }
     })();
+  });
   </script>
 
 </body>
