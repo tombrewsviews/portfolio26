@@ -234,44 +234,50 @@
 
     /* Hero */
     .hero {
-      padding-top: 12rem;
-      padding-bottom: 8rem;
-      padding-left: 2rem;
-      padding-right: 2rem;
+      padding: 0;
       overflow: hidden;
       position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      max-width: none;
+      width: 100%;
     }
     .hero-inner {
+      position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       gap: 4rem;
       align-items: flex-start;
-    }
-    @media (min-width: 1024px) {
-      .hero-inner {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
+      width: 100%;
+      max-width: 1536px;
+      margin: 0 auto;
+      padding: 12rem 2rem 8rem;
     }
     .hero-text { flex: 1; min-width: 0; max-width: 52rem; }
     .hero-canvas-wrap {
-      position: relative;
+      position: absolute;
+      inset: 0;
       width: 100%;
-      max-width: 480px;
-      aspect-ratio: 3 / 4;
+      height: 100%;
       cursor: pointer;
-      flex-shrink: 0;
-      align-self: center;
       background: #0d0d0d;
-      border-radius: 8px;
       overflow: hidden;
+      z-index: 1;
     }
-    @media (min-width: 1024px) {
-      .hero-canvas-wrap {
-        width: 480px;
-        align-self: auto;
-      }
+    .hero-canvas-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.65) 0%,
+        rgba(0, 0, 0, 0.35) 50%,
+        rgba(0, 0, 0, 0.25) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
     }
     .hero-canvas-wrap canvas {
       display: block;
@@ -280,19 +286,27 @@
     }
 
     .hero-title {
-      font-size: clamp(3.5rem, 12vw, 10rem);
+      font-size: clamp(2.5rem, 10vw, 10rem);
       margin-bottom: 3rem;
       line-height: 0.9;
+      color: #ffffff;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     .hero-title .char {
       display: inline-block;
     }
 
+    .hero .hero-sub,
+    .hero .text-annotation {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
     .hero-body {
-      font-size: 1.5rem;
+      font-size: clamp(1rem, 4vw, 1.5rem);
       line-height: 1.625;
-      color: rgba(27, 27, 27, 0.8);
+      color: rgba(255, 255, 255, 0.8);
       max-width: 48rem;
     }
 
@@ -1032,6 +1046,7 @@
 
       <!-- Hero -->
       <section class="hero container" id="hero-section">
+        <div class="hero-canvas-wrap" id="hero-canvas-wrap"></div>
         <div class="hero-inner">
           <div class="hero-text">
             <span class="hero-sub text-annotation" style="margin-bottom: 2rem; display: block;">// founding designer &
@@ -1045,7 +1060,6 @@
               </p>
             </div>
           </div>
-          <div class="hero-canvas-wrap" id="hero-canvas-wrap"></div>
         </div>
       </section>
 
@@ -1492,8 +1506,9 @@
         title.appendChild(wordSpan);
         if (wi < words.length - 1) {
           var space = document.createElement('span');
-          space.innerHTML = '&nbsp;';
+          space.textContent = ' ';
           space.className = 'char';
+          space.style.display = 'inline';
           title.appendChild(space);
         }
       });
@@ -1650,7 +1665,7 @@
       var container = document.getElementById('hero-canvas-wrap');
       if (!container) return;
 
-      var IMAGE_URL = 'portrait.jpg';
+      var IMAGE_URL = 'macintosh_classic_2048x2048-1024x1024.jpg';
 
       // -- Shaders --
       var vertexShader = [
@@ -1837,7 +1852,7 @@
         '  float lum = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));',
         '',
         '  // --- ASCII cell grid ---',
-        '  float cellSize = 8.0; // pixels per character cell',
+        '  float cellSize = 10.0; // pixels per character cell',
         '  vec2 pixelPos = vUv * uResolution;',
         '  vec2 cellIndex = floor(pixelPos / cellSize);',
         '  vec2 cellUv = fract(pixelPos / cellSize);',
@@ -1851,25 +1866,27 @@
         '',
         '  // Apply Bayer dithering to luminance',
         '  float bayerVal = bayer8x8(cellIndex);',
-        '  float dithered = cellLum + (bayerVal - 0.5) * 0.15;',
+        '  float dithered = cellLum + (bayerVal - 0.5) * 0.25;',
         '  dithered = clamp(dithered, 0.0, 1.0);',
         '',
         '  // Get ASCII character pixel',
         '  float charPixel = asciiChar(dithered, cellUv);',
         '',
-        '  // --- Color: orange (#ff6321) on black ---',
-        '  vec3 orangeColor = vec3(1.0, 0.388, 0.129); // #ff6321',
-        '  vec3 bgColor = vec3(0.05, 0.05, 0.05);',
+        '  // --- Color: lighter/whiter image colors at 50% opacity ---',
+        '  vec3 bgColor = vec3(0.02, 0.02, 0.02);',
         '',
-        '  // Modulate orange brightness by luminance for depth',
-        '  float brightness = 0.5 + cellLum * 0.5;',
-        '  vec3 litColor = orangeColor * brightness;',
+        '  // Mix original color toward white for a lighter, desaturated look',
+        '  float brightness = 0.8 + cellLum * 0.2;',
+        '  vec3 baseColor = mix(cellColor.rgb, vec3(1.0), 0.5);',
+        '  vec3 litColor = baseColor * brightness;',
         '',
-        '  // Mouse hover glow: slightly brighter near cursor',
-        '  float glow = strength * 0.3;',
-        '  litColor += vec3(glow * 0.8, glow * 0.3, glow * 0.05);',
+        '  // Mouse hover glow: neutral brightening near cursor',
+        '  float glow = strength * 0.35;',
+        '  litColor += vec3(glow);',
         '',
-        '  vec3 finalColor = mix(bgColor, litColor, charPixel);',
+        '  // Apply 50% opacity (blend character with background)',
+        '  float charOpacity = 0.5;',
+        '  vec3 finalColor = mix(bgColor, litColor, charPixel * charOpacity);',
         '',
         '  gl_FragColor = vec4(finalColor, 1.0);',
         '}'
@@ -1921,11 +1938,7 @@
         tex.magFilter = THREE.LinearFilter;
         uniforms.uTexture.value = tex;
 
-        // Adapt aspect ratio to image
-        var imgAspect = tex.image.width / tex.image.height;
-        container.style.aspectRatio = imgAspect;
-
-        // Resize renderer to new container size
+        // Resize renderer to container size (full hero background)
         var r = container.getBoundingClientRect();
         renderer.setSize(r.width, r.height);
         uniforms.uAspect.value = r.width / r.height;
@@ -1939,23 +1952,24 @@
       var hoverTarget = 0;
       var hoverCurrent = 0;
 
-      container.addEventListener('mousemove', function (e) {
+      var heroSection = document.getElementById('hero-section');
+      heroSection.addEventListener('mousemove', function (e) {
         var r = container.getBoundingClientRect();
         targetMouse.x = (e.clientX - r.left) / r.width;
         targetMouse.y = 1.0 - (e.clientY - r.top) / r.height;
       });
-      container.addEventListener('mouseenter', function () { hoverTarget = 1; });
-      container.addEventListener('mouseleave', function () { hoverTarget = 0; });
+      heroSection.addEventListener('mouseenter', function () { hoverTarget = 1; });
+      heroSection.addEventListener('mouseleave', function () { hoverTarget = 0; });
 
       // Touch support
-      container.addEventListener('touchmove', function (e) {
+      heroSection.addEventListener('touchmove', function (e) {
         var touch = e.touches[0];
         var r = container.getBoundingClientRect();
         targetMouse.x = (touch.clientX - r.left) / r.width;
         targetMouse.y = 1.0 - (touch.clientY - r.top) / r.height;
         hoverTarget = 1;
       }, { passive: true });
-      container.addEventListener('touchend', function () { hoverTarget = 0; });
+      heroSection.addEventListener('touchend', function () { hoverTarget = 0; });
 
       // Animation loop
       function tick() {
