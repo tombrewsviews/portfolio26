@@ -2,7 +2,22 @@
   "permissions": {
     "allow": [
       "mcp__Claude_Preview__preview_start",
-      "Bash(xargs kill:*)"
+      "Bash(xargs kill:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(claude mcp:*)",
+      "Read(//Users/parandykt/.claude/skills/**)",
+      "Bash(claude skill:*)",
+      "Bash(for skill:*)",
+      "Bash(do)",
+      "Bash(cp -r \"/tmp/mcp-server-guide/skills/$skill\" \"$HOME/.claude/skills/$skill\")",
+      "Bash(echo \"Installed: $skill\")",
+      "Bash(done)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "tessl"
+  ]
 }
