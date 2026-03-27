@@ -106,12 +106,13 @@
         left: 0;
         pointer-events: none;
         border-radius: 50%;
-        transform: translate(-50%, -50%);
       }
 
       .cursor-dot {
         width: 8px;
         height: 8px;
+        margin-left: -4px;
+        margin-top: -4px;
         background: var(--color-accent);
         z-index: 9999;
       }
@@ -119,6 +120,8 @@
       .cursor-follower {
         width: 40px;
         height: 40px;
+        margin-left: -20px;
+        margin-top: -20px;
         border: 1px solid rgba(255, 99, 33, 0.3);
         z-index: 9998;
       }
@@ -648,7 +651,7 @@
       z-index: 100;
       opacity: 0;
       transform: translate3d(0,0,0) scale(0.85);
-      transition: opacity 0.25s ease;
+      transition: opacity 0.25s ease, transform 0.25s ease;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
       will-change: transform, opacity;
     }
@@ -1283,7 +1286,7 @@
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
       <div class="navbar-inner">
-        <div class="navbar-brand">Tom Parandyk</div>
+        <div class="navbar-brand">Hi, I'm Tom</div>
         <div class="navbar-links">
           <a href="#work" class="nav-link">Work</a>
           <a href="#ship-log" class="nav-link">Ship Log</a>
@@ -2023,11 +2026,20 @@
       var isVisible = false;
 
       items.forEach(function (item) {
-        item.addEventListener('mouseenter', function () {
+        item.addEventListener('mouseenter', function (e) {
           var src = item.getAttribute('data-preview');
           if (src) {
             img.src = src;
+            // Position immediately before showing to prevent flash at (0,0)
+            var x = e.clientX + 20;
+            var y = e.clientY - 135;
+            if (x + 440 > window.innerWidth) x = e.clientX - 440;
+            if (y < 10) y = 10;
+            if (y + 270 > window.innerHeight) y = window.innerHeight - 280;
+            preview.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) scale(1)';
             isVisible = true;
+            // Force layout before adding visible class so transition works from correct position
+            preview.offsetHeight;
             preview.classList.add('visible');
           }
         });
@@ -2071,15 +2083,22 @@
         followerX += (mouseX - followerX) * 0.15;
         followerY += (mouseY - followerY) * 0.15;
 
-        dot.style.transform = 'translate(' + dotX + 'px, ' + dotY + 'px) translate(-50%, -50%)';
-        follower.style.transform = 'translate(' + followerX + 'px, ' + followerY + 'px) translate(-50%, -50%)';
+        dot.style.left = dotX + 'px';
+        dot.style.top = dotY + 'px';
+        follower.style.left = followerX + 'px';
+        follower.style.top = followerY + 'px';
 
-        rafId = requestAnimationFrame(updateCursor);
+        // Stop loop when cursor has caught up (within 0.5px)
+        var settled = Math.abs(mouseX - followerX) < 0.5 && Math.abs(mouseY - followerY) < 0.5;
+        if (settled) {
+          rafId = null;
+        } else {
+          rafId = requestAnimationFrame(updateCursor);
+        }
       }
-      rafId = requestAnimationFrame(updateCursor);
 
       // Hover effects on interactive elements
-      document.querySelectorAll('a, button, .experiment-row, .oss-item, .process-item').forEach(function (el) {
+      document.querySelectorAll('a, button, .experiment-row, .oss-item, .process-item, .past-work-item').forEach(function (el) {
         el.addEventListener('mouseenter', function () {
           gsap.to(follower, {
             scale: 2.5,
