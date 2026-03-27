@@ -450,6 +450,18 @@
       text-align: right;
       flex-shrink: 0;
     }
+    @media (min-width: 768px) {
+      .dither-controls {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .dither-toggle {
+        background: rgba(255, 99, 33, 0.2);
+        border-color: rgba(255, 99, 33, 0.4);
+        color: #ff6321;
+      }
+    }
     @media (max-width: 480px) {
       .dither-controls {
         right: 0.5rem;
@@ -2496,6 +2508,11 @@
       var toggle = document.getElementById('dither-toggle');
       var panel = document.getElementById('dither-controls');
       if (toggle && panel) {
+        // Open by default on desktop
+        if (window.innerWidth >= 768) {
+          panel.classList.add('open');
+          toggle.classList.add('active');
+        }
         toggle.addEventListener('click', function () {
           var isOpen = panel.classList.toggle('open');
           toggle.classList.toggle('active', isOpen);
