@@ -8,10 +8,18 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://cdn.jsdelivr.net/npm/@fontsource/commit-mono@5/400.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@fontsource/commit-mono@5/700.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="preload" href="macintosh_classic_2048x2048-1024x1024.jpg" as="image">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module">
+    import { prepare, layout, layoutWithLines, walkLineRanges } from 'https://esm.sh/@chenglou/pretext@0.0.3';
+    window.__pretext = { prepare, layout, layoutWithLines, walkLineRanges };
+    window.dispatchEvent(new Event('pretext-ready'));
+  </script>
   <style>
     *,
     *::before,
@@ -21,9 +29,11 @@
       padding: 0;
     }
 
+    html { scroll-behavior: smooth; }
+
     :root {
       --font-sans: "Commit Mono", ui-monospace, monospace;
-      --font-display: "Commit Mono", ui-monospace, monospace;
+      --font-display: "Space Grotesk", "Commit Mono", ui-monospace, monospace;
       --font-mono: "Commit Mono", ui-monospace, monospace;
       --color-primary: #000000;
       --color-accent: #ff6321;
@@ -52,6 +62,36 @@
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    /* Focus visible for keyboard navigation */
+    *:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+
+    /* Skip to content */
+    .skip-to-content {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      z-index: 100;
+      background: var(--color-primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .skip-to-content:focus {
+      top: 1rem;
     }
 
     /* Typography utilities */
@@ -93,7 +133,7 @@
       display: none;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 768px) and (pointer: fine) {
       #app-container {
         cursor: none;
       }
@@ -230,6 +270,60 @@
       transform: scale(0.95);
     }
 
+    /* Mobile menu */
+    .mobile-menu-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-on-surface);
+      padding: 0;
+    }
+
+    @media (min-width: 768px) {
+      .mobile-menu-btn {
+        display: none;
+      }
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(249, 249, 249, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 49;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+    }
+
+    .mobile-nav.open {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      text-transform: uppercase;
+      letter-spacing: -0.05em;
+      color: var(--color-on-surface);
+      transition: color 0.3s;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--color-accent);
+    }
+
     /* Sections */
     .section-pad {
       padding-top: 10rem;
@@ -305,6 +399,23 @@
 
     .hero-title .char {
       display: inline-block;
+      transition: transform 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+      will-change: transform;
+    }
+
+    /* Pretext line-by-line reveal for section headings */
+    .pt-line {
+      display: block;
+      overflow: hidden;
+    }
+    .pt-line-inner {
+      display: block;
+    }
+
+    /* CTA scatter chars */
+    .cta-heading .char {
+      display: inline-block;
+      will-change: transform, opacity;
     }
 
     .hero .hero-sub,
@@ -751,7 +862,7 @@
     }
 
     .stat-label {
-      font-size: 10px;
+      font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       opacity: 0.4;
@@ -795,6 +906,17 @@
       background: var(--color-accent);
       transform: scale(1.15);
       box-shadow: 0 2px 8px rgba(255, 99, 33, 0.3);
+    }
+
+    @media (max-width: 767px) {
+      .year-grid {
+        grid-template-columns: repeat(8, 1fr);
+        gap: 0.375rem;
+      }
+      .year-cell {
+        min-width: 32px;
+        min-height: 32px;
+      }
     }
 
     #week-tabs-container {
@@ -1284,12 +1406,31 @@
     .space-y-4>*+* {
       margin-top: 1rem;
     }
+
+    /* Reduced motion: respect user preferences */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .bounce-arrow svg {
+        animation: none;
+      }
+      .gs-reveal {
+        visibility: visible !important;
+      }
+    }
   </style>
 </head>
 
 <body>
 
   <div id="app-container" style="opacity: 0; min-height: 100vh;">
+
+    <!-- Skip to content -->
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
 
     <!-- Custom Cursor -->
     <div class="cursor-dot" id="cursor-dot"></div>
@@ -1300,15 +1441,30 @@
       <div class="navbar-inner">
         <div class="navbar-brand">Hi, I'm Tom</div>
         <div class="navbar-links">
-          <a href="#work" class="nav-link">Work</a>
-          <a href="#ship-log" class="nav-link">Ship Log</a>
-          <a href="#contact" class="nav-link">Contact</a>
-          <a href="https://dribbble.com/tmass" target="_blank" rel="noopener noreferrer" class="btn-hire" style="display:inline-block;">Dribbble ↗</a>
+          <a href="#work" class="nav-link" aria-label="View my work">Work</a>
+          <a href="#ship-log" class="nav-link" aria-label="View ship log">Ship Log</a>
+          <a href="#contact" class="nav-link" aria-label="Contact me">Contact</a>
+          <a href="https://dribbble.com/tmass" target="_blank" rel="noopener noreferrer" class="btn-hire" style="display:inline-block;" aria-label="Visit my Dribbble portfolio">Dribbble ↗</a>
         </div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open navigation menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
       </div>
     </nav>
 
-    <main>
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobile-nav">
+      <a href="#work" class="mobile-nav-link">Work</a>
+      <a href="#ship-log" class="mobile-nav-link">Ship Log</a>
+      <a href="#contact" class="mobile-nav-link">Contact</a>
+      <a href="https://dribbble.com/tmass" target="_blank" rel="noopener noreferrer" class="mobile-nav-link">Dribbble</a>
+    </div>
+
+    <main id="main-content">
 
       <!-- Hero -->
       <section class="hero container" id="hero-section">
@@ -1772,7 +1928,7 @@
             <span class="accent">© 2026</span>
           </div>
           <div class="footer-socials">
-            <a href="mailto:parandykt@gmail.com">
+            <a href="mailto:parandykt@gmail.com" aria-label="Send email to Tom Parandyk">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="20" height="16" x="2" y="4" rx="2" />
@@ -1785,7 +1941,7 @@
     </footer>
 
     <!-- Bounce Arrow -->
-    <div class="bounce-arrow">
+    <div class="bounce-arrow" aria-hidden="true">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 5v14" />
@@ -1799,6 +1955,9 @@
   document.addEventListener('DOMContentLoaded', function() {
     // Register ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
+
+    // Respect reduced motion preference
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Generate year grid cells with interactive tabs
     (function () {
@@ -1851,6 +2010,8 @@
         if (status === 'shipped') cell.classList.add('shipped');
         else if (status === 'current') cell.classList.add('current');
         cell.setAttribute('data-week', i);
+        cell.setAttribute('aria-label', 'Week ' + (i + 1) + (status === 'shipped' ? ' - shipped' : status === 'current' ? ' - current' : ' - upcoming'));
+        cell.setAttribute('role', status === 'shipped' || status === 'current' ? 'button' : 'presentation');
 
         // Only shipped and current weeks are clickable
         if (status === 'shipped' || status === 'current') {
@@ -1895,6 +2056,309 @@
       });
     })();
 
+    // Split CTA heading into chars for scatter animation
+    (function () {
+      var heading = document.querySelector('.cta-heading');
+      if (!heading) return;
+      // Preserve the inner HTML structure (including the <span> for "something.")
+      var nodes = Array.prototype.slice.call(heading.childNodes);
+      heading.innerHTML = '';
+      nodes.forEach(function (node) {
+        if (node.nodeType === 3) {
+          // Text node — split into chars
+          var text = node.textContent;
+          for (var i = 0; i < text.length; i++) {
+            var ch = text[i];
+            if (ch === ' ') {
+              var sp = document.createElement('span');
+              sp.textContent = ' ';
+              sp.className = 'char';
+              sp.style.display = 'inline';
+              heading.appendChild(sp);
+            } else {
+              var span = document.createElement('span');
+              span.className = 'char';
+              span.textContent = ch;
+              heading.appendChild(span);
+            }
+          }
+        } else if (node.nodeType === 1) {
+          // Element node (the <span> with "something.") — split its text too
+          var wrapper = node.cloneNode(false);
+          var innerText = node.textContent;
+          for (var j = 0; j < innerText.length; j++) {
+            var c = innerText[j];
+            if (c === ' ') {
+              var s = document.createElement('span');
+              s.textContent = ' ';
+              s.className = 'char';
+              s.style.display = 'inline';
+              wrapper.appendChild(s);
+            } else {
+              var sp2 = document.createElement('span');
+              sp2.className = 'char';
+              sp2.textContent = c;
+              wrapper.appendChild(sp2);
+            }
+          }
+          heading.appendChild(wrapper);
+        }
+      });
+    })();
+
+    // ===== PRETEXT-POWERED ANIMATIONS =====
+    function initPretextAnimations() {
+      var pt = window.__pretext;
+      if (!pt) return;
+
+      // --- 1. Hero title: per-character mouse repulsion ---
+      (function () {
+        var title = document.getElementById('hero-title');
+        if (!title || prefersReducedMotion) return;
+        var chars = title.querySelectorAll('.char');
+        var heroSection = document.getElementById('hero-section');
+        var mouseX = -1000, mouseY = -1000;
+        var repelRadius = 120;
+        var repelStrength = 18;
+        var rafId = null;
+
+        heroSection.addEventListener('mousemove', function (e) {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          if (!rafId) rafId = requestAnimationFrame(updateRepel);
+        }, { passive: true });
+
+        heroSection.addEventListener('mouseleave', function () {
+          mouseX = -1000;
+          mouseY = -1000;
+          if (!rafId) rafId = requestAnimationFrame(updateRepel);
+        }, { passive: true });
+
+        function updateRepel() {
+          var anyMoved = false;
+          for (var i = 0; i < chars.length; i++) {
+            var ch = chars[i];
+            if (ch.textContent === ' ') continue;
+            var rect = ch.getBoundingClientRect();
+            var cx = rect.left + rect.width / 2;
+            var cy = rect.top + rect.height / 2;
+            var dx = cx - mouseX;
+            var dy = cy - mouseY;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < repelRadius) {
+              var force = (1 - dist / repelRadius) * repelStrength;
+              var nx = dx / dist * force;
+              var ny = dy / dist * force;
+              ch.style.transform = 'translate(' + nx.toFixed(1) + 'px,' + ny.toFixed(1) + 'px)';
+              anyMoved = true;
+            } else {
+              ch.style.transform = '';
+            }
+          }
+          rafId = anyMoved || mouseX !== -1000 ? requestAnimationFrame(updateRepel) : null;
+        }
+      })();
+
+      // --- 2. Section heading line-by-line reveal ---
+      (function () {
+        if (prefersReducedMotion) return;
+
+        // Get the computed font for section headings
+        var headings = document.querySelectorAll('.section-heading');
+        headings.forEach(function (heading) {
+          var text = heading.textContent.trim();
+          if (!text || text.length < 5) return;
+
+          var style = window.getComputedStyle(heading);
+          var fontSize = style.fontSize;
+          var fontFamily = style.fontFamily;
+          var fontWeight = style.fontWeight;
+          var font = fontWeight + ' ' + fontSize + ' ' + fontFamily;
+
+          try {
+            var maxWidth = heading.offsetWidth;
+            var lineHeight = parseFloat(fontSize) * 0.85; // match .text-monolith line-height
+            var result = pt.layoutWithLines(text, font, maxWidth, lineHeight);
+
+            if (result.lines && result.lines.length > 1) {
+              heading.innerHTML = '';
+              heading.style.lineHeight = style.lineHeight;
+
+              result.lines.forEach(function (line) {
+                var lineDiv = document.createElement('span');
+                lineDiv.className = 'pt-line';
+                var inner = document.createElement('span');
+                inner.className = 'pt-line-inner';
+                inner.textContent = line.text;
+                lineDiv.appendChild(inner);
+                heading.appendChild(lineDiv);
+              });
+
+              // Animate each line with stagger on scroll
+              var inners = heading.querySelectorAll('.pt-line-inner');
+              gsap.set(inners, { y: '110%' });
+              gsap.to(inners, {
+                y: '0%',
+                stagger: 0.08,
+                duration: 0.9,
+                ease: 'power4.out',
+                scrollTrigger: {
+                  trigger: heading,
+                  start: 'top 80%',
+                  once: true
+                }
+              });
+            }
+          } catch (e) {
+            // Fallback: keep original text if pretext fails
+          }
+        });
+      })();
+
+      // --- 3. Ship title dynamic reflow with width animation ---
+      (function () {
+        if (prefersReducedMotion) return;
+        var shipTitle = document.querySelector('.ship-title');
+        if (!shipTitle) return;
+
+        var text = shipTitle.textContent.replace(/\s+/g, ' ').trim();
+        var style = window.getComputedStyle(shipTitle);
+        var fontSize = style.fontSize;
+        var fontFamily = style.fontFamily;
+        var font = style.fontWeight + ' ' + fontSize + ' ' + fontFamily;
+
+        try {
+          var fullWidth = shipTitle.offsetWidth;
+          var lineHeight = parseFloat(fontSize) * 0.8;
+
+          // Use pretext to verify text layout at target width
+          var finalResult = pt.layout(text, font, fullWidth, lineHeight);
+
+          // Animate: start narrow, expand to full — text reflows naturally
+          shipTitle.style.display = 'block';
+          shipTitle.style.overflow = 'hidden';
+          shipTitle.style.whiteSpace = 'normal';
+          shipTitle.textContent = text;
+
+          // Start at narrow width and expand
+          gsap.set(shipTitle, { maxWidth: '3em' });
+          gsap.to(shipTitle, {
+            maxWidth: fullWidth + 'px',
+            duration: 1.5,
+            ease: 'power3.inOut',
+            scrollTrigger: {
+              trigger: shipTitle,
+              start: 'top 75%',
+              once: true
+            }
+          });
+        } catch (e) {
+          // Fallback: leave as-is
+        }
+      })();
+
+      // --- 4. CTA heading scatter-to-assemble ---
+      (function () {
+        if (prefersReducedMotion) return;
+        var ctaHeading = document.querySelector('.cta-heading');
+        if (!ctaHeading) return;
+
+        var chars = ctaHeading.querySelectorAll('.char');
+        if (chars.length === 0) return;
+
+        // Set initial scattered state — subtle randomization
+        chars.forEach(function (ch) {
+          if (ch.textContent.trim() === '') return;
+          var rx = (Math.random() - 0.5) * 40;
+          var ry = (Math.random() - 0.5) * 25;
+          gsap.set(ch, {
+            opacity: 0,
+            x: rx,
+            y: ry,
+            rotateZ: (Math.random() - 0.5) * 8
+          });
+        });
+
+        // Animate to assembled position on scroll
+        gsap.to(chars, {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          rotateZ: 0,
+          stagger: {
+            each: 0.015,
+            from: 'center'
+          },
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: ctaHeading,
+            start: 'top 75%',
+            once: true
+          }
+        });
+      })();
+
+      // --- 5. Words section: scroll-driven line reveal using pretext geometry ---
+      (function () {
+        if (prefersReducedMotion) return;
+        var bodies = document.querySelectorAll('.words-body');
+        bodies.forEach(function (body) {
+          var text = body.textContent.trim();
+          if (!text) return;
+
+          var style = window.getComputedStyle(body);
+          var font = style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily;
+
+          try {
+            var maxWidth = body.offsetWidth;
+            var lineHeight = parseFloat(style.fontSize) * parseFloat(style.lineHeight);
+            if (isNaN(lineHeight)) lineHeight = parseFloat(style.fontSize) * 1.625;
+            var result = pt.layoutWithLines(text, font, maxWidth, lineHeight);
+
+            if (result.lines && result.lines.length > 1) {
+              body.innerHTML = '';
+
+              result.lines.forEach(function (line) {
+                var lineSpan = document.createElement('span');
+                lineSpan.className = 'pt-line';
+                var inner = document.createElement('span');
+                inner.className = 'pt-line-inner';
+                inner.textContent = line.text;
+                lineSpan.appendChild(inner);
+                body.appendChild(lineSpan);
+              });
+
+              var inners = body.querySelectorAll('.pt-line-inner');
+              gsap.set(inners, { y: '105%', opacity: 0.3 });
+              gsap.to(inners, {
+                y: '0%',
+                opacity: 1,
+                stagger: 0.04,
+                duration: 0.7,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: body,
+                  start: 'top 80%',
+                  once: true
+                }
+              });
+            }
+          } catch (e) {
+            // Fallback: leave as-is
+          }
+        });
+      })();
+    }
+
+    // Wait for pretext module to load, then init
+    if (window.__pretext) {
+      initPretextAnimations();
+    } else {
+      window.addEventListener('pretext-ready', initPretextAnimations);
+    }
+
     // ===== ANIMATIONS =====
 
     // Helper: scroll-reveal using set() + to() pattern (no flicker)
@@ -1926,80 +2390,92 @@
       delay: 0.5
     });
 
-    // Hero title chars
-    gsap.set('#hero-title .char', { y: 100, opacity: 0 });
-    gsap.to('#hero-title .char', {
-      y: 0,
-      opacity: 1,
-      stagger: 0.02,
-      duration: 1,
-      ease: 'power4.out',
-      delay: 0.8
-    });
+    if (!prefersReducedMotion) {
+      // Hero title chars
+      gsap.set('#hero-title .char', { y: 100, opacity: 0 });
+      gsap.to('#hero-title .char', {
+        y: 0,
+        opacity: 1,
+        stagger: 0.02,
+        duration: 1,
+        ease: 'power4.out',
+        delay: 0.8
+      });
 
-    // Hero subtitle
-    gsap.set('.hero-sub', { y: 30, opacity: 0 });
-    gsap.to('.hero-sub', {
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      ease: 'power3.out',
-      delay: 1.5
-    });
+      // Hero subtitle
+      gsap.set('.hero-sub', { y: 30, opacity: 0 });
+      gsap.to('.hero-sub', {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        delay: 1.5
+      });
+    }
 
-    // Status items
-    scrollReveal('.status-item', '#status-section',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: 'power3.out' }
-    );
+    if (!prefersReducedMotion) {
+      // Status items
+      scrollReveal('.status-item', '#status-section',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: 'power3.out' }
+      );
 
-    // Experiment rows
-    scrollReveal('.experiment-row', '#work',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: 'power3.out' },
-      { start: 'top 70%' }
-    );
+      // Experiment rows
+      scrollReveal('.experiment-row', '#work',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: 'power3.out' },
+        { start: 'top 70%' }
+      );
 
-    // Past work items
-    scrollReveal('.past-work-item', '#past-work-section',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: 'power3.out' },
-      { start: 'top 70%' }
-    );
+      // Past work items
+      scrollReveal('.past-work-item', '#past-work-section',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: 'power3.out' },
+        { start: 'top 70%' }
+      );
 
-    // Ship log content
-    scrollReveal('.ship-log-content', '#ship-log',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.2, duration: 1, ease: 'power3.out' },
-      { start: 'top 70%' }
-    );
+      // Ship log content
+      scrollReveal('.ship-log-content', '#ship-log',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.2, duration: 1, ease: 'power3.out' },
+        { start: 'top 70%' }
+      );
 
-    // Words items
-    scrollReveal('.words-item', '#words-section',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.2, duration: 1, ease: 'power3.out' },
-      { start: 'top 70%' }
-    );
+      // Words items
+      scrollReveal('.words-item', '#words-section',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.2, duration: 1, ease: 'power3.out' },
+        { start: 'top 70%' }
+      );
 
-    // Process items
-    scrollReveal('.process-item', '#process-section',
-      { y: 100, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.1, duration: 1.2, ease: 'expo.out' },
-      { start: 'top 70%' }
-    );
+      // Process items
+      scrollReveal('.process-item', '#process-section',
+        { y: 100, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 1.2, ease: 'expo.out' },
+        { start: 'top 70%' }
+      );
 
-    // Shaped me columns
-    scrollReveal('.shaped-col', '#shaped-section',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.2, duration: 1, ease: 'power3.out' }
-    );
+      // Shaped me columns
+      scrollReveal('.shaped-col', '#shaped-section',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.2, duration: 1, ease: 'power3.out' }
+      );
 
-    // CTA text
-    scrollReveal('.cta-text', '#contact',
-      { scale: 0.9, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 1.5, ease: 'expo.out' },
-      { start: 'top 70%' }
-    );
+      // CTA body and link (heading handled by pretext scatter)
+      scrollReveal('.cta-body, .cta-link', '#contact',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.15, duration: 1.2, ease: 'expo.out' },
+        { start: 'top 70%' }
+      );
+      // Make cta-text visible immediately (children animate individually)
+      gsap.set('.cta-text', { visibility: 'visible' });
+    }
+
+    if (prefersReducedMotion) {
+      document.querySelectorAll('.gs-reveal').forEach(function(el) {
+        el.style.visibility = 'visible';
+      });
+    }
 
     // ===== TERMINAL COPY =====
     (function () {
@@ -2027,11 +2503,38 @@
       });
     })();
 
+    // ===== MOBILE MENU =====
+    (function () {
+      var btn = document.getElementById('mobile-menu-btn');
+      var nav = document.getElementById('mobile-nav');
+      if (!btn || !nav) return;
+
+      btn.addEventListener('click', function () {
+        var isOpen = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+        // Toggle icon between hamburger and X
+        if (isOpen) {
+          btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+        } else {
+          btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+        }
+      });
+
+      // Close mobile nav when clicking a link
+      nav.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          nav.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+        });
+      });
+    })();
+
     // ===== PAST WORK HOVER PREVIEW =====
     (function () {
       var preview = document.createElement('div');
       preview.className = 'pw-preview';
-      preview.innerHTML = '<img src="" alt="">';
+      preview.innerHTML = '<img src="" alt="Project preview" loading="lazy">';
       document.body.appendChild(preview);
       var img = preview.querySelector('img');
       var items = document.querySelectorAll('.past-work-item[data-preview]');
@@ -2042,6 +2545,7 @@
           var src = item.getAttribute('data-preview');
           if (src) {
             img.src = src;
+            img.alt = item.querySelector('.pw-title').textContent + ' preview';
             // Position immediately before showing to prevent flash at (0,0)
             var x = e.clientX + 20;
             var y = e.clientY - 135;
@@ -2077,7 +2581,7 @@
     (function () {
       var dot = document.getElementById('cursor-dot');
       var follower = document.getElementById('cursor-follower');
-      if (!dot || !follower || window.innerWidth < 768) return;
+      if (!dot || !follower || window.innerWidth < 768 || !window.matchMedia('(pointer: fine)').matches) return;
 
       var mouseX = 0, mouseY = 0;
       var dotX = 0, dotY = 0, followerX = 0, followerY = 0;
