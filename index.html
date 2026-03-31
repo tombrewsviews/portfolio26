@@ -1720,12 +1720,37 @@
                 </div>
               </div>
 
-              <!-- Week 02 (current — placeholder) -->
+              <!-- Week 02 -->
               <div class="week-tab-panel" data-week="1">
                 <div class="week-detail">
                   <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
                     <span class="text-annotation">// Week 02</span>
                     <span class="text-annotation">Mar 24–30 / 2026</span>
+                  </div>
+                  <h3 class="week-title">debug-toolkit</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">//
+                    v0.17.0 · release_note</span>
+                  <div class="week-body space-y-6">
+                    <p>0.17.0 shipped with direct access to clean error states and context optimization.</p>
+                  </div>
+                  <div class="terminal-box" data-command="npm i debug-toolkit">
+                    <span class="terminal-prompt">$</span> npm i debug-toolkit
+                    <button class="terminal-copy" aria-label="Copy command">copy</button>
+                  </div>
+                  <div class="week-links">
+                    <a href="https://github.com/tombrewsviews/debug-toolkit" class="text-annotation">github →</a>
+                    <a href="https://www.npmjs.com/package/debug-toolkit" class="text-annotation">npm →</a>
+                    <a href="https://github.com/tombrewsviews/debug-toolkit#readme" class="text-annotation">docs →</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Week 03 (current — placeholder) -->
+              <div class="week-tab-panel" data-week="2">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 03</span>
+                    <span class="text-annotation">Mar 31–Apr 6 / 2026</span>
                   </div>
                   <h3 class="week-title">In progress...</h3>
                   <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// currently building</span>
@@ -1969,8 +1994,8 @@
       // Define week statuses: 'shipped', 'current', or null
       var weekStatuses = [];
       for (var i = 0; i < 52; i++) {
-        if (i === 0) { weekStatuses.push('shipped'); lastShippedWeek = i; }
-        else if (i === 1) weekStatuses.push('current');
+        if (i === 0 || i === 1) { weekStatuses.push('shipped'); lastShippedWeek = i; }
+        else if (i === 2) weekStatuses.push('current');
         else weekStatuses.push(null);
       }
 
