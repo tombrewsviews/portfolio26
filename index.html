@@ -1510,13 +1510,136 @@
           <div class="hero-text">
             <span class="hero-sub text-annotation" style="margin-bottom: 2rem; display: block;">// founding designer &
               full stack builder</span>
-            <h1 class="text-monolith hero-title" id="hero-title">My dream is to build useful tools that change the world.</h1>
+            <h1 class="text-monolith hero-title" id="hero-title">I love building my designs.</h1>
             <div class="hero-sub" style="max-width: 48rem;">
               <p class="hero-body">
                 I've been a founding designer at startups that crossed $1Bn in acquisitions.
-                Yet, my dream is to build solutions that change the world, so I keep measuring myself against new goals
-                all the time, and when the number doesn't add up, I keep going.
+                Yet, my dream is to build solutions that bring positive change to the world, spark engement, and are loved by people.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ship Log -->
+      <section id="ship-log" class="section-pad container">
+        <div class="ship-log-inner">
+          <div class="ship-log-left ship-log-content gs-reveal">
+            <h2 class="ship-title">Ship<br>Every<br>Week.</h2>
+            <div class="challenge-box">
+              <h4 class="text-annotation" style="margin-bottom: 1.5rem;">The challenge</h4>
+              <div class="space-y-4">
+                <p class="challenge-item"><strong>Not someday. Not when it's ready.</strong> Every single week,
+                  something ships — a feature, a tool, a package, an idea made real.</p>
+                <p class="challenge-item">This is my public commitment. The tracker below doesn't lie. Momentum over
+                  perfection. Progress over polish. The streak is the point.</p>
+              </div>
+              <p class="text-annotation" style="color: var(--color-accent); margin-top: 2rem;">// "Waiting is how ideas
+                die."</p>
+            </div>
+            <div class="stats-grid">
+              <div>
+                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Weeks shipped</span>
+                <div class="stat-value">2</div>
+              </div>
+              <div>
+                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Streak</span>
+                <div class="stat-value">2</div>
+              </div>
+              <div>
+                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Goal</span>
+                <div class="stat-value">52</div>
+              </div>
+              <div>
+                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Complete</span>
+                <div class="stat-value">4%</div>
+              </div>
+            </div>
+          </div>
+          <div class="ship-log-right ship-log-content gs-reveal">
+            <div>
+              <span class="text-annotation" style="display: block; margin-bottom: 1rem;">Year grid: black = shipped ·
+                orange = selected · grey = upcoming</span>
+              <div class="year-grid" id="year-grid"></div>
+            </div>
+            <div id="week-tabs-container">
+              <!-- Week 01 -->
+              <div class="week-tab-panel active" data-week="0">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 01</span>
+                    <span class="text-annotation">Mar 17–23 / 2026</span>
+                  </div>
+                  <h3 class="week-title">debug-toolkit</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">//
+                    npm_package · mcp_server · typescript · 3451_loc</span>
+                  <div class="week-body space-y-6">
+                    <p>1. AI agents are great at writing code. They're terrible at seeing it run.</p>
+                    <p>2. When an agent hits a bug, it reads code and guesses a fix. You run it, paste the error back, the
+                      agent guesses again. Repeat 5–8 times. I built the exit ramp: an MCP server giving agents a
+                      closed-loop debugging system. Investigate → instrument → capture → verify → remember.</p>
+                    <p>3. <strong>15 files · 3,451 lines of TypeScript · 4 npm dependencies · JS/TS, Python, Go,
+                        Rust/Tauri.</strong></p>
+                  </div>
+                  <div class="terminal-box" data-command="npx debug-toolkit init">
+                    <span class="terminal-prompt">$</span> npx debug-toolkit init
+                    <button class="terminal-copy" aria-label="Copy command">copy</button>
+                  </div>
+                  <div class="week-links">
+                    <a href="https://github.com/tombrewsviews/debug-toolkit" class="text-annotation">github →</a>
+                    <a href="https://www.npmjs.com/package/debug-toolkit" class="text-annotation">npm →</a>
+                    <a href="https://github.com/tombrewsviews/debug-toolkit#readme" class="text-annotation">docs →</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Week 02 -->
+              <div class="week-tab-panel" data-week="1">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 02</span>
+                    <span class="text-annotation">Mar 24–30 / 2026</span>
+                  </div>
+                  <h3 class="week-title">debug-toolkit</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">//
+                    v0.17.0 · release_note</span>
+                  <div class="week-body space-y-6">
+                    <p>0.17.0 shipped with direct access to clean error states and context optimization.</p>
+                  </div>
+                  <div class="terminal-box" data-command="npm i debug-toolkit">
+                    <span class="terminal-prompt">$</span> npm i debug-toolkit
+                    <button class="terminal-copy" aria-label="Copy command">copy</button>
+                  </div>
+                  <div class="week-links">
+                    <a href="https://github.com/tombrewsviews/debug-toolkit" class="text-annotation">github →</a>
+                    <a href="https://www.npmjs.com/package/debug-toolkit" class="text-annotation">npm →</a>
+                    <a href="https://github.com/tombrewsviews/debug-toolkit#readme" class="text-annotation">docs →</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Week 03 (current — placeholder) -->
+              <div class="week-tab-panel" data-week="2">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 03</span>
+                    <span class="text-annotation">Mar 31–Apr 6 / 2026</span>
+                  </div>
+                  <h3 class="week-title">In progress...</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// currently building</span>
+                  <div class="week-body space-y-6">
+                    <p>This week's ship is underway. Check back soon.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="community-box">
+              <h4 class="community-title">Build alongside me.</h4>
+              <p class="community-desc">
+                Creating a community for people who ship. Weekly commits. Public progress. Accountability that actually
+                works. If you build things — you're in the right place.
+              </p>
+              <a target="_blank" href="https://github.com/tombrewsviews/straw-hat-collective/discussions" class="btn-community">join the collective →</a>
             </div>
           </div>
         </div>
@@ -1648,129 +1771,7 @@
         </div>
       </section>
 
-      <!-- Ship Log -->
-      <section id="ship-log" class="section-pad container">
-        <div class="ship-log-inner">
-          <div class="ship-log-left ship-log-content gs-reveal">
-            <h2 class="ship-title">Ship<br>Every<br>Week.</h2>
-            <div class="challenge-box">
-              <h4 class="text-annotation" style="margin-bottom: 1.5rem;">The challenge</h4>
-              <div class="space-y-4">
-                <p class="challenge-item"><strong>Not someday. Not when it's ready.</strong> Every single week,
-                  something ships — a feature, a tool, a package, an idea made real.</p>
-                <p class="challenge-item">This is my public commitment. The tracker below doesn't lie. Momentum over
-                  perfection. Progress over polish. The streak is the point.</p>
-              </div>
-              <p class="text-annotation" style="color: var(--color-accent); margin-top: 2rem;">// "Waiting is how ideas
-                die."</p>
-            </div>
-            <div class="stats-grid">
-              <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Weeks shipped</span>
-                <div class="stat-value">2</div>
-              </div>
-              <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Streak</span>
-                <div class="stat-value">2</div>
-              </div>
-              <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Goal</span>
-                <div class="stat-value">52</div>
-              </div>
-              <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Complete</span>
-                <div class="stat-value">4%</div>
-              </div>
-            </div>
-          </div>
-          <div class="ship-log-right ship-log-content gs-reveal">
-            <div>
-              <span class="text-annotation" style="display: block; margin-bottom: 1rem;">Year grid: black = shipped ·
-                orange = selected · grey = upcoming</span>
-              <div class="year-grid" id="year-grid"></div>
-            </div>
-            <div id="week-tabs-container">
-              <!-- Week 01 -->
-              <div class="week-tab-panel active" data-week="0">
-                <div class="week-detail">
-                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
-                    <span class="text-annotation">// Week 01</span>
-                    <span class="text-annotation">Mar 17–23 / 2026</span>
-                  </div>
-                  <h3 class="week-title">debug-toolkit</h3>
-                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">//
-                    npm_package · mcp_server · typescript · 3451_loc</span>
-                  <div class="week-body space-y-6">
-                    <p>1. AI agents are great at writing code. They're terrible at seeing it run.</p>
-                    <p>2. When an agent hits a bug, it reads code and guesses a fix. You run it, paste the error back, the
-                      agent guesses again. Repeat 5–8 times. I built the exit ramp: an MCP server giving agents a
-                      closed-loop debugging system. Investigate → instrument → capture → verify → remember.</p>
-                    <p>3. <strong>15 files · 3,451 lines of TypeScript · 4 npm dependencies · JS/TS, Python, Go,
-                        Rust/Tauri.</strong></p>
-                  </div>
-                  <div class="terminal-box" data-command="npx debug-toolkit init">
-                    <span class="terminal-prompt">$</span> npx debug-toolkit init
-                    <button class="terminal-copy" aria-label="Copy command">copy</button>
-                  </div>
-                  <div class="week-links">
-                    <a href="https://github.com/tombrewsviews/debug-toolkit" class="text-annotation">github →</a>
-                    <a href="https://www.npmjs.com/package/debug-toolkit" class="text-annotation">npm →</a>
-                    <a href="https://github.com/tombrewsviews/debug-toolkit#readme" class="text-annotation">docs →</a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Week 02 -->
-              <div class="week-tab-panel" data-week="1">
-                <div class="week-detail">
-                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
-                    <span class="text-annotation">// Week 02</span>
-                    <span class="text-annotation">Mar 24–30 / 2026</span>
-                  </div>
-                  <h3 class="week-title">debug-toolkit</h3>
-                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">//
-                    v0.17.0 · release_note</span>
-                  <div class="week-body space-y-6">
-                    <p>0.17.0 shipped with direct access to clean error states and context optimization.</p>
-                  </div>
-                  <div class="terminal-box" data-command="npm i debug-toolkit">
-                    <span class="terminal-prompt">$</span> npm i debug-toolkit
-                    <button class="terminal-copy" aria-label="Copy command">copy</button>
-                  </div>
-                  <div class="week-links">
-                    <a href="https://github.com/tombrewsviews/debug-toolkit" class="text-annotation">github →</a>
-                    <a href="https://www.npmjs.com/package/debug-toolkit" class="text-annotation">npm →</a>
-                    <a href="https://github.com/tombrewsviews/debug-toolkit#readme" class="text-annotation">docs →</a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Week 03 (current — placeholder) -->
-              <div class="week-tab-panel" data-week="2">
-                <div class="week-detail">
-                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
-                    <span class="text-annotation">// Week 03</span>
-                    <span class="text-annotation">Mar 31–Apr 6 / 2026</span>
-                  </div>
-                  <h3 class="week-title">In progress...</h3>
-                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// currently building</span>
-                  <div class="week-body space-y-6">
-                    <p>This week's ship is underway. Check back soon.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="community-box">
-              <h4 class="community-title">Build alongside me.</h4>
-              <p class="community-desc">
-                Creating a community for people who ship. Weekly commits. Public progress. Accountability that actually
-                works. If you build things — you're in the right place.
-              </p>
-              <a target="_blank" href="https://github.com/tombrewsviews/straw-hat-collective/discussions" class="btn-community">join the collective →</a>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       <!-- Words -->
       <section class="words-section" id="words-section">
