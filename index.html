@@ -1527,11 +1527,11 @@
             <div class="stats-grid">
               <div>
                 <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Weeks shipped</span>
-                <div class="stat-value">2</div>
+                <div class="stat-value">3</div>
               </div>
               <div>
                 <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Streak</span>
-                <div class="stat-value">2</div>
+                <div class="stat-value">3</div>
               </div>
               <div>
                 <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Goal</span>
@@ -1539,7 +1539,7 @@
               </div>
               <div>
                 <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Complete</span>
-                <div class="stat-value">4%</div>
+                <div class="stat-value">6%</div>
               </div>
             </div>
           </div>
@@ -1605,12 +1605,37 @@
                 </div>
               </div>
 
-              <!-- Week 03 (current — placeholder) -->
+              <!-- Week 03 -->
               <div class="week-tab-panel" data-week="2">
                 <div class="week-detail">
                   <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
                     <span class="text-annotation">// Week 03</span>
                     <span class="text-annotation">Mar 31–Apr 6 / 2026</span>
+                  </div>
+                  <h3 class="week-title">foresight</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">//
+                    claude_code_skill · post_implementation · lookahead</span>
+                  <div class="week-body space-y-6">
+                    <p>1. AI agents are great at finishing tasks. They don't look at what they just broke.</p>
+                    <p>2. Foresight is the first post-implementation lookahead skill for Claude Code. It runs at the end of every implementation turn and surfaces what will crash, what will silently fail, what security surfaces just opened, and — the most underrated part — the exact question you're about to ask next.</p>
+                    <p>3. <strong>60-case benchmark · 32% baseline → 100% risk coverage · net −42 tokens per turn.</strong></p>
+                  </div>
+                  <div class="terminal-box" data-command="npx skills add tombrewsviews/foresight-skill">
+                    <span class="terminal-prompt">$</span> npx skills add tombrewsviews/foresight-skill
+                    <button class="terminal-copy" aria-label="Copy command">copy</button>
+                  </div>
+                  <div class="week-links">
+                    <a href="https://github.com/tombrewsviews/skills-custom/tree/main/foresight" class="text-annotation">github →</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Week 04 (current — placeholder) -->
+              <div class="week-tab-panel" data-week="3">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 04</span>
+                    <span class="text-annotation">Apr 7–13 / 2026</span>
                   </div>
                   <h3 class="week-title">In progress...</h3>
                   <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// currently building</span>
@@ -1982,8 +2007,8 @@
       // Define week statuses: 'shipped', 'current', or null
       var weekStatuses = [];
       for (var i = 0; i < 52; i++) {
-        if (i === 0 || i === 1) { weekStatuses.push('shipped'); lastShippedWeek = i; }
-        else if (i === 2) weekStatuses.push('current');
+        if (i === 0 || i === 1 || i === 2) { weekStatuses.push('shipped'); lastShippedWeek = i; }
+        else if (i === 3) weekStatuses.push('current');
         else weekStatuses.push(null);
       }
 
