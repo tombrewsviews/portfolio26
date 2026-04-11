@@ -1527,11 +1527,11 @@
             <div class="stats-grid">
               <div>
                 <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Weeks shipped</span>
-                <div class="stat-value">3</div>
+                <div class="stat-value">4</div>
               </div>
               <div>
                 <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Streak</span>
-                <div class="stat-value">3</div>
+                <div class="stat-value">4</div>
               </div>
               <div>
                 <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Goal</span>
@@ -1539,7 +1539,7 @@
               </div>
               <div>
                 <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Complete</span>
-                <div class="stat-value">6%</div>
+                <div class="stat-value">8%</div>
               </div>
             </div>
           </div>
@@ -1630,12 +1630,32 @@
                 </div>
               </div>
 
-              <!-- Week 04 (current — placeholder) -->
+              <!-- Week 04 -->
               <div class="week-tab-panel" data-week="3">
                 <div class="week-detail">
                   <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
                     <span class="text-annotation">// Week 04</span>
                     <span class="text-annotation">Apr 7–13 / 2026</span>
+                  </div>
+                  <h3 class="week-title">stackpack-state</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// react_state · ai_agents · open_source</span>
+                  <div class="week-body space-y-6">
+                    <p>1. React state management was built for humans clicking buttons. AI agents don't click buttons — they call tools, stream responses, and update state from outside the component tree.</p>
+                    <p>2. stackpack-state is a React state library built specifically for AI agents. Designed to work with agentic loops, it gives agents a clean way to read and write UI state without fighting React's mental model.</p>
+                  </div>
+                  <div class="week-links">
+                    <a href="https://github.com/stackpackdev/state" class="text-annotation">github →</a>
+                    <a href="https://medium.com/ai-in-plain-english/introducing-stackpack-state-a-react-state-library-built-for-ai-agents-72c666be880a" class="text-annotation">article →</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Week 05 (current — placeholder) -->
+              <div class="week-tab-panel" data-week="4">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 05</span>
+                    <span class="text-annotation">Apr 14–20 / 2026</span>
                   </div>
                   <h3 class="week-title">In progress...</h3>
                   <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// currently building</span>
@@ -2007,8 +2027,8 @@
       // Define week statuses: 'shipped', 'current', or null
       var weekStatuses = [];
       for (var i = 0; i < 52; i++) {
-        if (i === 0 || i === 1 || i === 2) { weekStatuses.push('shipped'); lastShippedWeek = i; }
-        else if (i === 3) weekStatuses.push('current');
+        if (i === 0 || i === 1 || i === 2 || i === 3) { weekStatuses.push('shipped'); lastShippedWeek = i; }
+        else if (i === 4) weekStatuses.push('current');
         else weekStatuses.push(null);
       }
 

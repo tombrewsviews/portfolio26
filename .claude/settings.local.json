@@ -29,7 +29,9 @@
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''''latest:'''', d.get\\(''''dist-tags'''',{}\\).get\\(''''latest'''',''''?''''\\)\\); print\\(''''versions:'''', list\\(d.get\\(''''versions'''',{}\\).keys\\(\\)\\)\\)\")",
       "Bash(curl -s \"https://registry.npmjs.org/@chenglou/pretext/0.0.3\")",
       "Bash(python3 -c \":*)",
-      "WebFetch(domain:esm.sh)"
+      "WebFetch(domain:esm.sh)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:ai.plainenglish.io)"
     ]
   },
   "enableAllProjectMcpServers": true,
