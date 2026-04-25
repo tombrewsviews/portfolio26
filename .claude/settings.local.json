@@ -31,7 +31,9 @@
       "Bash(python3 -c \":*)",
       "WebFetch(domain:esm.sh)",
       "WebFetch(domain:medium.com)",
-      "WebFetch(domain:ai.plainenglish.io)"
+      "WebFetch(domain:ai.plainenglish.io)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:tombrewsviews.github.io)"
     ]
   },
   "enableAllProjectMcpServers": true,

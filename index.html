@@ -405,6 +405,21 @@
       will-change: transform, opacity;
     }
 
+    .cta-heading .cta-word {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .cta-heading .cta-br {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .cta-heading .cta-br {
+        display: inline;
+      }
+    }
+
     .hero .hero-sub,
     .hero .text-annotation {
       color: rgba(255, 255, 255, 0.7);
@@ -604,18 +619,25 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       padding-bottom: 3rem;
       cursor: pointer;
+      display: block;
+      color: inherit;
+      text-decoration: none;
     }
 
-    .experiment-row:hover .exp-id,
-    .experiment-row:hover .exp-title {
+    .experiment-row.is-static {
+      cursor: default;
+    }
+
+    .experiment-row:not(.is-static):hover .exp-id,
+    .experiment-row:not(.is-static):hover .exp-title {
       color: var(--color-accent);
     }
 
-    .experiment-row:hover .exp-sep {
+    .experiment-row:not(.is-static):hover .exp-sep {
       color: rgba(255, 99, 33, 0.2);
     }
 
-    .experiment-row:hover .exp-desc {
+    .experiment-row:not(.is-static):hover .exp-desc {
       color: var(--color-on-surface);
     }
 
@@ -678,6 +700,9 @@
 
     .oss-item {
       cursor: pointer;
+      display: block;
+      color: inherit;
+      text-decoration: none;
     }
 
     .oss-title {
@@ -719,6 +744,8 @@
       gap: 2rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding-bottom: 3rem;
+      color: inherit;
+      text-decoration: none;
     }
 
     @media (min-width: 768px) {
@@ -748,34 +775,6 @@
       color: rgba(255, 255, 255, 0.4);
     }
 
-    /* Past work hover preview */
-    .pw-preview {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 420px;
-      height: 270px;
-      border-radius: 8px;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 100;
-      opacity: 0;
-      transform: translate3d(0,0,0) scale(0.85);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-      will-change: transform, opacity;
-    }
-
-    .pw-preview.visible {
-      opacity: 1;
-    }
-
-    .pw-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
 
     .pw-desc {
       font-size: 1.25rem;
@@ -790,8 +789,14 @@
       gap: 6rem;
     }
 
+    .ship-log-top {
+      display: flex;
+      flex-direction: column;
+      gap: 6rem;
+    }
+
     @media (min-width: 768px) {
-      .ship-log-inner {
+      .ship-log-top {
         flex-direction: row;
       }
     }
@@ -840,6 +845,20 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
+    }
+
+    .stats-grid-top {
+      width: 100%;
+      grid-template-columns: repeat(2, 1fr);
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    @media (min-width: 768px) {
+      .stats-grid-top {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4rem;
+      }
     }
 
     .stat-value {
@@ -1511,6 +1530,25 @@
       <!-- Ship Log -->
       <section id="ship-log" class="section-pad container">
         <div class="ship-log-inner">
+          <div class="stats-grid stats-grid-top ship-log-content gs-reveal">
+            <div>
+              <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Weeks shipped</span>
+              <div class="stat-value">5</div>
+            </div>
+            <div>
+              <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Streak</span>
+              <div class="stat-value">5</div>
+            </div>
+            <div>
+              <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Goal</span>
+              <div class="stat-value">52</div>
+            </div>
+            <div>
+              <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Complete</span>
+              <div class="stat-value">10%</div>
+            </div>
+          </div>
+          <div class="ship-log-top">
           <div class="ship-log-left ship-log-content gs-reveal">
             <h2 class="ship-title">Ship<br>Every<br>Week.</h2>
             <div class="challenge-box">
@@ -1523,24 +1561,6 @@
               </div>
               <p class="text-annotation" style="color: var(--color-accent); margin-top: 2rem;">// "Waiting is how ideas
                 die."</p>
-            </div>
-            <div class="stats-grid">
-              <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Weeks shipped</span>
-                <div class="stat-value">4</div>
-              </div>
-              <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Streak</span>
-                <div class="stat-value">4</div>
-              </div>
-              <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Goal</span>
-                <div class="stat-value">52</div>
-              </div>
-              <div>
-                <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Complete</span>
-                <div class="stat-value">8%</div>
-              </div>
             </div>
           </div>
           <div class="ship-log-right ship-log-content gs-reveal">
@@ -1650,12 +1670,36 @@
                 </div>
               </div>
 
-              <!-- Week 05 (current — placeholder) -->
+              <!-- Week 05 -->
               <div class="week-tab-panel" data-week="4">
                 <div class="week-detail">
                   <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
                     <span class="text-annotation">// Week 05</span>
                     <span class="text-annotation">Apr 14–20 / 2026</span>
+                  </div>
+                  <h3 class="week-title">stackpack-debug</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// v0.23.1 · runtime_devtools · mcp_server</span>
+                  <div class="week-body space-y-6">
+                    <p>1. Runtime DevTools for AI agents — exposes console logs, network errors, build failures, runtime exceptions, and server-side errors over MCP, so the agent debugs from captured output instead of guessing from source.</p>
+                    <p>2. Structured 7-step debug loop (investigate → instrument → capture → verify → cleanup → recall) with persistent diagnosis memory that carries causal chains across sessions.</p>
+                    <p>3. Capability-aware runtime — optional Lighthouse, Chrome, and Ghost OS integrations are auto-detected at startup; missing ones return setup hints instead of cryptic failures.</p>
+                  </div>
+                  <div class="terminal-box" data-command="npm i -g stackpack-debug">
+                    <span class="terminal-prompt">$</span> npm i -g stackpack-debug
+                    <button class="terminal-copy" aria-label="Copy command">copy</button>
+                  </div>
+                  <div class="week-links">
+                    <a href="https://www.npmjs.com/package/stackpack-debug" class="text-annotation">npm →</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Week 06 (current — placeholder) -->
+              <div class="week-tab-panel" data-week="5">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 06</span>
+                    <span class="text-annotation">Apr 21–27 / 2026</span>
                   </div>
                   <h3 class="week-title">In progress...</h3>
                   <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// currently building</span>
@@ -1665,174 +1709,7 @@
                 </div>
               </div>
             </div>
-            <div class="community-box">
-              <h4 class="community-title">Build alongside me.</h4>
-              <p class="community-desc">
-                Creating a community for people who ship. Weekly commits. Public progress. Accountability that actually
-                works. If you build things — you're in the right place.
-              </p>
-              <a target="_blank" href="https://github.com/tombrewsviews/straw-hat-collective/discussions" class="btn-community">join the collective →</a>
-            </div>
           </div>
-        </div>
-      </section>
-
-      <!-- Status -->
-      <section class="status-section" id="status-section">
-        <div class="container status-inner">
-          <div class="status-item gs-reveal">
-            <span class="text-annotation">// tools</span>
-            <span class="status-value">ai native, claude, Kimi, kilo, Figma, pencil</span>
-          </div>
-          <div class="status-item gs-reveal">
-            <span class="text-annotation">// challenges</span>
-            <span class="status-value">building datasets, fine tuning local models, building audio assistants</span>
-          </div>
-          <div class="status-item gs-reveal">
-            <span class="text-annotation">// mindset</span>
-            <span class="status-value">combine, connect, remix, ship</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Work -->
-      <section id="work" class="section-pad container">
-        <div class="flex-between">
-          <h2 class="section-heading-lg section-heading" style="margin-bottom: 0;">Active Experiments</h2>
-          <span class="text-annotation" style="display: none;">// current projects</span>
-        </div>
-        <span class="text-annotation" style="display: block; margin-bottom: 2rem; margin-top: -4rem;">// current
-          projects</span>
-
-        <div class="space-y-12" style="margin-bottom: 8rem;">
-          <div class="experiment-row gs-reveal">
-            <div class="exp-row-inner">
-              <span class="text-annotation exp-id">01/03</span>
-              <h3 class="exp-title">VocalSync <span class="exp-sep">|</span></h3>
-              <p class="exp-desc">AI-powered singing mentorship | Local audio pitch detection + midi analysis | Alpha in testing</p>
-            </div>
-          </div>
-          <div class="experiment-row gs-reveal">
-            <div class="exp-row-inner">
-              <span class="text-annotation exp-id">02/03</span>
-              <h3 class="exp-title">Tched <span class="exp-sep">|</span></h3>
-              <p class="exp-desc">RAW image editing, stripped to the bone | WebGL, WASM, ruthless subtraction + Custom
-                keyboard driven ux | Soon releasing for my own sanity</p>
-            </div>
-          </div>
-          <div class="experiment-row gs-reveal">
-            <div class="exp-row-inner">
-              <span class="text-annotation exp-id">03/03</span>
-              <h3 class="exp-title">FoodTracker <span class="exp-sep">|</span></h3>
-              <p class="exp-desc">Calorie tracking that doesn't punish you | Swift + behavioral psychology +
-                local ai models + prompt engineering | MVP at user testing stage</p>
-            </div>
-          </div>
-        </div>
-
-        <div style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 3rem;">
-          <span class="text-annotation" style="display: block; margin-bottom: 2rem;">Open source:</span>
-          <div class="oss-grid">
-            <div class="oss-item">
-              <div class="oss-title">Film Generation Pipeline</div>
-              <div class="oss-line"></div>
-            </div>
-            <div class="oss-item">
-              <div class="oss-title">Agentic State Framework</div>
-              <div class="oss-line"></div>
-            </div>
-            <div class="oss-item">
-              <div class="oss-title">Ethical Web scraper</div>
-              <div class="oss-line"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Past Work -->
-      <section class="past-work-section" id="past-work-section">
-        <div class="container">
-          <h2 class="section-heading-lg section-heading" style="color: white;">Past Work</h2>
-          <div class="space-y-12">
-            <div class="past-work-item gs-reveal" data-preview="neon.jpg">
-              <div><span class="text-annotation pw-tag">$1B+ acquisition</span></div>
-              <div>
-                <h3 class="pw-title">Neon</h3>
-                <span class="text-annotation pw-role">// database infrastructure</span>
-              </div>
-              <div>
-                <p class="pw-desc">Postgres is powerful. It's also intimidating. I translated that infrastructure into
-                  primitives so intuitive that millions of developers never realized how complex the system underneath
-                  actually was.</p>
-              </div>
-            </div>
-            <div class="past-work-item gs-reveal" data-preview="koyeb.jpg">
-              <div><span class="text-annotation pw-tag">acquired by Mistral</span></div>
-              <div>
-                <h3 class="pw-title">Koyeb</h3>
-                <span class="text-annotation pw-role">// developer infrastructure</span>
-              </div>
-              <div>
-                <p class="pw-desc">The product worked. Developers hated using it. I led a full redesign — the kind where
-                  you rip out the foundation and rebuild while the building stays standing.</p>
-              </div>
-            </div>
-            <div class="past-work-item gs-reveal" data-preview="qodo.jpg">
-              <div><span class="text-annotation pw-tag">founding designer</span></div>
-              <div>
-                <h3 class="pw-title">Qodo</h3>
-                <span class="text-annotation pw-role">// ai developer tools · fmr. CodiumAI</span>
-              </div>
-              <div>
-                <p class="pw-desc">AI can generate code. The hard part nobody talks about: making the developer trust
-                  it. I designed the bridge between machine intelligence and human intent.</p>
-              </div>
-            </div>
-            <div class="past-work-item gs-reveal" data-preview="greyfinch.jpg">
-              <div><span class="text-annotation pw-tag">acquired</span></div>
-              <div>
-                <h3 class="pw-title">Greyfinch</h3>
-                <span class="text-annotation pw-role">// healthcare SaaS</span>
-              </div>
-              <div>
-                <p class="pw-desc">Healthcare software looks like it was designed by people who've never been patients.
-                  I turned enterprise UX into something a stressed parent could navigate at 2am.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      
-
-      <!-- Words -->
-      <section class="words-section" id="words-section">
-        <div class="container">
-          <h2 class="section-heading">Words</h2>
-          <div class="space-y-24">
-            <div class="words-item gs-reveal" style="max-width: 56rem;">
-              <h3 class="words-title">DreamCulture in the AI Native age</h3>
-              <p class="words-body">
-                Most organizations optimize for productivity. I wanted to know what happens when you optimize for
-                sustainable creativity instead. The answer surprised me. (Small Crews, Big Dreams: What One Piece Gets
-                Right About the Future of Teams The perfect culture model for AI-native startups was hiding in a pirate
-                manga all along.)
-              </p>
-              <a target="_blank" href="https://medium.com/@tomparandyk/small-crews-big-dreams-what-one-piece-gets-right-about-the-future-of-teams-2da5a3760302"
-                class="text-annotation" style="color: var(--color-accent);">Read on Medium →</a>
-            </div>
-            <div class="words-item gs-reveal" style="max-width: 56rem;">
-              <h3 class="words-title">The Outcome Economy: How Agent Networks Will Replace SaaS and Redefine Software
-              </h3>
-              <p class="words-body">
-                A predictive exploration of the post-platform future, where users buy results instead of tools.
-              </p>
-              <a target="_blank" href="https://ai.plainenglish.io/the-outcome-economy-how-agent-networks-will-replace-saas-and-redefine-software-0b26f9bb9699"
-                class="text-annotation" style="color: var(--color-accent);">Read on AI Plain English →</a>
-            </div>
-            <div class="words-item gs-reveal">
-              <a target="_blank" href="https://tomparandyk.medium.com/" class="words-link-big">My recent posts →</a>
-            </div>
           </div>
         </div>
       </section>
@@ -1877,6 +1754,150 @@
             <span class="text-annotation" style="color: var(--color-accent);">→ continuous_evolution</span>
             <p class="text-annotation" style="max-width: 28rem;">The ship-every-week commitment is step four made
               literal. Not just a principle — a practice. Every week is a cycle completed.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Status -->
+      <section class="status-section" id="status-section">
+        <div class="container status-inner">
+          <div class="status-item gs-reveal">
+            <span class="text-annotation">// tools</span>
+            <span class="status-value">ai native, claude, Kimi, kilo, Figma, pencil</span>
+          </div>
+          <div class="status-item gs-reveal">
+            <span class="text-annotation">// challenges</span>
+            <span class="status-value">building datasets, fine tuning local models, building audio assistants</span>
+          </div>
+          <div class="status-item gs-reveal">
+            <span class="text-annotation">// mindset</span>
+            <span class="status-value">combine, connect, remix, ship</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Work -->
+      <section id="work" class="section-pad container">
+        <div class="flex-between">
+          <h2 class="section-heading-lg section-heading" style="margin-bottom: 0;">Active Experiments</h2>
+          <span class="text-annotation" style="display: none;">// current projects</span>
+        </div>
+        <span class="text-annotation" style="display: block; margin-bottom: 2rem; margin-top: -4rem;">// current
+          projects</span>
+
+        <div class="space-y-12" style="margin-bottom: 8rem;">
+          <div class="experiment-row is-static gs-reveal">
+            <div class="exp-row-inner">
+              <span class="text-annotation exp-id">01/03</span>
+              <h3 class="exp-title">VocalSync <span class="exp-sep">|</span></h3>
+              <p class="exp-desc">AI-powered singing mentorship | Local audio pitch detection + midi analysis | Alpha in testing</p>
+            </div>
+          </div>
+          <a class="experiment-row gs-reveal" href="https://dribbble.com/shots/27283008-Tched-RAW-editor-with-keyboard-controls" target="_blank" rel="noopener noreferrer">
+            <div class="exp-row-inner">
+              <span class="text-annotation exp-id">02/03</span>
+              <h3 class="exp-title">Tched <span class="exp-sep">|</span></h3>
+              <p class="exp-desc">RAW image editing, stripped to the bone | WebGL, WASM, ruthless subtraction + Custom
+                keyboard driven ux | Soon releasing for my own sanity</p>
+            </div>
+          </a>
+          <div class="experiment-row is-static gs-reveal">
+            <div class="exp-row-inner">
+              <span class="text-annotation exp-id">03/03</span>
+              <h3 class="exp-title">FoodTracker <span class="exp-sep">|</span></h3>
+              <p class="exp-desc">Calorie tracking that doesn't punish you | Swift + behavioral psychology +
+                local ai models + prompt engineering | MVP at user testing stage</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 3rem;">
+          <span class="text-annotation" style="display: block; margin-bottom: 2rem;">Open source:</span>
+          <div class="oss-grid">
+            <a class="oss-item" href="https://www.npmjs.com/package/stackpack-debug" target="_blank" rel="noopener noreferrer">
+              <div class="oss-title">Agentic Debugging Toolkit</div>
+              <div class="oss-line"></div>
+            </a>
+            <a class="oss-item" href="https://www.npmjs.com/package/stackpack-state" target="_blank" rel="noopener noreferrer">
+              <div class="oss-title">Agentic State Framework</div>
+              <div class="oss-line"></div>
+            </a>
+            <a class="oss-item" href="https://github.com/tombrewsviews/observer-lab" target="_blank" rel="noopener noreferrer">
+              <div class="oss-title">Ethical Web scraper</div>
+              <div class="oss-line"></div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Past Work -->
+      <section class="past-work-section" id="past-work-section">
+        <div class="container">
+          <h2 class="section-heading-lg section-heading" style="color: white;">Past Work</h2>
+          <div class="space-y-12">
+            <a class="past-work-item gs-reveal" href="https://dribbble.com/shots/25098686-Neon-Onboarding-redesign" target="_blank" rel="noopener noreferrer">
+              <div><span class="text-annotation pw-tag">$1B+ acquisition</span></div>
+              <div>
+                <h3 class="pw-title">Neon</h3>
+                <span class="text-annotation pw-role">// database infrastructure</span>
+              </div>
+              <div>
+                <p class="pw-desc">I contributed to company grow from Series A to Series B working as a founding growth designer. I
+helped expanded number of databases from 6K to over 800K instances and improved MRR from $1.5K to $131K. Shaped and implemented Design System with dark/light themes in
+the core product.</p>
+              </div>
+            </a>
+            <a class="past-work-item gs-reveal" href="https://dribbble.com/shots/27283992-Koyeb-Deployment-Platform" target="_blank" rel="noopener noreferrer">
+              <div><span class="text-annotation pw-tag">acquired by Mistral</span></div>
+              <div>
+                <h3 class="pw-title">Koyeb</h3>
+                <span class="text-annotation pw-role">// developer infrastructure</span>
+              </div>
+              <div>
+                <p class="pw-desc">I was responsible for redesign of the platform's Design System. I contributed to code, and onboarding redesign to improve the adoption and UX workflows.</p>
+              </div>
+            </a>
+            <a class="past-work-item gs-reveal" href="https://github.com/The-PR-Agent/pr-agent" target="_blank" rel="noopener noreferrer">
+              <div><span class="text-annotation pw-tag">founding designer</span></div>
+              <div>
+                <h3 class="pw-title">Qodo</h3>
+                <span class="text-annotation pw-role">// ai developer tools · fmr. CodiumAI</span>
+              </div>
+              <div>
+                <p class="pw-desc">As a founding designer I worked on agents infrastructure, VSC agentic extrension, code review platform, and on a meta-level, on bridging the gap between machine intelligence and human intent.</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      
+
+      <!-- Words -->
+      <section class="words-section" id="words-section">
+        <div class="container">
+          <h2 class="section-heading">Words</h2>
+          <div class="space-y-24">
+            <div class="words-item gs-reveal" style="max-width: 56rem;">
+              <h3 class="words-title">I built a voice-first food logger on an iPhone — here's what broke and how I fixed it</h3>
+              <p class="words-body">
+                A field report from building a voice-first food logger on iPhone. The honest breakdown of what failed in real-world use — silence detection, transcription drift, on-device latency — and the fixes that finally made it usable.
+              </p>
+              <a target="_blank" href="https://medium.com/@tomparandyk/i-built-a-voice-first-food-logger-on-an-iphone-heres-what-broke-and-how-i-fixed-it-950dc9939f0a"
+                class="text-annotation" style="color: var(--color-accent);">Read on Medium →</a>
+            </div>
+            <div class="words-item gs-reveal" style="max-width: 56rem;">
+              <h3 class="words-title">The Outcome Economy: How Agent Networks Will Replace SaaS and Redefine Software
+              </h3>
+              <p class="words-body">
+                A predictive exploration of the post-platform future, where users buy results instead of tools.
+              </p>
+              <a target="_blank" href="https://ai.plainenglish.io/the-outcome-economy-how-agent-networks-will-replace-saas-and-redefine-software-0b26f9bb9699"
+                class="text-annotation" style="color: var(--color-accent);">Read on AI Plain English →</a>
+            </div>
+            <div class="words-item gs-reveal">
+              <a target="_blank" href="https://tomparandyk.medium.com/" class="words-link-big">My recent posts →</a>
+            </div>
           </div>
         </div>
       </section>
@@ -1959,7 +1980,7 @@
       <section id="contact" class="cta-section">
         <div class="cta-text gs-reveal" style="max-width: 72rem; margin: 0 auto;">
           <h2 class="cta-heading">
-            You've scrolled this far. That tells me <span style="color: var(--color-accent);">something.</span>
+            I design and build<br class="cta-br">as a shortest<br class="cta-br">path to <span style="color: var(--color-accent);">validation.</span>
           </h2>
           <p class="cta-body">
             I take on select collaborations — the kind that push boundaries and the people in them. If you're building
@@ -2027,8 +2048,8 @@
       // Define week statuses: 'shipped', 'current', or null
       var weekStatuses = [];
       for (var i = 0; i < 52; i++) {
-        if (i === 0 || i === 1 || i === 2 || i === 3) { weekStatuses.push('shipped'); lastShippedWeek = i; }
-        else if (i === 4) weekStatuses.push('current');
+        if (i === 0 || i === 1 || i === 2 || i === 3 || i === 4) { weekStatuses.push('shipped'); lastShippedWeek = i; }
+        else if (i === 5) weekStatuses.push('current');
         else weekStatuses.push(null);
       }
 
@@ -2118,47 +2139,45 @@
     (function () {
       var heading = document.querySelector('.cta-heading');
       if (!heading) return;
-      // Preserve the inner HTML structure (including the <span> for "something.")
+
+      function appendCharsAsWords(target, text) {
+        // Split into words/spaces; wrap each word in a no-wrap span so chars
+        // never break mid-word, even though each char is its own inline-block.
+        var tokens = text.split(/(\s+)/);
+        tokens.forEach(function (tok) {
+          if (tok === '') return;
+          if (/^\s+$/.test(tok)) {
+            var sp = document.createElement('span');
+            sp.textContent = tok;
+            sp.className = 'char';
+            sp.style.display = 'inline';
+            target.appendChild(sp);
+            return;
+          }
+          var word = document.createElement('span');
+          word.className = 'cta-word';
+          for (var i = 0; i < tok.length; i++) {
+            var ch = document.createElement('span');
+            ch.className = 'char';
+            ch.textContent = tok[i];
+            word.appendChild(ch);
+          }
+          target.appendChild(word);
+        });
+      }
+
       var nodes = Array.prototype.slice.call(heading.childNodes);
       heading.innerHTML = '';
       nodes.forEach(function (node) {
         if (node.nodeType === 3) {
-          // Text node — split into chars
-          var text = node.textContent;
-          for (var i = 0; i < text.length; i++) {
-            var ch = text[i];
-            if (ch === ' ') {
-              var sp = document.createElement('span');
-              sp.textContent = ' ';
-              sp.className = 'char';
-              sp.style.display = 'inline';
-              heading.appendChild(sp);
-            } else {
-              var span = document.createElement('span');
-              span.className = 'char';
-              span.textContent = ch;
-              heading.appendChild(span);
-            }
-          }
+          appendCharsAsWords(heading, node.textContent);
         } else if (node.nodeType === 1) {
-          // Element node (the <span> with "something.") — split its text too
-          var wrapper = node.cloneNode(false);
-          var innerText = node.textContent;
-          for (var j = 0; j < innerText.length; j++) {
-            var c = innerText[j];
-            if (c === ' ') {
-              var s = document.createElement('span');
-              s.textContent = ' ';
-              s.className = 'char';
-              s.style.display = 'inline';
-              wrapper.appendChild(s);
-            } else {
-              var sp2 = document.createElement('span');
-              sp2.className = 'char';
-              sp2.textContent = c;
-              wrapper.appendChild(sp2);
-            }
+          if (node.tagName === 'BR') {
+            heading.appendChild(node.cloneNode(false));
+            return;
           }
+          var wrapper = node.cloneNode(false);
+          appendCharsAsWords(wrapper, node.textContent);
           heading.appendChild(wrapper);
         }
       });
@@ -2588,53 +2607,6 @@
       });
     })();
 
-    // ===== PAST WORK HOVER PREVIEW =====
-    (function () {
-      var preview = document.createElement('div');
-      preview.className = 'pw-preview';
-      preview.innerHTML = '<img src="" alt="Project preview" loading="lazy">';
-      document.body.appendChild(preview);
-      var img = preview.querySelector('img');
-      var items = document.querySelectorAll('.past-work-item[data-preview]');
-      var isVisible = false;
-
-      items.forEach(function (item) {
-        item.addEventListener('mouseenter', function (e) {
-          var src = item.getAttribute('data-preview');
-          if (src) {
-            img.src = src;
-            img.alt = item.querySelector('.pw-title').textContent + ' preview';
-            // Position immediately before showing to prevent flash at (0,0)
-            var x = e.clientX + 20;
-            var y = e.clientY - 135;
-            if (x + 440 > window.innerWidth) x = e.clientX - 440;
-            if (y < 10) y = 10;
-            if (y + 270 > window.innerHeight) y = window.innerHeight - 280;
-            preview.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) scale(1)';
-            isVisible = true;
-            // Force layout before adding visible class so transition works from correct position
-            preview.offsetHeight;
-            preview.classList.add('visible');
-          }
-        });
-
-        item.addEventListener('mouseleave', function () {
-          isVisible = false;
-          preview.classList.remove('visible');
-        });
-
-        item.addEventListener('mousemove', function (e) {
-          if (!isVisible) return;
-          var x = e.clientX + 20;
-          var y = e.clientY - 135;
-          if (x + 440 > window.innerWidth) x = e.clientX - 440;
-          if (y < 10) y = 10;
-          if (y + 270 > window.innerHeight) y = window.innerHeight - 280;
-          preview.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) scale(1)';
-        }, { passive: true });
-      });
-    })();
-
     // ===== CUSTOM CURSOR =====
     (function () {
       var dot = document.getElementById('cursor-dot');
@@ -2672,7 +2644,7 @@
       }
 
       // Hover effects on interactive elements
-      document.querySelectorAll('a, button, .experiment-row, .oss-item, .process-item, .past-work-item').forEach(function (el) {
+      document.querySelectorAll('a, button, .experiment-row:not(.is-static), .oss-item, .process-item, .past-work-item').forEach(function (el) {
         el.addEventListener('mouseenter', function () {
           gsap.to(follower, {
             scale: 2.5,
