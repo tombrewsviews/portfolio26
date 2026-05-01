@@ -1533,11 +1533,11 @@
           <div class="stats-grid stats-grid-top ship-log-content gs-reveal">
             <div>
               <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Weeks shipped</span>
-              <div class="stat-value">5</div>
+              <div class="stat-value">6</div>
             </div>
             <div>
               <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Streak</span>
-              <div class="stat-value">5</div>
+              <div class="stat-value">6</div>
             </div>
             <div>
               <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Goal</span>
@@ -1545,7 +1545,7 @@
             </div>
             <div>
               <span class="text-annotation" style="display: block; margin-bottom: 0.25rem;">Complete</span>
-              <div class="stat-value">10%</div>
+              <div class="stat-value">12%</div>
             </div>
           </div>
           <div class="ship-log-top">
@@ -1694,12 +1694,32 @@
                 </div>
               </div>
 
-              <!-- Week 06 (current — placeholder) -->
+              <!-- Week 06 -->
               <div class="week-tab-panel" data-week="5">
                 <div class="week-detail">
                   <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
                     <span class="text-annotation">// Week 06</span>
                     <span class="text-annotation">Apr 21–27 / 2026</span>
+                  </div>
+                  <h3 class="week-title">swift-interactions</h3>
+                  <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// claude_code_skill · swiftui · ios_26 · progressive_disclosure</span>
+                  <div class="week-body space-y-6">
+                    <p>1. AI agents writing SwiftUI animations either reach for Lottie, hallucinate deprecated APIs, or load every animation doc into context to write a single spring.</p>
+                    <p>2. swift-interactions is a progressive-disclosure skill for SwiftUI 26 / iOS 26. The agent reads a trigger phrase ("on scroll", "while dragging", "card flip"), opens one folder index, and loads exactly one self-contained recipe — built-in APIs only, no bridges.</p>
+                    <p>3. <strong>24 recipes across 6 trigger folders · 4 reference docs (curves, API matrix, liquid glass, performance) · 8 non-negotiable global rules including Reduce Motion gating.</strong></p>
+                  </div>
+                  <div class="week-links">
+                    <a href="https://github.com/tombrewsviews/skill-swift-interactions" class="text-annotation">github →</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Week 07 (current — placeholder) -->
+              <div class="week-tab-panel" data-week="6">
+                <div class="week-detail">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem;">
+                    <span class="text-annotation">// Week 07</span>
+                    <span class="text-annotation">Apr 28–May 4 / 2026</span>
                   </div>
                   <h3 class="week-title">In progress...</h3>
                   <span class="text-annotation" style="color: var(--color-accent); display: block; margin-bottom: 2rem;">// currently building</span>
@@ -2048,8 +2068,8 @@ the core product.</p>
       // Define week statuses: 'shipped', 'current', or null
       var weekStatuses = [];
       for (var i = 0; i < 52; i++) {
-        if (i === 0 || i === 1 || i === 2 || i === 3 || i === 4) { weekStatuses.push('shipped'); lastShippedWeek = i; }
-        else if (i === 5) weekStatuses.push('current');
+        if (i === 0 || i === 1 || i === 2 || i === 3 || i === 4 || i === 5) { weekStatuses.push('shipped'); lastShippedWeek = i; }
+        else if (i === 6) weekStatuses.push('current');
         else weekStatuses.push(null);
       }
 
