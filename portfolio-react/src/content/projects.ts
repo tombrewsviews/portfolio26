@@ -13,7 +13,6 @@ export const projects: Project[] = [
     overview: {
       date: '2026',
       categories: ['Product Design', 'Design System'],
-      subtitle: 'An internal platform for structuring and tracking advertising deals end to end.',
     },
     about:
       'Adlook needed a single internal surface for deal teams to assemble, price, and track advertising deals. I designed the end-to-end flow and the component system that backs it.',
@@ -41,7 +40,6 @@ export const projects: Project[] = [
     overview: {
       date: '2025',
       categories: ['Product Design', 'Developer Tools'],
-      subtitle: 'A registry for discovering, publishing, and managing AI agent skills.',
     },
     about:
       'Tessl Skills Registry is where developers discover, publish, and version skills for AI agents. I designed the registry browsing, detail, and publishing flows.',
@@ -68,7 +66,6 @@ export const projects: Project[] = [
     overview: {
       date: '2025',
       categories: ['Product Design', 'Developer Tools'],
-      subtitle: 'A serverless platform for deploying apps and services globally.',
     },
     about:
       'Koyeb lets developers deploy apps globally without managing infrastructure. I redesigned core deployment and monitoring flows.',
@@ -95,7 +92,6 @@ export const projects: Project[] = [
     overview: {
       date: '2024',
       categories: ['Product Design', 'AI'],
-      subtitle: 'AI-assisted code generation and review tooling.',
     },
     about:
       'Qodo brings AI code generation and review into the developer workflow. I designed the review and PR-agent surfaces.',
@@ -122,7 +118,6 @@ export const projects: Project[] = [
     overview: {
       date: '2024',
       categories: ['Product Design', 'Onboarding'],
-      subtitle: 'Serverless Postgres with branching and instant provisioning.',
     },
     about:
       'Neon is serverless Postgres with database branching. I redesigned the onboarding to get developers to a live database fast.',
@@ -149,7 +144,6 @@ export const projects: Project[] = [
     overview: {
       date: '2023',
       categories: ['Product Design', 'Enterprise'],
-      subtitle: 'An internal platform for managing complex banking deals.',
     },
     about:
       'For BNP Paribas I designed an internal deal platform handling complex, regulated banking workflows for deal teams.',

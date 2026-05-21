@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ElementType, type ReactNode } from 'react';
 import gsap from 'gsap';
-import { FLEX_MIN, FLEX_MAX } from '../lib/flexAnim';
+import { FLEX_MIN, weightForProgress } from '../lib/flexAnim';
 
 type Props = {
   as?: ElementType;
@@ -18,15 +18,15 @@ export default function FlexText({ as: Tag = 'span', children, className, style 
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) {
-      el.style.fontVariationSettings = `"wght" ${FLEX_MAX}`;
+      el.style.fontVariationSettings = `"wght" ${weightForProgress(1)}`;
       return;
     }
 
-    const obj = { w: FLEX_MIN };
+    const obj = { p: 0 };
     el.style.fontVariationSettings = `"wght" ${FLEX_MIN}`;
 
     const tween = gsap.to(obj, {
-      w: FLEX_MAX,
+      p: 1,
       ease: 'none',
       scrollTrigger: {
         trigger: el,
@@ -35,7 +35,7 @@ export default function FlexText({ as: Tag = 'span', children, className, style 
         scrub: true,
       },
       onUpdate: () => {
-        el.style.fontVariationSettings = `"wght" ${Math.round(obj.w)}`;
+        el.style.fontVariationSettings = `"wght" ${Math.round(weightForProgress(obj.p))}`;
       },
     });
 

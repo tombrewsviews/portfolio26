@@ -10,7 +10,7 @@ export type Project = {
   disciplines: string[];
   thumb: string;
   videoSrc: string;
-  overview: { date: string; categories: string[]; subtitle: string };
+  overview: { date: string; categories: string[] };
   about: string;
   metrics: Metric[];
   role: string;
