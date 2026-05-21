@@ -8,25 +8,28 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "remotion": "remotion studio src/remotion/Root.tsx"
   },
   "dependencies": {
+    "@chenglou/pretext": "^0.0.3",
+    "@remotion/cli": "^4.0.464",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
-    "lenis": "^1.1.13",
-    "gsap": "^3.12.5",
-    "@chenglou/pretext": "^0.0.3"
+    "remotion": "^4.0.464"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "jsdom": "^25.0.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.6",
-    "vitest": "^2.1.1",
-    "jsdom": "^25.0.0",
-    "@testing-library/react": "^16.0.1",
-    "@testing-library/jest-dom": "^6.5.0"
+    "vitest": "^2.1.1"
   }
 }
