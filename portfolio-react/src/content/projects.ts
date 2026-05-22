@@ -27,6 +27,12 @@ export const projects: Project[] = [
       { heading: 'Fragmented tooling', body: 'Deal data lived across spreadsheets and disconnected tools; the platform had to consolidate them without disrupting in-flight deals.' },
       { heading: 'Dense data, clear hierarchy', body: 'Deal screens carry heavy data. The challenge was visual hierarchy that stays legible at density.' },
     ],
+    shots: [
+      { layout: 'bleed', ratio: '16 / 9', src: '/media/adlook-deal-board.jpg', marker: '[UP]', caption: 'Deal board' },
+      { layout: 'wide-left', ratio: '4 / 3', src: '/media/adlook-pricing.jpg', marker: '[LEFT]', caption: 'Pricing builder' },
+      { layout: 'pair', ratio: '3 / 4', src: '/media/adlook-detail.jpg', srcB: '/media/adlook-tracking.jpg', marker: '[LEFT]', caption: 'Deal detail', markerB: '[RIGHT]', captionB: 'Tracking view' },
+      { layout: 'narrow-right', ratio: '1 / 1', src: '/media/adlook-token.jpg', marker: '[RIGHT]', caption: 'Design tokens' },
+    ],
   },
   {
     slug: 'tessl',
@@ -52,6 +58,12 @@ export const projects: Project[] = [
     challenges: [
       { heading: 'Developer trust', body: 'Skills run with agent permissions; the UI had to surface provenance and risk clearly before install.' },
       { heading: 'Versioning clarity', body: 'Showing version history and compatibility without overwhelming the browse experience.' },
+    ],
+    shots: [
+      { layout: 'wide-right', ratio: '16 / 10', src: '/media/tessl-registry.jpg', marker: '[RIGHT]', caption: 'Registry browse' },
+      { layout: 'full', ratio: '16 / 9', src: '/media/tessl-detail.jpg', marker: '[UP]', caption: 'Skill detail' },
+      { layout: 'narrow-left', ratio: '3 / 4', src: '/media/tessl-permissions.jpg', marker: '[LEFT]', caption: 'Permission gate' },
+      { layout: 'pair', ratio: '4 / 3', src: '/media/tessl-publish.jpg', srcB: '/media/tessl-versions.jpg', marker: '[LEFT]', caption: 'Publish flow', markerB: '[DOWN RIGHT]', captionB: 'Version history' },
     ],
   },
   {
@@ -79,6 +91,12 @@ export const projects: Project[] = [
       { heading: 'Infra made simple', body: 'Exposing enough control for power users while keeping the first deploy effortless.' },
       { heading: 'Observability', body: 'Surfacing logs, metrics, and health without a cluttered dashboard.' },
     ],
+    shots: [
+      { layout: 'full', ratio: '16 / 9', src: '/media/koyeb-deploy.jpg', marker: '[UP]', caption: 'Deploy flow' },
+      { layout: 'pair', ratio: '4 / 3', src: '/media/koyeb-regions.jpg', srcB: '/media/koyeb-service.jpg', marker: '[LEFT]', caption: 'Edge regions', markerB: '[RIGHT]', captionB: 'Service view' },
+      { layout: 'bleed', ratio: '21 / 9', src: '/media/koyeb-metrics.jpg', marker: '[DOWN]', caption: 'Metrics dashboard' },
+      { layout: 'narrow-right', ratio: '1 / 1', src: '/media/koyeb-logs.jpg', marker: '[RIGHT]', caption: 'Live logs' },
+    ],
   },
   {
     slug: 'qodo',
@@ -104,6 +122,12 @@ export const projects: Project[] = [
     challenges: [
       { heading: 'Trust in AI output', body: 'Designing suggestion UI that invites review rather than blind acceptance.' },
       { heading: 'Workflow fit', body: 'Embedding into existing PR flows without adding friction.' },
+    ],
+    shots: [
+      { layout: 'wide-left', ratio: '16 / 10', src: '/media/qodo-review.jpg', marker: '[LEFT]', caption: 'PR review surface' },
+      { layout: 'narrow-right', ratio: '3 / 4', src: '/media/qodo-inline.jpg', marker: '[RIGHT]', caption: 'Inline suggestion' },
+      { layout: 'bleed', ratio: '16 / 9', src: '/media/qodo-agent.jpg', marker: '[UP]', caption: 'PR agent' },
+      { layout: 'pair', ratio: '4 / 3', src: '/media/qodo-ide.jpg', srcB: '/media/qodo-web.jpg', marker: '[LEFT]', caption: 'IDE panel', markerB: '[RIGHT]', captionB: 'Web app' },
     ],
   },
   {
@@ -131,6 +155,12 @@ export const projects: Project[] = [
       { heading: 'Explaining branching', body: 'Database branching is novel; onboarding had to teach it without a wall of docs.' },
       { heading: 'Fast first value', body: 'Getting users to a working query in minutes.' },
     ],
+    shots: [
+      { layout: 'bleed', ratio: '16 / 9', src: '/media/neon-onboarding.jpg', marker: '[UP]', caption: 'Onboarding' },
+      { layout: 'wide-right', ratio: '4 / 3', src: '/media/neon-branching.jpg', marker: '[RIGHT]', caption: 'Branch diagram' },
+      { layout: 'pair', ratio: '3 / 4', src: '/media/neon-query.jpg', srcB: '/media/neon-console.jpg', marker: '[LEFT]', caption: 'First query', markerB: '[DOWN RIGHT]', captionB: 'Console' },
+      { layout: 'narrow-left', ratio: '1 / 1', src: '/media/neon-empty.jpg', marker: '[LEFT]', caption: 'Empty state' },
+    ],
   },
   {
     slug: 'bnp-paribas',
@@ -156,6 +186,12 @@ export const projects: Project[] = [
     challenges: [
       { heading: 'Regulatory constraints', body: 'Designing within strict compliance and audit requirements.' },
       { heading: 'Legacy integration', body: 'Fitting new flows alongside entrenched internal systems.' },
+    ],
+    shots: [
+      { layout: 'full', ratio: '16 / 9', src: '/media/bnp-workflow.jpg', marker: '[UP]', caption: 'Deal workflow' },
+      { layout: 'narrow-right', ratio: '3 / 4', src: '/media/bnp-audit.jpg', marker: '[RIGHT]', caption: 'Audit trail' },
+      { layout: 'wide-left', ratio: '16 / 10', src: '/media/bnp-dashboard.jpg', marker: '[LEFT]', caption: 'Deal dashboard' },
+      { layout: 'pair', ratio: '4 / 3', src: '/media/bnp-compliance.jpg', srcB: '/media/bnp-legacy.jpg', marker: '[LEFT]', caption: 'Compliance step', markerB: '[RIGHT]', captionB: 'Legacy bridge' },
     ],
   },
 ];

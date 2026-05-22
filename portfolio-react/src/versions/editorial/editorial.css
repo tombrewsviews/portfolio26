@@ -1,0 +1,248 @@
+/*
+ * Editorial portfolio version — a light, minimal, type-led layout.
+ * Design language reproduced from a reference editorial portfolio
+ * (structure + interactions); all content is Tom Parandyk's own.
+ *
+ * Everything is scoped under `.ed` so it never collides with the
+ * dark Roboto-Flex version that lives on `/`.
+ */
+
+.ed {
+  /* ---- Color tokens ---- */
+  --ed-background: #ffffff;
+  --ed-foreground: #1e1e1e;
+  --ed-grey: #737373;
+  --ed-subtle: #bfbfbf;
+  --ed-muted: #f0f0f0;
+  --ed-muted-2: #f3f3f3;
+  --ed-border: #e0e0e0;
+  --ed-black: #000000;
+  --ed-white: #ffffff;
+
+  /* ---- Type scale (px, fluid steps applied per-class) ---- */
+  --ed-hero: clamp(56px, 11vw, 120px);
+  --ed-heading: clamp(34px, 5vw, 46px);
+  --ed-subhead: clamp(24px, 3vw, 32px);
+  --ed-body-lg: 18px;
+  --ed-body: 16px;
+  --ed-mini: 10px;
+
+  /* ---- Layout ---- */
+  --ed-maxw: 1600px;
+  --ed-pad: 20px;
+  --ed-pad-lg: 40px;
+
+  /* ---- Easing ---- */
+  --ed-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  background: var(--ed-background);
+  color: var(--ed-foreground);
+  font-family: 'Roboto Flex', system-ui, -apple-system, Arial, sans-serif;
+  font-weight: 400;
+  font-variation-settings: 'wght' 400;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.ed * { box-sizing: border-box; }
+.ed a { color: inherit; text-decoration: none; }
+.ed img { display: block; max-width: 100%; height: auto; }
+.ed button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+.ed ::selection { background: var(--ed-foreground); color: var(--ed-background); }
+
+/* ---- Type utilities ---- */
+.ed-hero { font-size: var(--ed-hero); line-height: 0.95; letter-spacing: -0.02em; }
+.ed-heading { font-size: var(--ed-heading); line-height: 1.1; letter-spacing: -0.02em; }
+.ed-subhead { font-size: var(--ed-subhead); line-height: 1.1; letter-spacing: -0.02em; }
+.ed-body-lg { font-size: var(--ed-body-lg); line-height: 1.3; letter-spacing: -0.02em; }
+.ed-body { font-size: var(--ed-body); line-height: 1.45; letter-spacing: -0.02em; }
+.ed-mini {
+  font-size: var(--ed-mini);
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.ed-grey { color: var(--ed-grey); }
+.ed-subtle { color: var(--ed-subtle); }
+.ed-medium { font-variation-settings: 'wght' 500; font-weight: 500; }
+.ed-semibold { font-variation-settings: 'wght' 600; font-weight: 600; }
+
+/* ---- Section frame ---- */
+.ed-section {
+  padding: 64px var(--ed-pad);
+}
+.ed-inner { max-width: var(--ed-maxw); margin-inline: auto; }
+@media (min-width: 768px) {
+  .ed-section { padding: 80px var(--ed-pad-lg); }
+}
+
+/* ---- Animated underline (scale-x from right→left on hover) ---- */
+.ed-underline {
+  position: relative;
+  display: inline-block;
+}
+.ed-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 500ms var(--ed-ease);
+  pointer-events: none;
+}
+.ed-underline:hover::after,
+.ed-link-group:hover .ed-underline::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---- Arrow icons that rotate on hover ---- */
+.ed-arrow {
+  display: inline-block;
+  transition: transform 500ms var(--ed-ease);
+}
+/* external (↗) straightens from -45deg */
+.ed-link-group:hover .ed-arrow--ext { transform: rotate(-45deg); }
+/* internal (→) tilts up 45deg */
+.ed-link-group:hover .ed-arrow--int { transform: rotate(45deg); }
+.ed-link-group { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ---- Image hover scale + crossfade ---- */
+.ed-media {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--ed-muted);
+}
+.ed-media__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms var(--ed-ease);
+}
+.ed-card:hover .ed-media__img { transform: scale(1.05); }
+
+/* placeholder striping when an image src is missing */
+.ed-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ed-subtle);
+  font-size: var(--ed-mini);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #f6f6f6,
+      #f6f6f6 10px,
+      #f0f0f0 10px,
+      #f0f0f0 20px
+    );
+}
+
+/* ---- Marquee (two rows, second reversed, pause on hover) ---- */
+@keyframes ed-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ed-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 40px 0;
+}
+.ed-marquee__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: ed-marquee 60s linear infinite;
+}
+.ed-marquee__track--reverse { animation-direction: reverse; }
+.ed-marquee:hover .ed-marquee__track { animation-play-state: paused; }
+.ed-marquee__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 80px;
+  padding: 0 28px;
+  font-size: var(--ed-subhead);
+  letter-spacing: -0.02em;
+  color: var(--ed-grey);
+  white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .ed-marquee__item { height: 120px; padding: 0 44px; }
+}
+/* edge fade gradients */
+.ed-marquee__fade {
+  position: absolute;
+  inset-block: 0;
+  z-index: 10;
+  width: 48px;
+  pointer-events: none;
+}
+.ed-marquee__fade--l {
+  left: 0;
+  background: linear-gradient(to right, var(--ed-background), transparent);
+}
+.ed-marquee__fade--r {
+  right: 0;
+  background: linear-gradient(to left, var(--ed-background), transparent);
+}
+@media (min-width: 768px) {
+  .ed-marquee__fade { width: 128px; }
+}
+
+/* ---- Buttons ---- */
+.ed-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 32px;
+  font-size: var(--ed-body-lg);
+  letter-spacing: -0.02em;
+  transition: background-color 300ms var(--ed-ease), opacity 300ms var(--ed-ease);
+}
+/* `.ed a { color: inherit }` (specificity 0,1,1) would otherwise beat a single
+ * button class, so qualify the button color rules to win on links and spans. */
+.ed a.ed-btn--solid,
+.ed .ed-btn--solid,
+.ed .ed-btn--solid span { color: var(--ed-white); }
+.ed-btn--solid { background: var(--ed-foreground); }
+.ed-btn--solid:hover { background: #2c2c2c; }
+.ed a.ed-btn--ghost,
+.ed .ed-btn--ghost,
+.ed .ed-btn--ghost span { color: var(--ed-foreground); }
+.ed-btn--ghost { background: var(--ed-muted-2); }
+.ed-btn--ghost:hover { background: var(--ed-muted); }
+
+/* ---- Reveal-on-scroll (set via IntersectionObserver) ---- */
+.ed-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 800ms var(--ed-ease), transform 800ms var(--ed-ease);
+}
+.ed-reveal.is-in { opacity: 1; transform: none; }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .ed-marquee__track { animation: none; }
+  .ed-reveal { opacity: 1; transform: none; transition: none; }
+  .ed-media__img,
+  .ed-underline::after,
+  .ed-arrow { transition: none; }
+}

@@ -25,7 +25,7 @@ export const shaped: ShapedGroup[] = [
     key: '// foundation',
     items: [
       { name: 'Father of Three', note: 'the reason I build things that last' },
-      { name: 'Meditation', note: 'not a hobby — infrastructure' },
+      { name: 'Meditation', note: 'not a hobby, infrastructure' },
       { name: "Beginner's Mind", note: 'protected at all costs' },
       { name: 'Audiobooks', note: 'always something in my ears' },
     ],

@@ -3,18 +3,45 @@ import Reveal from '../Reveal';
 
 export default function Challenges({ project }: { project: Project }) {
   return (
-    <section className="container" style={{ paddingBlock: 'clamp(2rem, 5vw, 4rem)', borderTop: '1px solid var(--line)' }}>
-      <span style={{ color: 'var(--muted)', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>// challenges</span>
-      <div style={{ marginTop: '1.5rem', display: 'grid', gap: 'var(--gap)' }}>
-        {project.challenges.map((c, i) => (
-          <Reveal key={i} delay={i * 0.05}>
-            <div style={{ maxWidth: '60ch' }}>
-              <h3 style={{ fontWeight: 600, fontSize: 'clamp(1.1rem, 3vw, 1.5rem)' }}>{c.heading}</h3>
-              <p style={{ color: 'var(--muted)', marginTop: '0.5rem' }}>{c.body}</p>
-            </div>
-          </Reveal>
-        ))}
+    <section className="container case-sec">
+      <div className="case-sec__row">
+        <span className="case-sec__label kicker">The challenges</span>
+        <div className="case-sec__content">
+          <div className="challenges">
+            {project.challenges.map((c, i) => (
+              <Reveal key={i} delay={i * 0.06}>
+                <article className="challenges__item">
+                  <span className="challenges__idx">{String(i + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h3 className="challenges__heading">{c.heading}</h3>
+                    <p className="challenges__body measure">{c.body}</p>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </div>
+
+      <style>{`
+        .challenges { display: grid; gap: clamp(1.75rem, 4vw, 2.75rem); }
+        .challenges__item {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: clamp(1rem, 3vw, 2rem);
+          align-items: baseline;
+          border-top: 1px solid var(--line);
+          padding-top: clamp(1.25rem, 3vw, 2rem);
+        }
+        .challenges__idx { color: var(--faint); font-size: var(--step-0); font-variation-settings: 'wght' 500; }
+        .challenges__heading {
+          font-size: var(--step-2);
+          line-height: 1.05;
+          letter-spacing: -0.02em;
+          font-variation-settings: 'wght' 540;
+        }
+        .challenges__body { color: var(--muted); margin-top: 0.6rem; font-size: var(--step-0); line-height: 1.5; }
+      `}</style>
     </section>
   );
 }

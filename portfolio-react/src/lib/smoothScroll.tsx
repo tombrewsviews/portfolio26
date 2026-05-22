@@ -19,9 +19,18 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const onScroll = () => ScrollTrigger.update();
     lenisRef.current?.lenis?.on('scroll', onScroll);
 
+    // Recalculate trigger positions once fonts/layout settle and after full load,
+    // so scroll reveals fire against correct geometry and never stick hidden.
+    const refresh = () => ScrollTrigger.refresh();
+    const t = setTimeout(refresh, 400);
+    window.addEventListener('load', refresh);
+    if (document.fonts?.ready) document.fonts.ready.then(refresh);
+
     return () => {
       gsap.ticker.remove(update);
       lenisRef.current?.lenis?.off('scroll', onScroll);
+      window.removeEventListener('load', refresh);
+      clearTimeout(t);
     };
   }, []);
 

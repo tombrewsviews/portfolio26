@@ -1,11 +1,11 @@
-export const FLEX_MIN = 300;
-export const FLEX_MAX = 900;
+export const FLEX_MIN = 200;
+export const FLEX_MAX = 1000;
 
 // Shared scroll-choreography constants so motion is consistent site-wide.
 export const REVEAL = {
-  duration: 0.9,
-  ease: 'power3.out',
-  y: 24,
+  duration: 1.0,
+  ease: 'expo.out',
+  y: 40,
   stagger: 0.08,
 } as const;
 

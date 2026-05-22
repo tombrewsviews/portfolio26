@@ -1,88 +1,155 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import FlexText from './FlexText';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FLEX_MAX, FLEX_MIN, weightForProgress } from '../lib/flexAnim';
 
-const HEADLINE = 'I love building while I design.';
-const SUBLINE = 'Product design and design engineering — shipped, not theorized.';
+gsap.registerPlugin(ScrollTrigger);
+
+// Stacked headline — the type IS the hero (Marin Kurir register).
+const LINES = ['I love building', 'while I', 'design.'];
+const SUBLINE = 'Product design and design engineering. Shipped, not theorized.';
 
 export default function Hero() {
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const subRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLElement>(null);
+  const subRef = useRef<HTMLParagraphElement>(null);
 
-  // Kinetic typography: per-word reveal on the headline (visible animation).
   useEffect(() => {
-    const el = headlineRef.current;
-    if (!el) return;
+    const root = rootRef.current;
+    if (!root) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const words = el.querySelectorAll<HTMLElement>('[data-word]');
-    if (reduce || words.length === 0) return;
+    const words = root.querySelectorAll<HTMLElement>('[data-word]');
+    const accent = root.querySelector<HTMLElement>('[data-accent]');
 
-    const tween = gsap.from(words, {
-      yPercent: 110,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-      stagger: 0.06,
-      delay: 0.1,
-    });
-    return () => {
-      tween.kill();
-    };
-  }, []);
+    if (reduce) {
+      gsap.set(words, { yPercent: 0, opacity: 1 });
+      if (accent) accent.style.fontVariationSettings = `"wght" ${FLEX_MAX}`;
+      return;
+    }
 
-  // Pretext layout: measure the subline to reserve its height up front,
-  // preventing layout shift when the variable font swaps in (font-display: swap).
-  useEffect(() => {
-    const el = subRef.current;
-    if (!el) return;
-    let cancelled = false;
-    import('@chenglou/pretext')
-      .then(({ prepare, layout }) => {
-        if (cancelled || !subRef.current) return;
-        const cs = getComputedStyle(el);
-        const font = `${cs.fontSize} ${cs.fontFamily}`;
-        const lineHeight = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
-        const prepared = prepare(SUBLINE, font);
-        const { height } = layout(prepared, el.clientWidth, lineHeight);
-        if (height > 0) el.style.minHeight = `${Math.ceil(height)}px`;
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
+    const ctx = gsap.context(() => {
+      // Kinetic entrance: words rise into place, line by line.
+      gsap.from(words, {
+        yPercent: 115,
+        duration: 1.1,
+        ease: 'expo.out',
+        stagger: 0.07,
+        delay: 0.15,
+      });
+
+      // Scroll choreography: headline drifts up + fades, accent word fattens.
+      if (accent) {
+        const obj = { p: 0 };
+        accent.style.fontVariationSettings = `"wght" ${FLEX_MIN}`;
+        gsap.to(obj, {
+          p: 1,
+          ease: 'none',
+          scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: 0.5 },
+          onUpdate: () => {
+            accent.style.fontVariationSettings = `"wght" ${Math.round(weightForProgress(obj.p))}`;
+          },
+        });
+      }
+      gsap.to(root.querySelector('[data-headline]'), {
+        yPercent: -14,
+        ease: 'none',
+        scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: 0.5 },
+      });
+    }, root);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <header
-      className="container"
-      style={{ minHeight: '92vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1.5rem' }}
-    >
-      <span style={{ color: 'var(--muted)', fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-        // founding designer &amp; full-stack builder
-      </span>
-      <FlexText
-        as="h1"
-        style={{
-          fontSize: 'clamp(2.5rem, 9vw, 7rem)',
-          lineHeight: 1.02,
-          letterSpacing: '-0.02em',
-          maxWidth: '14ch',
-        }}
-      >
-        <span ref={headlineRef} style={{ display: 'inline-block' }}>
-          {HEADLINE.split(' ').map((word, i) => (
-            <span key={i} style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'top' }}>
-              <span data-word style={{ display: 'inline-block' }}>
-                {word}
+    <header ref={rootRef} className="container hero">
+      <p className="kicker hero__kicker">Founding designer &amp; full-stack builder</p>
+
+      <h1 className="hero__headline display" data-headline>
+        {LINES.map((line, li) => {
+          const isAccent = li === LINES.length - 1;
+          return (
+            <span className="hero__line" key={li} data-accent={isAccent ? '' : undefined}>
+              <span className="hero__mask">
+                <span className="hero__word" data-word>
+                  {line}
+                </span>
               </span>
-              {i < HEADLINE.split(' ').length - 1 ? ' ' : ''}
             </span>
-          ))}
-        </span>
-      </FlexText>
-      <div ref={subRef} style={{ color: 'var(--muted)', maxWidth: '46ch', fontSize: 'clamp(1rem, 2vw, 1.25rem)' }}>
+          );
+        })}
+      </h1>
+
+      <p ref={subRef} className="hero__sub measure">
         {SUBLINE}
-      </div>
+      </p>
+
+      <span className="hero__scroll" aria-hidden="true">
+        scroll <span className="hero__scroll-line" />
+      </span>
+
+      <style>{`
+        .hero {
+          min-height: 100svh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding-block: clamp(6rem, 14vh, 10rem);
+          position: relative;
+        }
+        .hero__kicker { margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+        .hero__headline {
+          font-size: var(--display);
+          line-height: 0.9;
+          letter-spacing: -0.035em;
+          font-weight: 800;
+          text-wrap: balance;
+        }
+        .hero__line { display: block; }
+        .hero__line:nth-child(2) { padding-left: clamp(1rem, 8vw, 8rem); }
+        .hero__mask { display: block; overflow: hidden; padding-bottom: 0.08em; }
+        .hero__word {
+          display: block;
+          font-variation-settings: 'wght' 800;
+          will-change: transform;
+        }
+        .hero__line[data-accent] .hero__word {
+          color: var(--fg);
+          font-variation-settings: 'wght' 200;
+        }
+        .hero__sub {
+          margin-top: clamp(1.75rem, 4vw, 2.75rem);
+          color: var(--muted);
+          font-size: var(--step-1);
+          line-height: 1.35;
+          font-variation-settings: 'wght' 380;
+        }
+        .hero__scroll {
+          position: absolute;
+          left: var(--pad);
+          bottom: clamp(1.5rem, 4vh, 3rem);
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          color: var(--faint);
+          font-size: var(--step--1);
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+        }
+        .hero__scroll-line {
+          display: block;
+          width: clamp(3rem, 8vw, 6rem);
+          height: 1px;
+          background: var(--line-strong);
+          transform-origin: left;
+          animation: heroScroll 2.4s var(--ease-out-quart) infinite;
+        }
+        @keyframes heroScroll {
+          0%, 100% { transform: scaleX(0.3); opacity: 0.4; }
+          50% { transform: scaleX(1); opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero__scroll-line { animation: none; transform: scaleX(1); opacity: 1; }
+        }
+      `}</style>
     </header>
   );
 }

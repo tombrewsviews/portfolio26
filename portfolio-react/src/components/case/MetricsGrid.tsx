@@ -3,18 +3,38 @@ import Reveal from '../Reveal';
 
 export default function MetricsGrid({ project }: { project: Project }) {
   return (
-    <section className="container" style={{ paddingBlock: 'clamp(2rem, 5vw, 4rem)', borderTop: '1px solid var(--line)' }}>
-      <span style={{ color: 'var(--muted)', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>// success metrics</span>
-      <div style={{ display: 'grid', gap: 'var(--gap)', marginTop: '1.5rem', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 12rem), 1fr))' }}>
-        {project.metrics.map((m, i) => (
-          <Reveal key={i} delay={i * 0.05}>
-            <div style={{ borderTop: '1px solid var(--line)', paddingTop: '1rem' }}>
-              <div style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', fontWeight: 700, letterSpacing: '-0.02em' }}>{m.value}</div>
-              <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>{m.label}</div>
-            </div>
-          </Reveal>
-        ))}
+    <section className="container case-sec">
+      <div className="case-sec__row">
+        <span className="case-sec__label kicker">Success metrics</span>
+        <div className="case-sec__content">
+          <div className="metrics">
+            {project.metrics.map((m, i) => (
+              <Reveal key={i} delay={i * 0.06}>
+                <div className="metrics__item">
+                  <div className="metrics__value">{m.value}</div>
+                  <div className="metrics__label">{m.label}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </div>
+
+      <style>{`
+        .metrics {
+          display: grid;
+          gap: clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem);
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+        }
+        .metrics__item { border-top: 1px solid var(--line-strong); padding-top: clamp(1rem, 2vw, 1.5rem); }
+        .metrics__value {
+          font-size: var(--step-3);
+          line-height: 0.95;
+          letter-spacing: -0.03em;
+          font-variation-settings: 'wght' 620;
+        }
+        .metrics__label { color: var(--muted); font-size: var(--step--1); margin-top: 0.5rem; letter-spacing: 0.02em; }
+      `}</style>
     </section>
   );
 }
