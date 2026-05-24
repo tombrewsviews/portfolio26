@@ -6,68 +6,126 @@ import { creative } from '../content/creative';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CreativeBanner() {
-  const items = [...creative, ...creative];
-  const trackRef = useRef<HTMLDivElement>(null);
+  // Split into two rows; top pans right, bottom pans left.
+  const mid = Math.ceil(creative.length / 2);
+  const topItems = creative.slice(0, mid);
+  const bottomItems = creative.slice(mid);
 
-  // Scroll velocity nudges the marquee speed for a kinetic, alive feel.
+  const sectionRef = useRef<HTMLElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  // Scroll-controlled: pin the section, then drive the two rows in opposite
+  // directions across the scroll distance. Each row starts pre-shifted toward
+  // its "incoming" edge and resolves to the opposite as the user scrolls, so
+  // the top slides right and the bottom slides left in lockstep.
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
+    const section = sectionRef.current;
+    const top = topRef.current;
+    const bottom = bottomRef.current;
+    if (!section || !top || !bottom) return;
+
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) return;
 
-    const st = ScrollTrigger.create({
-      trigger: track,
-      start: 'top bottom',
-      end: 'bottom top',
-      onUpdate: (self) => {
-        const boost = 1 + Math.min(Math.abs(self.getVelocity()) / 1400, 4);
-        gsap.to(track, { '--marquee-speed': boost, duration: 0.6, ease: 'power2.out', overwrite: true });
-      },
-    });
-    return () => st.kill();
+    const ctx = gsap.context(() => {
+      // Overflow per row (how far each track can travel beyond the viewport).
+      const topOverflow = () => Math.max(top.scrollWidth - window.innerWidth, 0);
+      const bottomOverflow = () => Math.max(bottom.scrollWidth - window.innerWidth, 0);
+      // Scroll distance = the larger overflow so both rows finish together.
+      const distance = () => Math.max(topOverflow(), bottomOverflow());
+
+      // Top row: start fully shifted left (off-screen), resolve to 0 → moves RIGHT.
+      gsap.fromTo(
+        top,
+        { x: () => -topOverflow() },
+        {
+          x: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: () => `+=${distance()}`,
+            pin: true,
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+            anticipatePin: 1,
+          },
+        }
+      );
+
+      // Bottom row: start at 0, resolve to fully shifted left → moves LEFT.
+      gsap.fromTo(
+        bottom,
+        { x: 0 },
+        {
+          x: () => -bottomOverflow(),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: () => `+=${distance()}`,
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+    }, section);
+
+    return () => ctx.revert();
   }, []);
 
+  const renderRow = (
+    items: typeof creative,
+    ref: React.RefObject<HTMLDivElement>,
+    offset: number
+  ) => (
+    <div className="banner__row">
+      <div className="banner__track" ref={ref}>
+        {items.map((c, i) => (
+          <figure className="banner__fig" key={i}>
+            <span className="banner__num">{String(offset + i + 1).padStart(2, '0')}</span>
+            <img
+              className="banner__img img-fallback"
+              src={c.src}
+              alt={c.caption}
+              loading="lazy"
+              onError={(e) => { e.currentTarget.classList.add('is-missing'); }}
+            />
+            <figcaption className="banner__cap">{c.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
-    <section aria-label="Creative work" className="banner">
-      <div className="banner__wrap">
-        <div className="banner__track" ref={trackRef}>
-          {items.map((c, i) => (
-            <figure className="banner__fig" key={i}>
-              <span className="banner__num">{String((i % creative.length) + 1).padStart(2, '0')}</span>
-              <img
-                className="banner__img img-fallback"
-                src={c.src}
-                alt={c.caption}
-                loading="lazy"
-                onError={(e) => { e.currentTarget.classList.add('is-missing'); }}
-              />
-              <figcaption className="banner__cap">{c.caption}</figcaption>
-            </figure>
-          ))}
-        </div>
+    <section aria-label="Creative work" className="banner" ref={sectionRef}>
+      <div className="banner__viewport">
+        {renderRow(topItems, topRef, 0)}
+        {renderRow(bottomItems, bottomRef, mid)}
       </div>
 
       <style>{`
         .banner {
-          padding-block: clamp(2.5rem, 7vw, 6rem);
-          border-block: 1px solid var(--line);
           background: var(--bg-deep);
+          overflow: hidden;
         }
-        .banner__wrap { overflow: hidden; }
+        /* Pinned viewport is one screen tall; two rows pan across it. */
+        .banner__viewport {
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: clamp(1rem, 2vw, 2rem);
+          overflow: hidden;
+        }
+        .banner__row { overflow: hidden; }
         .banner__track {
-          --marquee-speed: 1;
           display: flex;
           gap: clamp(1rem, 2vw, 2rem);
           width: max-content;
-          animation: bannerMarquee 48s linear infinite;
-          animation-play-state: running;
           will-change: transform;
-        }
-        .banner__track:hover { animation-play-state: paused; }
-        @keyframes bannerMarquee {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
         }
         .banner__fig {
           position: relative;
@@ -96,9 +154,11 @@ export default function CreativeBanner() {
           font-size: var(--step--1);
           letter-spacing: 0.04em;
         }
+        /* No pin/scrub when motion is reduced — fall back to plain swipe strips. */
         @media (prefers-reduced-motion: reduce) {
-          .banner__wrap { overflow-x: auto; }
-          .banner__track { animation: none; }
+          .banner__viewport { height: auto; padding-block: clamp(2.5rem, 7vw, 6rem); }
+          .banner__row { overflow-x: auto; }
+          .banner__track { transform: none !important; padding-inline: var(--pad); }
         }
       `}</style>
     </section>

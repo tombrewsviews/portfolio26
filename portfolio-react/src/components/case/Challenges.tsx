@@ -1,5 +1,6 @@
 import type { Project } from '../../types';
 import Reveal from '../Reveal';
+import FlexText from '../FlexText';
 
 export default function Challenges({ project }: { project: Project }) {
   return (
@@ -13,7 +14,7 @@ export default function Challenges({ project }: { project: Project }) {
                 <article className="challenges__item">
                   <span className="challenges__idx">{String(i + 1).padStart(2, '0')}</span>
                   <div>
-                    <h3 className="challenges__heading">{c.heading}</h3>
+                    <FlexText as="h3" className="challenges__heading">{c.heading}</FlexText>
                     <p className="challenges__body measure">{c.body}</p>
                   </div>
                 </article>

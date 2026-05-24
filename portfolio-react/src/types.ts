@@ -29,6 +29,8 @@ export type Shot = {
   /** Caption/marker for the second frame in a `pair`. */
   markerB?: string;
   captionB?: string;
+  /** Show the "Under NDA" overlay + tint over the frame(s). Off by default. */
+  nda?: boolean;
 };
 
 export type Project = {
@@ -39,7 +41,8 @@ export type Project = {
   year: string;
   disciplines: string[];
   thumb: string;
-  videoSrc: string;
+  /** Optional video intro. Omit to skip the VideoIntro section entirely. */
+  videoSrc?: string;
   overview: { date: string; categories: string[] };
   about: string;
   metrics: Metric[];

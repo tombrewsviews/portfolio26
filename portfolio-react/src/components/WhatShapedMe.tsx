@@ -33,7 +33,14 @@ export default function WhatShapedMe() {
       </div>
 
       <style>{`
-        .shaped__title { margin-bottom: clamp(2.5rem, 7vw, 5rem); }
+        /* Sized to fit "What shaped me" on one line across the section width
+           (14 heavy display chars ≈ container width ÷ 8). Scales with the
+           viewport and never wraps; clamps to a sane min on tiny screens. */
+        .shaped__title {
+          margin-bottom: clamp(2.5rem, 7vw, 5rem);
+          font-size: clamp(2rem, 9.5vw, 8rem);
+          white-space: nowrap;
+        }
         .shaped__grid {
           display: grid;
           gap: clamp(2.5rem, 5vw, 4.5rem);

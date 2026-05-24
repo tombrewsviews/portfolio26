@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLenis } from 'lenis/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { sectionScrollOffset } from './sectionScroll';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -57,15 +58,52 @@ export function PageTransition({ children }: { children: ReactNode }) {
   const animating = useRef(false);
 
   /**
-   * Jump to the top instantly. This site drives scrolling through Lenis, whose
-   * virtual position ignores a bare window.scrollTo (it snaps back on the next
-   * frame), so reset Lenis directly; fall back to the window for the
-   * reduced-motion / no-Lenis path.
+   * Position the new page instantly behind the cover panel. With no `hash` this
+   * jumps to the top; with a `#section` hash it lands on that section (e.g. the
+   * "← All work" link returns to the same Selected Work position every time).
+   *
+   * This site drives scrolling through Lenis, whose virtual position ignores a
+   * bare window.scrollTo (it snaps back on the next frame), so drive Lenis
+   * directly; fall back to the window for the reduced-motion / no-Lenis path.
+   *
+   * The hashed element only exists after the new route paints, and its offset
+   * depends on pinned-section spacers (e.g. the pinned CreativeBanner above
+   * #work). So before measuring we refresh ScrollTrigger to lay in those
+   * spacers, then scroll — and repeat once after a beat to catch late layout
+   * (fonts/images) so the landing point stays exact.
    */
-  const resetScroll = useCallback(() => {
-    if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
-    else window.scrollTo(0, 0);
-  }, [lenis]);
+  const positionScroll = useCallback(
+    (hash?: string) => {
+      const toTarget = () => {
+        const el = hash ? document.querySelector<HTMLElement>(hash) : null;
+        if (el) {
+          if (lenis) lenis.scrollTo(el, { immediate: true, force: true, offset: sectionScrollOffset() });
+          else el.scrollIntoView({ block: 'start' });
+          return;
+        }
+        if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+        else window.scrollTo(0, 0);
+      };
+
+      if (!hash) {
+        toTarget();
+        return;
+      }
+
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+          toTarget();
+          // Pin spacers / fonts can settle a frame late; re-land to stay exact.
+          setTimeout(() => {
+            ScrollTrigger.refresh();
+            toTarget();
+          }, 420);
+        }),
+      );
+    },
+    [lenis],
+  );
   // Forces the new page to remount so its Reveal sections re-arm and re-fire.
   const [animateKey, setAnimateKey] = useState(0);
 
@@ -74,11 +112,17 @@ export function PageTransition({ children }: { children: ReactNode }) {
       const panel = panelRef.current;
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // No panel or reduced motion: navigate plainly, reset scroll, remount.
+      // Split an optional "#section" target off the path so we can land the new
+      // page on that section instead of the top.
+      const hashIndex = path.indexOf('#');
+      const route = hashIndex >= 0 ? path.slice(0, hashIndex) || '/' : path;
+      const hash = hashIndex >= 0 ? path.slice(hashIndex) : undefined;
+
+      // No panel or reduced motion: navigate plainly, position scroll, remount.
       if (!panel || reduce) {
-        navigate(path);
-        resetScroll();
+        navigate(route);
         setAnimateKey((k) => k + 1);
+        positionScroll(hash);
         refreshSoon();
         return;
       }
@@ -103,11 +147,11 @@ export function PageTransition({ children }: { children: ReactNode }) {
         ease: 'power3.inOut',
       });
 
-      // Behind the cover: swap route, reset scroll, remount the page.
+      // Behind the cover: swap route, position scroll, remount the page.
       tl.add(() => {
-        navigate(path);
-        resetScroll();
+        navigate(route);
         setAnimateKey((k) => k + 1);
+        positionScroll(hash);
         refreshSoon();
       });
 
@@ -119,7 +163,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
         delay: HOLD,
       });
     },
-    [navigate, resetScroll],
+    [navigate, positionScroll],
   );
 
   return (

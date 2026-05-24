@@ -9,11 +9,11 @@ export const experiments: Experiment[] = [
   {
     title: 'Claude Skills',
     description: 'A set of over 10 custom Claude Code skills extending agent capability across design and engineering.',
-    links: [{ label: 'Source', href: 'https://github.com/tombrewsviews' }],
+    links: [{ label: 'Source', href: 'https://github.com/tombrewsviews/skill-simulate-to-verify' }],
   },
   {
     title: 'BYOA + Kinetic Type',
     description: 'Bring-your-own-agent experiments paired with kinetic typography explorations.',
-    links: [{ label: 'Medium', href: 'https://medium.com/@tomparandyk' }],
+    links: [{ label: 'GitHub', href: 'https://github.com/tombrewsviews/BYOA' }],
   },
 ];

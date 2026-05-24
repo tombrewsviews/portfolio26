@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Stacked headline — the type IS the hero (Marin Kurir register).
 const LINES = ['I love building', 'while I', 'design.'];
-const SUBLINE = 'Product design and design engineering. Shipped, not theorized.';
+const SUBLINE = "I'm a hands-on, player coach, prototyping, shipping, and listening to customer voice.";
 
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null);
@@ -37,13 +37,15 @@ export default function Hero() {
       });
 
       // Scroll choreography: headline drifts up + fades, accent word fattens.
+      // Weight ramps to full within the first ~40svh of scroll — while the word
+      // is still on screen — instead of completing as the hero leaves the view.
       if (accent) {
         const obj = { p: 0 };
         accent.style.fontVariationSettings = `"wght" ${FLEX_MIN}`;
         gsap.to(obj, {
           p: 1,
           ease: 'none',
-          scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: 0.5 },
+          scrollTrigger: { trigger: root, start: 'top top', end: '+=40%', scrub: 0.5 },
           onUpdate: () => {
             accent.style.fontVariationSettings = `"wght" ${Math.round(weightForProgress(obj.p))}`;
           },
@@ -78,7 +80,7 @@ export default function Hero() {
         })}
       </h1>
 
-      <p ref={subRef} className="hero__sub measure">
+      <p ref={subRef} className="hero__sub">
         {SUBLINE}
       </p>
 
@@ -105,7 +107,9 @@ export default function Hero() {
         }
         .hero__line { display: block; }
         .hero__line:nth-child(2) { padding-left: clamp(1rem, 8vw, 8rem); }
-        .hero__mask { display: block; overflow: hidden; padding-bottom: 0.08em; }
+        /* padding-bottom gives descenders (e.g. the "g" in "design.") room so
+           the rise-in overflow:hidden mask doesn't clip them. */
+        .hero__mask { display: block; overflow: hidden; padding-bottom: 0.2em; }
         .hero__word {
           display: block;
           font-variation-settings: 'wght' 800;
@@ -118,9 +122,14 @@ export default function Hero() {
         .hero__sub {
           margin-top: clamp(1.75rem, 4vw, 2.75rem);
           color: var(--muted);
-          font-size: var(--step-1);
+          /* Sized to sit on one line on desktop; wraps only on narrow viewports. */
+          font-size: clamp(var(--step-0), 1.6vw, var(--step-1));
           line-height: 1.35;
           font-variation-settings: 'wght' 380;
+          text-wrap: balance;
+        }
+        @media (min-width: 60rem) {
+          .hero__sub { white-space: nowrap; }
         }
         .hero__scroll {
           position: absolute;

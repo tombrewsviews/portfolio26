@@ -102,16 +102,17 @@ export default function WorkList() {
       </ul>
 
       <style>{`
+        /* Matches .experiments__head so all section heads are identical. */
         .work__head {
           display: flex;
           justify-content: space-between;
           align-items: baseline;
           gap: 1rem;
           flex-wrap: wrap;
-          padding-bottom: clamp(1.5rem, 4vw, 3rem);
+          padding-bottom: clamp(1.25rem, 3vw, 2rem);
           border-bottom: 1px solid var(--line);
         }
-        .work__count { color: var(--faint); font-size: var(--step--1); letter-spacing: 0.05em; }
+        .work__count { color: var(--faint); font-size: var(--step--1); }
         .work__list { list-style: none; }
         .work__item { border-bottom: 1px solid var(--line); }
 

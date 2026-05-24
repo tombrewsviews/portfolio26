@@ -98,7 +98,7 @@ button { font: inherit; }
 }
 
 /* ---- Case study editorial section: label left, content right ---- */
-.case-sec { padding-block: clamp(2.5rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
+.case-sec { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 .case-sec__row {
   display: grid;
   grid-template-columns: minmax(8rem, 14rem) 1fr;

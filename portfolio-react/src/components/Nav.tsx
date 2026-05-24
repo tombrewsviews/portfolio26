@@ -1,6 +1,24 @@
+import { useLenis } from 'lenis/react';
 import TransitionLink from '../lib/TransitionLink';
+import { sectionScrollOffset } from '../lib/sectionScroll';
 
 export default function Nav() {
+  const lenis = useLenis();
+
+  // Smooth-scroll to a section in EITHER direction. Native #hash anchors don't
+  // work on a Lenis page (its virtual scroll position snaps back), so drive the
+  // jump through Lenis; fall back to scrollIntoView when Lenis isn't available.
+  const scrollToSection = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    const target = document.getElementById(id);
+    if (!target) return;
+    if (lenis) {
+      lenis.scrollTo(target, { offset: sectionScrollOffset(), duration: 1.1 });
+    } else {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <nav className="nav">
       <div className="container nav__inner">
@@ -8,8 +26,8 @@ export default function Nav() {
           Tom Parandyk
         </TransitionLink>
         <div className="nav__links">
-          <a href="#about" className="nav__link">[ About ]</a>
-          <a href="#work" className="nav__link">[ Work ↓ ]</a>
+          <a href="#about" className="nav__link" onClick={(e) => scrollToSection(e, 'about')}>[ About ]</a>
+          <a href="#work" className="nav__link" onClick={(e) => scrollToSection(e, 'work')}>[ Work ]</a>
         </div>
       </div>
 
@@ -39,6 +57,7 @@ export default function Nav() {
           color: var(--fg);
           font-variation-settings: 'wght' 500;
           transition: opacity 0.3s var(--ease-out-quart);
+          cursor: pointer;
         }
         .nav__link:hover { opacity: 0.55; }
       `}</style>

@@ -1,92 +1,169 @@
+import { useEffect, useRef } from 'react';
 import TransitionLink from '../../lib/TransitionLink';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Project } from '../../types';
+import { FLEX_MIN, weightForProgress } from '../../lib/flexAnim';
+
+gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Calm closing link at the foot of a case study, pointing to the next
- * project so readers continue through the work instead of returning to
- * the index. Deliberately quiet: one eyebrow, a large title, one image,
- * a single soft lift on hover — no floating thumbs or padding shifts.
+ * Closing link at the foot of a case study, pointing to the next project.
+ * A two-column card — preview thumbnail on the left, title + meta stacked on
+ * the right — with no dividing rules (the case pages dropped section lines).
+ * Keeps the signature motion: the card rises in, the title fattens its Roboto
+ * Flex weight as it crosses the viewport, and snaps to full weight on hover.
  */
 export default function NextCase({ project }: { project: Project }) {
+  const rootRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+
+    const ctx = gsap.context(() => {
+      const card = root.querySelector<HTMLElement>('[data-card]');
+      const title = root.querySelector<HTMLElement>('[data-title]');
+      if (!card) return;
+
+      gsap.from(card, {
+        yPercent: 18,
+        opacity: 0,
+        duration: 1,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: card, start: 'top 92%' },
+      });
+
+      // Weight-on-scroll: title fattens as the card crosses the viewport.
+      if (title) {
+        const obj = { p: 0 };
+        gsap.to(obj, {
+          p: 1,
+          ease: 'none',
+          scrollTrigger: { trigger: card, start: 'top 90%', end: 'top 45%', scrub: true },
+          onUpdate: () => {
+            if (!title.dataset.hover) {
+              title.style.fontVariationSettings = `"wght" ${Math.round(weightForProgress(obj.p))}`;
+            }
+          },
+        });
+      }
+    }, root);
+
+    return () => ctx.revert();
+  }, [project.slug]);
+
+  const setHover = (el: HTMLElement | null, on: boolean) => {
+    if (!el) return;
+    if (on) {
+      el.dataset.hover = '1';
+      gsap.to(el, { fontVariationSettings: '"wght" 1000', duration: 0.5, ease: 'expo.out' });
+    } else {
+      delete el.dataset.hover;
+      gsap.to(el, { fontVariationSettings: `"wght" ${FLEX_MIN}`, duration: 0.6, ease: 'expo.out' });
+    }
+  };
+
   return (
-    <section className="container next-case">
-      <TransitionLink to={`/work/${project.slug}`} className="next-case__link">
-        <span className="next-case__eyebrow kicker">Next project</span>
+    <section ref={rootRef} className="container next-case">
+      <TransitionLink
+        to={`/work/${project.slug}`}
+        className="next-case__card"
+        data-card
+        onMouseEnter={(e) => setHover(e.currentTarget.querySelector('[data-title]'), true)}
+        onMouseLeave={(e) => setHover(e.currentTarget.querySelector('[data-title]'), false)}
+      >
+        <img
+          className="next-case__thumb img-fallback"
+          src={project.thumb}
+          alt=""
+          loading="lazy"
+          onError={(e) => { e.currentTarget.classList.add('is-missing'); }}
+        />
 
-        <div className="next-case__row">
-          <div className="next-case__text">
-            <h2 className="next-case__title">{project.title}</h2>
-            <p className="next-case__sub">{project.subtitle}</p>
-          </div>
+        <div className="next-case__body">
+          <span className="next-case__eyebrow kicker">
+            Next project <span className="next-case__arrow" aria-hidden="true">↗</span>
+          </span>
 
-          <div className="next-case__thumb-wrap">
-            <img
-              className="next-case__thumb img-fallback"
-              src={project.thumb}
-              alt=""
-              loading="lazy"
-              onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
-            />
-          </div>
+          <span className="next-case__title display" data-title>{project.title}</span>
+
+          <span className="next-case__meta">
+            <span className="next-case__disc">{project.subtitle}</span>
+            <span className="next-case__dot" aria-hidden="true">·</span>
+            <span className="next-case__year">{project.year}</span>
+          </span>
         </div>
       </TransitionLink>
 
       <style>{`
         .next-case {
           padding-block: clamp(4rem, 10vw, 8rem);
-          border-top: 1px solid var(--line);
         }
-        .next-case__link {
-          display: block;
-          border-radius: 1.25rem;
-          padding: clamp(1.5rem, 4vw, 2.5rem);
-          margin-inline: calc(clamp(1.5rem, 4vw, 2.5rem) * -1);
-          transition: background-color 0.5s var(--ease-out-quart);
-        }
-        .next-case__link:hover {
-          background-color: oklch(0.20 0.006 250);
-        }
-
-        .next-case__eyebrow { color: var(--faint); }
-
-        .next-case__row {
+        .next-case__card {
           display: grid;
-          grid-template-columns: 1fr auto;
+          grid-template-columns: clamp(12rem, 28vw, 22rem) 1fr;
           align-items: center;
           gap: clamp(1.5rem, 5vw, 4rem);
-          margin-top: clamp(1.25rem, 3vw, 2rem);
-        }
-
-        .next-case__title {
-          font-size: clamp(2.4rem, 1rem + 6vw, 5.5rem);
-          line-height: 0.95;
-          letter-spacing: -0.035em;
-          font-variation-settings: 'wght' 600;
-          color: var(--fg);
-          transition: opacity 0.4s var(--ease-out-quart);
-        }
-        .next-case__sub {
-          margin-top: clamp(0.5rem, 1.5vw, 0.9rem);
-          color: var(--muted);
-          font-size: var(--step-0);
-          font-variation-settings: 'wght' 380;
-        }
-
-        .next-case__thumb-wrap { flex-shrink: 0; }
-        .next-case__thumb {
-          width: clamp(7rem, 16vw, 13rem);
-          aspect-ratio: 1 / 1;
-          object-fit: cover;
-          border-radius: 1rem;
           transition: transform 0.6s var(--ease-out-expo);
         }
-        .next-case__link:hover .next-case__thumb {
-          transform: scale(1.03);
+        .next-case__card:hover { transform: translateY(-6px); }
+
+        .next-case__thumb {
+          width: 100%;
+          aspect-ratio: 4 / 3;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.7s var(--ease-out-expo), filter 0.5s var(--ease-out-quart);
+          filter: grayscale(1) brightness(0.85);
+        }
+        .next-case__card:hover .next-case__thumb { transform: scale(1.03); filter: grayscale(0) brightness(1); }
+        .next-case__thumb.is-missing { font-size: 0; } /* hide broken-image glyph; keep textured box */
+
+        .next-case__body { display: flex; flex-direction: column; min-width: 0; }
+        .next-case__eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5em;
+          color: var(--faint);
+          margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+        }
+        .next-case__arrow {
+          display: inline-block;
+          color: var(--muted);
+          transform: translate(-0.3em, 0);
+          opacity: 0;
+          transition: opacity 0.4s var(--ease-out-expo), transform 0.5s var(--ease-out-expo), color 0.4s;
+        }
+        .next-case__card:hover .next-case__arrow { opacity: 1; transform: translate(0, 0); color: var(--fg); }
+
+        .next-case__title {
+          font-size: var(--display-work);
+          line-height: 0.9;
+          letter-spacing: -0.035em;
+          font-variation-settings: 'wght' ${FLEX_MIN};
         }
 
-        @media (max-width: 640px) {
-          .next-case__row { grid-template-columns: 1fr; }
-          .next-case__thumb { width: 100%; aspect-ratio: 16 / 9; }
+        .next-case__meta {
+          display: flex;
+          align-items: baseline;
+          flex-wrap: wrap;
+          gap: 0.5em;
+          margin-top: clamp(0.75rem, 2vw, 1.25rem);
+          font-size: var(--step--1);
+        }
+        .next-case__disc { color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+        .next-case__dot { color: var(--faint); }
+        .next-case__year { color: var(--faint); }
+
+        @media (max-width: 768px) {
+          .next-case__card { grid-template-columns: 1fr; gap: clamp(1.25rem, 5vw, 2rem); }
+        }
+        @media (hover: none) {
+          .next-case__thumb { filter: none; }
+          .next-case__arrow { opacity: 1; transform: none; }
         }
       `}</style>
     </section>

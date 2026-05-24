@@ -7,31 +7,30 @@ export const projects: Project[] = [
     title: 'Adlook',
     subtitle: 'Internal Deal Platform',
     year: '2026',
-    disciplines: ['Product Design', 'Design System', 'Frontend'],
+    disciplines: ['Solo Product Operator'],
     thumb: '/media/adlook-thumb.jpg',
-    videoSrc: '/media/adlook-intro.mp4',
     overview: {
       date: '2026',
-      categories: ['Product Design', 'Design System'],
+      categories: ['Internal Financial Platform'],
     },
     about:
       'Adlook needed a single internal surface for deal teams to assemble, price, and track advertising deals. I designed the end-to-end flow and the component system that backs it.',
     metrics: [
-      { value: '40%', label: 'faster deal assembly' },
-      { value: '1', label: 'unified deal surface' },
-      { value: '0→system', label: 'design system established' },
+      { value: '15x', label: 'faster deal assembly' },
+      { value: '100%', label: 'reduction of deal errors' },
+      { value: '97%', label: 'UX satisfaction' },
     ],
     role:
-      'Lead product designer. Owned research, end-to-end flows, the design system, and frontend collaboration.',
+      'Lead product designer. Owned research, spec definition, end-to-end flow prototyping, the design system, and frontend implementation, including infrastructure and deployment to production in private Google Cloud VM.',
     challenges: [
       { heading: 'Fragmented tooling', body: 'Deal data lived across spreadsheets and disconnected tools; the platform had to consolidate them without disrupting in-flight deals.' },
       { heading: 'Dense data, clear hierarchy', body: 'Deal screens carry heavy data. The challenge was visual hierarchy that stays legible at density.' },
+      { heading: 'No business definition', body: 'There was no written spec. Requirements had to be defined from scratch through research and interviews with the employees who run deals day to day.' },
+      { heading: 'Greenfield, no foundations', body: 'No prior software in place — no design system, no internal tooling styleguide, no deployment guidelines. Everything had to be established along the way.' },
+      { heading: 'No dedicated team', body: 'There was no engineering or design team to lean on. I operated solo as the design engineer and product operator, owning every layer end to end.' },
     ],
     shots: [
-      { layout: 'bleed', ratio: '16 / 9', src: '/media/adlook-deal-board.jpg', marker: '[UP]', caption: 'Deal board' },
-      { layout: 'wide-left', ratio: '4 / 3', src: '/media/adlook-pricing.jpg', marker: '[LEFT]', caption: 'Pricing builder' },
-      { layout: 'pair', ratio: '3 / 4', src: '/media/adlook-detail.jpg', srcB: '/media/adlook-tracking.jpg', marker: '[LEFT]', caption: 'Deal detail', markerB: '[RIGHT]', captionB: 'Tracking view' },
-      { layout: 'narrow-right', ratio: '1 / 1', src: '/media/adlook-token.jpg', marker: '[RIGHT]', caption: 'Design tokens' },
+      { layout: 'bleed', ratio: '16 / 9', src: '/media/adlook-deal-board.jpg', marker: '[UP]', caption: 'Deal board', nda: true },
     ],
   },
   {
@@ -39,31 +38,33 @@ export const projects: Project[] = [
     projectNumber: '02',
     title: 'Tessl',
     subtitle: 'Skills Registry',
-    year: '2025',
-    disciplines: ['Product Design', 'Developer Tools'],
+    year: '2025–2026',
+    disciplines: ['Founding Product Designer / Design Engineer'],
     thumb: '/media/tessl-thumb.jpg',
-    videoSrc: '/media/tessl-intro.mp4',
+    videoSrc: '/media/tessl-overview.mp4',
     overview: {
-      date: '2025',
-      categories: ['Product Design', 'Developer Tools'],
+      date: '2025–2026',
+      categories: ['Developer Platform'],
     },
     about:
-      'Tessl Skills Registry is where developers discover, publish, and version skills for AI agents. I designed the registry browsing, detail, and publishing flows.',
+      'Tessl Registry is the package manager for agent skills — versioned, evaluated, and secured instructions that tell AI coding agents how to use a library, API, or workflow correctly. I designed the surfaces for discovering, evaluating, publishing, and versioning skills, so developers can find and trust them the way they would any package.',
     metrics: [
-      { value: '3', label: 'core flows shipped' },
-      { value: 'registry', label: 'discovery surface' },
-      { value: 'CLI+web', label: 'parity' },
+      { value: '5', label: 'major pivots over 12 months' },
+      { value: '72', label: 'flows designed' },
+      { value: '21', label: 'enterprise deals in GTM' },
     ],
-    role: 'Product designer. Owned the registry IA, browsing, and publish flows.',
+    role: 'Product designer. Owned the registry information architecture and the discover, skill-detail, publish, and versioning flows across the web registry and CLI.',
     challenges: [
-      { heading: 'Developer trust', body: 'Skills run with agent permissions; the UI had to surface provenance and risk clearly before install.' },
-      { heading: 'Versioning clarity', body: 'Showing version history and compatibility without overwhelming the browse experience.' },
+      { heading: 'A package manager for a new primitive', body: 'Skills are a brand-new unit of distribution. The registry had to make them feel as familiar to pin, update, and search as any npm package, without an established mental model to lean on.' },
+      { heading: 'Making quality legible', body: 'Each skill carries a Quality Score, an Impact Score (measurable uplift in agent behaviour), and Snyk security scanning. The detail view had to turn those signals into a clear, trustworthy verdict at a glance.' },
+      { heading: 'Trust before install', body: "Skills run with the agent's permissions. The flow had to surface provenance, security, and risk up front — before a developer runs npx tessl i — so installing a community skill never feels like a leap of faith." },
+      { heading: 'Web and CLI in lockstep', body: 'Developers discover skills on the web but install and publish from the terminal. The two surfaces had to stay conceptually identical so search, scores, and versions read the same in both.' },
     ],
     shots: [
-      { layout: 'wide-right', ratio: '16 / 10', src: '/media/tessl-registry.jpg', marker: '[RIGHT]', caption: 'Registry browse' },
-      { layout: 'full', ratio: '16 / 9', src: '/media/tessl-detail.jpg', marker: '[UP]', caption: 'Skill detail' },
-      { layout: 'narrow-left', ratio: '3 / 4', src: '/media/tessl-permissions.jpg', marker: '[LEFT]', caption: 'Permission gate' },
-      { layout: 'pair', ratio: '4 / 3', src: '/media/tessl-publish.jpg', srcB: '/media/tessl-versions.jpg', marker: '[LEFT]', caption: 'Publish flow', markerB: '[DOWN RIGHT]', captionB: 'Version history' },
+      { layout: 'full', ratio: '16 / 9', src: '/media/tessl-registry.jpg', marker: '[UP]', caption: 'Registry browse' },
+      { layout: 'full', ratio: '16 / 9', src: '/media/tessl-detail.jpg', marker: '[UP]', caption: 'Skill evaluation report' },
+      { layout: 'pair', ratio: '16 / 9', src: '/media/tessl-permissions.jpg', srcB: '/media/tessl-cli.jpg', marker: '[LEFT]', caption: 'tessl-audit scores', markerB: '[DOWN RIGHT]', captionB: 'Skill uplift' },
+      { layout: 'full', ratio: '4 / 3', src: '/media/tessl-partners.jpg', marker: '[UP]', caption: 'Enterprise-ready partners' },
     ],
   },
   {
@@ -82,9 +83,9 @@ export const projects: Project[] = [
     about:
       'Koyeb lets developers deploy apps globally without managing infrastructure. I redesigned core deployment and monitoring flows.',
     metrics: [
-      { value: 'global', label: 'edge deploy UX' },
+      { value: '1', label: 'global edge deploy UX' },
       { value: '2', label: 'flows redesigned' },
-      { value: 'faster', label: 'time to first deploy' },
+      { value: '1', label: 'faster time-to-first-deploy path' },
     ],
     role: 'Product designer. Redesigned deployment creation and service monitoring.',
     challenges: [
@@ -106,7 +107,7 @@ export const projects: Project[] = [
     year: '2024',
     disciplines: ['Product Design', 'AI'],
     thumb: '/media/qodo-thumb.jpg',
-    videoSrc: '/media/qodo-intro.mp4',
+    videoSrc: '/media/qodo.mp4',
     overview: {
       date: '2024',
       categories: ['Product Design', 'AI'],
@@ -114,9 +115,9 @@ export const projects: Project[] = [
     about:
       'Qodo brings AI code generation and review into the developer workflow. I designed the review and PR-agent surfaces.',
     metrics: [
-      { value: 'PR-native', label: 'review surface' },
-      { value: 'inline', label: 'AI suggestions' },
-      { value: 'IDE+web', label: 'reach' },
+      { value: '1', label: 'PR-native review surface' },
+      { value: '1', label: 'inline AI suggestions layer' },
+      { value: '2', label: 'surfaces reached (IDE + web)' },
     ],
     role: 'Product designer. Designed AI review and PR-agent interaction patterns.',
     challenges: [
@@ -146,9 +147,9 @@ export const projects: Project[] = [
     about:
       'Neon is serverless Postgres with database branching. I redesigned the onboarding to get developers to a live database fast.',
     metrics: [
-      { value: 'faster', label: 'time to first query' },
-      { value: 'branching', label: 'made visible' },
-      { value: 'onboarding', label: 'redesigned' },
+      { value: '1', label: 'faster time-to-first-query path' },
+      { value: '1', label: 'branching made visible' },
+      { value: '1', label: 'onboarding redesigned' },
     ],
     role: 'Product designer. Led the onboarding redesign.',
     challenges: [
@@ -178,9 +179,9 @@ export const projects: Project[] = [
     about:
       'For BNP Paribas I designed an internal deal platform handling complex, regulated banking workflows for deal teams.',
     metrics: [
-      { value: 'enterprise', label: 'scale' },
-      { value: 'regulated', label: 'compliant flows' },
-      { value: 'internal', label: 'deal platform' },
+      { value: '1', label: 'enterprise-scale platform' },
+      { value: '1', label: 'regulated, compliant flow set' },
+      { value: '1', label: 'internal deal platform' },
     ],
     role: 'Product designer. Designed deal workflows within enterprise constraints.',
     challenges: [

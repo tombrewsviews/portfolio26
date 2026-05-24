@@ -1,5 +1,6 @@
 import type { Project } from '../../types';
 import Reveal from '../Reveal';
+import FlexText from '../FlexText';
 
 export default function MetricsGrid({ project }: { project: Project }) {
   return (
@@ -11,7 +12,7 @@ export default function MetricsGrid({ project }: { project: Project }) {
             {project.metrics.map((m, i) => (
               <Reveal key={i} delay={i * 0.06}>
                 <div className="metrics__item">
-                  <div className="metrics__value">{m.value}</div>
+                  <FlexText as="div" className="metrics__value">{m.value}</FlexText>
                   <div className="metrics__label">{m.label}</div>
                 </div>
               </Reveal>
@@ -26,12 +27,14 @@ export default function MetricsGrid({ project }: { project: Project }) {
           gap: clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem);
           grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
         }
-        .metrics__item { border-top: 1px solid var(--line-strong); padding-top: clamp(1rem, 2vw, 1.5rem); }
+        .metrics__item { border-top: 1px solid var(--line-strong); padding-top: clamp(1rem, 2vw, 1.5rem); min-width: 0; }
         .metrics__value {
-          font-size: var(--step-3);
+          /* Fluid cap keeps the stat inside its cell even if a value runs long. */
+          font-size: clamp(var(--step-1), 7vw, var(--step-3));
           line-height: 0.95;
           letter-spacing: -0.03em;
           font-variation-settings: 'wght' 620;
+          overflow-wrap: anywhere;
         }
         .metrics__label { color: var(--muted); font-size: var(--step--1); margin-top: 0.5rem; letter-spacing: 0.02em; }
       `}</style>

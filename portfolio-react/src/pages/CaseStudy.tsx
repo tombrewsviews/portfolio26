@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { getProject, getNextProject } from '../content/lookup';
 import NotFound from './NotFound';
-import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import CaseHero from '../components/case/CaseHero';
 import VideoIntro from '../components/case/VideoIntro';
@@ -59,10 +58,9 @@ export default function CaseStudy() {
 
   return (
     <>
-      <Nav />
       <main>
         <CaseHero project={project} />
-        <VideoIntro project={project} />
+        {project.videoSrc && <VideoIntro project={project} />}
         {shotsForSlot(project, 'after-video')}
         <Overview project={project} />
         {shotsForSlot(project, 'after-overview')}

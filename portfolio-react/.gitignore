@@ -5,3 +5,6 @@ dist
 *.tsbuildinfo
 vite.config.js
 vite.config.d.ts
+
+# Source media (raw recordings, originals) — kept locally, never deployed/committed
+_originals
