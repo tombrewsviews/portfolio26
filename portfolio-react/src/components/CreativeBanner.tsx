@@ -77,14 +77,12 @@ export default function CreativeBanner() {
 
   const renderRow = (
     items: typeof creative,
-    ref: React.RefObject<HTMLDivElement>,
-    offset: number
+    ref: React.RefObject<HTMLDivElement>
   ) => (
     <div className="banner__row">
       <div className="banner__track" ref={ref}>
         {items.map((c, i) => (
           <figure className="banner__fig" key={i}>
-            <span className="banner__num">{String(offset + i + 1).padStart(2, '0')}</span>
             <img
               className="banner__img img-fallback"
               src={c.src}
@@ -101,8 +99,8 @@ export default function CreativeBanner() {
   return (
     <section aria-label="Creative work" className="banner" ref={sectionRef}>
       <div className="banner__viewport">
-        {renderRow(topItems, topRef, 0)}
-        {renderRow(bottomItems, bottomRef, mid)}
+        {renderRow(topItems, topRef)}
+        {renderRow(bottomItems, bottomRef)}
       </div>
 
       <style>{`
@@ -139,15 +137,6 @@ export default function CreativeBanner() {
         }
         .banner__img.is-missing { font-size: 0; } /* hide broken-image glyph; keep textured box */
         figure.banner__fig { margin: 0; }
-        .banner__num {
-          position: absolute;
-          top: 0.6rem; left: 0.7rem;
-          font-size: var(--step--1);
-          color: var(--fg);
-          font-variation-settings: 'wght' 600;
-          mix-blend-mode: difference;
-          z-index: 2;
-        }
         /* No pin/scrub when motion is reduced — fall back to plain swipe strips. */
         @media (prefers-reduced-motion: reduce) {
           .banner__viewport { height: auto; padding-block: clamp(2.5rem, 7vw, 6rem); }
