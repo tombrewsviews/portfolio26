@@ -1,0 +1,9 @@
+# Vercel uploads the whole tree unless told otherwise (it does NOT read .gitignore).
+# Keep raw originals, deps, and build output off the upload — Vercel builds from source.
+_originals
+node_modules
+dist
+.git
+.DS_Store
+*.local
+*.tsbuildinfo
