@@ -92,7 +92,6 @@ export default function CreativeBanner() {
               loading="lazy"
               onError={(e) => { e.currentTarget.classList.add('is-missing'); }}
             />
-            <figcaption className="banner__cap">{c.caption}</figcaption>
           </figure>
         ))}
       </div>
@@ -139,6 +138,7 @@ export default function CreativeBanner() {
           display: block;
         }
         .banner__img.is-missing { font-size: 0; } /* hide broken-image glyph; keep textured box */
+        figure.banner__fig { margin: 0; }
         .banner__num {
           position: absolute;
           top: 0.6rem; left: 0.7rem;
@@ -147,12 +147,6 @@ export default function CreativeBanner() {
           font-variation-settings: 'wght' 600;
           mix-blend-mode: difference;
           z-index: 2;
-        }
-        .banner__cap {
-          margin-top: 0.6rem;
-          color: var(--faint);
-          font-size: var(--step--1);
-          letter-spacing: 0.04em;
         }
         /* No pin/scrub when motion is reduced — fall back to plain swipe strips. */
         @media (prefers-reduced-motion: reduce) {

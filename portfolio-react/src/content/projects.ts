@@ -21,7 +21,7 @@ export const projects: Project[] = [
       { value: '97%', label: 'UX satisfaction' },
     ],
     role:
-      'Lead product designer. Owned research, spec definition, end-to-end flow prototyping, the design system, and frontend implementation, including infrastructure and deployment to production in private Google Cloud VM.',
+      'I led this end-to-end as the sole product operator — owning research, spec definition, flow prototyping, the design system, and frontend implementation, through to infrastructure and production deployment on a private Google Cloud VM.',
     challenges: [
       { heading: 'Fragmented tooling', body: 'Deal data lived across spreadsheets and disconnected tools; the platform had to consolidate them without disrupting in-flight deals.' },
       { heading: 'Dense data, clear hierarchy', body: 'Deal screens carry heavy data. The challenge was visual hierarchy that stays legible at density.' },
@@ -53,7 +53,7 @@ export const projects: Project[] = [
       { value: '72', label: 'flows designed' },
       { value: '21', label: 'enterprise deals in GTM' },
     ],
-    role: 'Product designer. Owned the registry information architecture and the discover, skill-detail, publish, and versioning flows across the web registry and CLI.',
+    role: 'I owned the registry information architecture and the discover, skill-detail, publish, and versioning flows across both the web registry and the CLI.',
     challenges: [
       { heading: 'Package manager for a new primitive', body: 'Skills are a brand-new unit of distribution. The registry had to make them feel as familiar to pin, update, and search as any npm package, without an established mental model to lean on.' },
       { heading: 'Making quality legible', body: 'Each skill carries a Quality Score, an Impact Score (measurable uplift in agent behaviour), and Snyk security scanning. The detail view had to turn those signals into a clear, trustworthy verdict at a glance.' },
@@ -87,7 +87,7 @@ export const projects: Project[] = [
       { value: '3x', label: 'revenue growth' },
       { value: '$50M', label: 'acquisition after redesign' },
     ],
-    role: 'As lead product designer, I was contracted to redesign and improve the platform design as well as grow the key metrics. I worked closely with engineering and the CEO as part of a small startup team.',
+    role: 'I was brought in to redesign the platform and grow its key metrics, working closely with engineering and the CEO as part of a small startup team.',
     challenges: [
       { heading: 'Infra made simple', body: 'Exposing enough control for power users while keeping the first deploy effortless.' },
       { heading: 'Observability', body: 'Surfacing logs, metrics, and health without a cluttered dashboard.' },
@@ -121,7 +121,7 @@ export const projects: Project[] = [
       { value: '4M', label: 'PR reviews' },
       { value: '500K', label: 'users' },
     ],
-    role: 'Founding product designer, from zero to 300K installs in a year. Solo designer across every touchpoint, and a design engineer in the production codebase, polishing the execution and shipping features end to end.',
+    role: 'I joined as founding product designer and took it from zero to 300K installs in a year — the solo designer across every touchpoint, and a design engineer in the production codebase, polishing the execution and shipping features end-to-end.',
     challenges: [
       { heading: 'Trust in AI output', body: 'Designing suggestion UI that invites review rather than blind acceptance.' },
       { heading: 'Workflow fit', body: 'Embedding into existing PR flows without adding friction.' },
@@ -149,19 +149,24 @@ export const projects: Project[] = [
     overview: {
       date: '2022–2024',
       categories: ['Serverless Database Platform'],
-      roleLabel: 'Lead Product Designer / Design Engineer',
+      roleLabel: 'Founding Product Designer / Design Engineer',
     },
     about:
-      'Neon is serverless Postgres with database branching. I redesigned the onboarding to get developers to a live database fast.',
+      'Neon is serverless Postgres with instant database branching. I worked across the infra, AI, and control-plane teams on the console — redesigning onboarding to get developers to a live database fast, building the design system, and shipping production theming end-to-end.',
     metrics: [
-      { value: '1', label: 'faster time-to-first-query path' },
-      { value: '1', label: 'branching made visible' },
-      { value: '1', label: 'onboarding redesigned' },
+      { value: '800K', label: 'databases created' },
+      { value: '25x', label: 'revenue growth' },
+      { value: '10%', label: 'MoM adoption improvement' },
     ],
-    role: 'Product designer. Led the onboarding redesign.',
+    role: 'I was the founding designer and design engineer, working across the infra, AI, and control-plane teams. I built the design system end-to-end and the integration pipeline between Figma and code, and shipped console theming to production.',
     challenges: [
-      { heading: 'Explaining branching', body: 'Database branching is novel; onboarding had to teach it without a wall of docs.' },
-      { heading: 'Fast first value', body: 'Getting users to a working query in minutes.' },
+      { heading: 'Explaining branching', body: 'Database branching is a novel primitive; onboarding had to teach it without a wall of docs.' },
+      { heading: 'Fast first value', body: 'Getting developers from sign-up to a working query in minutes, not hours.' },
+      { heading: 'One system, many teams', body: 'Infra, AI, and control-plane teams shipped to the same console. The design system had to keep them coherent without slowing any of them down.' },
+      { heading: 'Figma-to-code pipeline', body: 'Design and engineering drifted apart at scale. The fix was an integration pipeline that kept tokens, themes, and components in sync between Figma and the codebase.' },
+      { heading: 'Navigation patterns', body: 'Database branches mirror code branches, but the relationship is easy to lose. Navigation had to make that mapping legible and help users move through complex, branching environments without getting lost.' },
+      { heading: 'Integration surfaces', body: 'Connecting Neon to external tools meant defining the interface patterns from scratch — establishing the flows and accounting for the edge cases each integration introduced.' },
+      { heading: 'Leading without a hierarchy', body: 'Driving design across a large, deeply technical organization with no established design leadership — setting direction and standards while earning trust team by team.' },
     ],
     shots: [
       { layout: 'full', ratio: '3 / 2', src: '/media/neon-create.jpg', marker: '[UP]', caption: 'Create new project' },
@@ -190,7 +195,7 @@ export const projects: Project[] = [
       { value: '98%', label: 'data error removal' },
       { value: '$700M', label: 'assets in 12 months' },
     ],
-    role: 'As lead product designer, I owned the design process end to end — from UX research through to high-fidelity interface design.',
+    role: 'I owned the design process end-to-end, from UX research through to high-fidelity interface design.',
     challenges: [
       { heading: 'Regulatory constraints', body: 'Designing within strict compliance and audit requirements.' },
       { heading: 'Legacy integration', body: 'Fitting new flows alongside entrenched internal systems.' },
