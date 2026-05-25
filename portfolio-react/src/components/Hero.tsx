@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Stacked headline — the type IS the hero (Marin Kurir register).
 const LINES = ['I love building', 'while I', 'design.'];
-const SUBLINE = "I'm a hands-on, player coach, prototyping, shipping, and listening to customer voice.";
+const SUBLINE = "I'm a hands-on, player coach — prototyping, shipping, and listening to customer voice.";
 
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null);
