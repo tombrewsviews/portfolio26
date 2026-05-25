@@ -84,9 +84,7 @@ export default function NextCase({ project }: { project: Project }) {
         />
 
         <div className="next-case__body">
-          <span className="next-case__eyebrow kicker">
-            Next project <span className="next-case__arrow" aria-hidden="true">↗</span>
-          </span>
+          <span className="next-case__eyebrow kicker">Next project</span>
 
           <span className="next-case__title display" data-title>{project.title}</span>
 
@@ -134,24 +132,19 @@ export default function NextCase({ project }: { project: Project }) {
         .next-case__eyebrow {
           display: inline-flex;
           align-items: center;
-          gap: 0.5em;
           color: var(--faint);
           margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
         }
-        .next-case__arrow {
-          display: inline-block;
-          color: var(--muted);
-          transform: translate(-0.3em, 0);
-          opacity: 0;
-          transition: opacity 0.4s var(--ease-out-expo), transform 0.5s var(--ease-out-expo), color 0.4s;
-        }
-        .next-case__card:hover .next-case__arrow { opacity: 1; transform: translate(0, 0); color: var(--accent-bright); }
 
         .next-case__title {
-          font-size: var(--display-work);
+          /* Slightly smaller than --display-work so the two-word titles
+             (e.g. "BNP Paribas") still fit on one line at the heaviest hover
+             weight (1000) instead of wrapping. nowrap keeps it single-line. */
+          font-size: clamp(2.6rem, 0.5rem + 9.5vw, 8rem);
           line-height: 0.9;
           letter-spacing: -0.035em;
           font-variation-settings: 'wght' ${FLEX_MIN};
+          white-space: nowrap;
         }
 
         .next-case__meta {
@@ -168,10 +161,11 @@ export default function NextCase({ project }: { project: Project }) {
 
         @media (max-width: 768px) {
           .next-case__card { grid-template-columns: 1fr; gap: clamp(1.25rem, 5vw, 2rem); }
+          /* On phones, allow the title to wrap rather than overflow the viewport. */
+          .next-case__title { white-space: normal; }
         }
         @media (hover: none) {
           .next-case__thumb { filter: none; }
-          .next-case__arrow { opacity: 1; transform: none; }
         }
       `}</style>
     </section>

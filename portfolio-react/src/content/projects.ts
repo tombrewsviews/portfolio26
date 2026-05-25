@@ -11,7 +11,7 @@ export const projects: Project[] = [
     thumb: '/media/adlook-deal-board.jpg',
     overview: {
       date: '2026',
-      categories: ['Internal Financial Platform'],
+      categories: ['AdTech/FinTech'],
     },
     about:
       'Adlook needed a single internal surface for deal teams to assemble, price, and track advertising deals. I designed the end-to-end flow and the component system that backs it.',
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     videoSrc: '/media/tessl-overview.mp4',
     overview: {
       date: '2025–2026',
-      categories: ['Developer Platform'],
+      categories: ['DevTools/AI'],
     },
     about:
       'Tessl Registry is the package manager for agent skills — versioned, evaluated, and secured instructions that tell AI coding agents how to use a library, API, or workflow correctly. I designed the surfaces for discovering, evaluating, publishing, and versioning skills, so developers can find and trust them the way they would any package.',
@@ -78,7 +78,7 @@ export const projects: Project[] = [
     videoSrc: '/media/koyeb-platform.mp4',
     overview: {
       date: '2024–2025',
-      categories: ['Deployment Platform'],
+      categories: ['Cloud Infrastructure'],
     },
     about:
       'Koyeb lets developers deploy apps globally without managing infrastructure. I redesigned core deployment and monitoring flows, the onboarding flow, the marketing website and branding, and the design system.',
@@ -112,7 +112,7 @@ export const projects: Project[] = [
     videoSrc: '/media/qodo-platform.mp4',
     overview: {
       date: '2022–2025',
-      categories: ['Agentic Developer Platform'],
+      categories: ['AI/DevTools'],
     },
     about:
       'Qodo brings AI code generation and review into the developer workflow, with the first agents designed in the terminal before Claude Code was released. The work spanned the review and PR-agent surfaces, AI research and model fine-tuning, and on-prem deployment for a large customer base.',
@@ -148,7 +148,7 @@ export const projects: Project[] = [
     videoSrc: '/media/neon-platform.mp4',
     overview: {
       date: '2022–2024',
-      categories: ['Serverless Database Platform'],
+      categories: ['Database/Cloud Infrastructure'],
       roleLabel: 'Founding Product Designer / Design Engineer',
     },
     about:
@@ -179,13 +179,13 @@ export const projects: Project[] = [
     slug: 'bnp-paribas',
     projectNumber: '06',
     title: 'BNP Paribas',
-    subtitle: 'Internal Deal Platform',
+    subtitle: 'Internal Investment Platform',
     year: '2021–2023',
     disciplines: ['Product Design', 'Enterprise'],
     thumb: '/media/bnp-securities.jpg',
     overview: {
       date: '2021–2023',
-      categories: ['Internal Investment Platform'],
+      categories: ['FinTech/Investment'],
       roleLabel: 'Lead Product Designer',
     },
     about:
