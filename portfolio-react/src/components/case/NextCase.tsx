@@ -99,8 +99,12 @@ export default function NextCase({ project }: { project: Project }) {
       </TransitionLink>
 
       <style>{`
+        /* Rule above fences the closing block off from the case study; the
+           Footer's own top rule provides the line below. Extra vertical padding
+           makes the Next-project block stand out. */
         .next-case {
-          padding-block: clamp(4rem, 10vw, 8rem);
+          padding-block: clamp(6rem, 14vw, 11rem);
+          border-top: 1px solid var(--line);
         }
         .next-case__card {
           display: grid;
@@ -111,15 +115,19 @@ export default function NextCase({ project }: { project: Project }) {
         }
         .next-case__card:hover { transform: translateY(-6px); }
 
+        /* 16/9 matches the hero images so object-fit:cover doesn't crop them.
+           Border + radius match .shot__frame for a consistent media treatment. */
         .next-case__thumb {
           width: 100%;
-          aspect-ratio: 4 / 3;
+          aspect-ratio: 16 / 9;
           object-fit: cover;
           display: block;
+          border: 1px solid var(--line);
+          border-radius: clamp(0.5rem, 1.2vw, 1rem);
           transition: transform 0.7s var(--ease-out-expo), filter 0.5s var(--ease-out-quart);
           filter: grayscale(1) brightness(0.85);
         }
-        .next-case__card:hover .next-case__thumb { transform: scale(1.03); filter: grayscale(0) brightness(1); }
+        .next-case__card:hover .next-case__thumb { transform: scale(1.02); filter: grayscale(0) brightness(1); }
         .next-case__thumb.is-missing { font-size: 0; } /* hide broken-image glyph; keep textured box */
 
         .next-case__body { display: flex; flex-direction: column; min-width: 0; }
@@ -137,7 +145,7 @@ export default function NextCase({ project }: { project: Project }) {
           opacity: 0;
           transition: opacity 0.4s var(--ease-out-expo), transform 0.5s var(--ease-out-expo), color 0.4s;
         }
-        .next-case__card:hover .next-case__arrow { opacity: 1; transform: translate(0, 0); color: var(--fg); }
+        .next-case__card:hover .next-case__arrow { opacity: 1; transform: translate(0, 0); color: var(--accent-bright); }
 
         .next-case__title {
           font-size: var(--display-work);

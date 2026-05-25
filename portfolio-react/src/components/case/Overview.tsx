@@ -19,7 +19,7 @@ export default function Overview({ project }: { project: Project }) {
               </div>
               <div>
                 <dt>Role</dt>
-                <dd>{project.disciplines.join(', ')}</dd>
+                <dd>{project.overview.roleLabel ?? project.disciplines.join(', ')}</dd>
               </div>
             </dl>
             <p className="overview__about measure">{project.about}</p>

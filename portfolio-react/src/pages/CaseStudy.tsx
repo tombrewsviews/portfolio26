@@ -58,11 +58,11 @@ export default function CaseStudy() {
 
   return (
     <>
-      <main>
+      <main className="case-main">
         <CaseHero project={project} />
         {project.videoSrc && <VideoIntro project={project} />}
-        {shotsForSlot(project, 'after-video')}
         <Overview project={project} />
+        {shotsForSlot(project, 'after-video')}
         {shotsForSlot(project, 'after-overview')}
         <MetricsGrid project={project} />
         {shotsForSlot(project, 'after-metrics')}

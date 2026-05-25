@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Flip } from 'gsap/Flip';
 import { socials } from '../content/socials';
-import { sources } from '../content/sources';
 import FlexText from './FlexText';
+import SourcesColophon from './SourcesColophon';
 
 gsap.registerPlugin(Flip);
 
@@ -67,7 +67,9 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="container footer">
+    <>
+      <SourcesColophon />
+      <footer className="container footer">
       <div className="footer__cta" ref={ctaRef}>
         <FlexText as="h2" className="footer__big display">
           Let's talk.
@@ -81,27 +83,13 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="footer__sources">
-        <span className="kicker">Creative AI solutions used to design this site</span>
-        <ul className="footer__src-list">
-          {sources.map((src) => (
-            <li className="footer__src" key={src.name}>
-              <a href={src.href} target="_blank" rel="noopener noreferrer" className="footer__src-link">
-                {src.name}
-              </a>
-              <span className="footer__src-note">{src.note}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
       <div className="footer__base">
         <span>© {new Date().getFullYear()} Tom Parandyk</span>
-        <span>Built with React, GSAP &amp; RobotoFlex</span>
+        <span>Built with React, GSAP &amp; painful attention to every pixel</span>
       </div>
 
       <style>{`
-        .footer { padding-block: clamp(4rem, 10vw, 8rem) clamp(2rem, 4vw, 3rem); border-top: 1px solid var(--line); }
+        .footer { padding-block: clamp(4rem, 10vw, 8rem) clamp(2rem, 4vw, 3rem); }
         .footer__cta {
           display: flex;
           justify-content: space-between;
@@ -118,20 +106,7 @@ export default function Footer() {
           color: var(--muted);
           transition: color 0.3s var(--ease-out-quart);
         }
-        .footer__social:hover { color: var(--fg); }
-
-        .footer__sources { border-top: 1px solid var(--line); padding-top: clamp(1.75rem, 4vw, 2.75rem); }
-        .footer__src-list {
-          list-style: none;
-          margin-top: clamp(1.25rem, 3vw, 2rem);
-          display: grid;
-          gap: 0.6rem 2rem;
-          grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-        }
-        .footer__src { display: flex; gap: 0.6rem; align-items: baseline; font-size: var(--step--1); }
-        .footer__src-link { color: var(--fg); font-variation-settings: 'wght' 520; white-space: nowrap; }
-        .footer__src-link:hover { text-decoration: underline; }
-        .footer__src-note { color: var(--faint); }
+        .footer__social:hover { color: var(--accent-bright); }
 
         .footer__base {
           display: flex;
@@ -143,6 +118,7 @@ export default function Footer() {
           font-size: var(--step--1);
         }
       `}</style>
-    </footer>
+      </footer>
+    </>
   );
 }

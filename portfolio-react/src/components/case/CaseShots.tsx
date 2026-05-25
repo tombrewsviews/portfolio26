@@ -26,6 +26,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 function Frame({
   src,
+  video,
   ratio,
   marker,
   caption,
@@ -34,6 +35,7 @@ function Frame({
   nda = false,
 }: {
   src?: string;
+  video?: string;
   ratio: string;
   marker?: string;
   caption?: string;
@@ -46,7 +48,18 @@ function Frame({
   return (
     <figure className={`shot ${className}`}>
       <div className="shot__frame img-fallback" style={{ aspectRatio: ratio }}>
-        {src && (
+        {video ? (
+          <video
+            className="shot__img"
+            src={video}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+          />
+        ) : src && (
           <img
             className="shot__img"
             src={src}
@@ -63,7 +76,7 @@ function Frame({
         {nda && (
           <div className="shot__overlay">
             <span className="shot__placeholder">
-              Under NDA • Showcase over a private call only
+              Under NDA • Details available over a private call
             </span>
           </div>
         )}
@@ -116,6 +129,7 @@ export default function CaseShots({ shot }: { shot: Shot }) {
               <>
                 <Frame
                   src={shot.src}
+                  video={shot.video}
                   ratio={shot.ratio}
                   marker={shot.marker}
                   caption={shot.caption}
@@ -124,6 +138,7 @@ export default function CaseShots({ shot }: { shot: Shot }) {
                 />
                 <Frame
                   src={shot.srcB}
+                  video={shot.videoB}
                   ratio={shot.ratio}
                   marker={shot.markerB}
                   caption={shot.captionB}
@@ -134,6 +149,7 @@ export default function CaseShots({ shot }: { shot: Shot }) {
             ) : (
               <Frame
                 src={shot.src}
+                video={shot.video}
                 ratio={shot.ratio}
                 marker={shot.marker}
                 caption={shot.caption}

@@ -81,21 +81,14 @@ export default function WorkList() {
                 <span className="work__title" data-title>
                   {p.title}
                 </span>
-                <span className="work__arrow" aria-hidden="true">↗</span>
               </span>
 
               <span className="work__meta">
-                <span className="work__disc">{p.subtitle}</span>
+                {/* List shows only the base subtitle; the "— Acquired by …"
+                    suffix stays on the case-study page. */}
+                <span className="work__disc">{p.subtitle.split('—')[0].trim()}</span>
                 <span className="work__year">{p.year}</span>
               </span>
-
-              <img
-                className="work__thumb img-fallback"
-                src={p.thumb}
-                alt=""
-                loading="lazy"
-                onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
-              />
             </TransitionLink>
           </li>
         ))}
@@ -147,14 +140,6 @@ export default function WorkList() {
           font-variation-settings: 'wght' ${FLEX_MIN};
           white-space: nowrap;
         }
-        .work__arrow {
-          font-size: clamp(1.25rem, 3vw, 2.5rem);
-          color: var(--muted);
-          opacity: 0;
-          transform: translate(-0.4em, 0.1em);
-          transition: opacity 0.4s var(--ease-out-expo), transform 0.5s var(--ease-out-expo), color 0.4s;
-        }
-        .work__link:hover .work__arrow { opacity: 1; transform: translate(0, 0); color: var(--fg); }
 
         .work__meta {
           display: flex;
@@ -168,31 +153,10 @@ export default function WorkList() {
         .work__disc { color: var(--muted); font-size: var(--step--1); letter-spacing: 0.06em; text-transform: uppercase; }
         .work__year { color: var(--faint); font-size: var(--step--1); }
 
-        /* Thumbnail floats in on hover (desktop only; graceful if asset missing) */
-        .work__thumb {
-          position: absolute;
-          right: clamp(8rem, 18vw, 16rem);
-          top: 50%;
-          width: clamp(7rem, 12vw, 11rem);
-          aspect-ratio: 4 / 3;
-          object-fit: cover;
-          pointer-events: none;
-          opacity: 0;
-          transform: translateY(-50%) scale(0.94) rotate(-3deg);
-          transition: opacity 0.4s var(--ease-out-quart), transform 0.5s var(--ease-out-expo);
-          z-index: 2;
-        }
-        .work__link:hover .work__thumb { opacity: 1; transform: translateY(-50%) scale(1) rotate(-2deg); }
-
         @media (max-width: 768px) {
           .work__link { grid-template-columns: auto 1fr; }
           .work__title { white-space: normal; }
           .work__meta { grid-column: 1 / -1; flex-direction: row; align-items: baseline; justify-content: space-between; width: 100%; padding-top: 0.5rem; }
-          .work__thumb { display: none; }
-          .work__arrow { display: none; }
-        }
-        @media (hover: none) {
-          .work__thumb { display: none; }
         }
       `}</style>
     </section>

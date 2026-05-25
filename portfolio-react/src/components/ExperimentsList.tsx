@@ -71,7 +71,7 @@ export default function ExperimentsList() {
           transition: color 0.3s var(--ease-out-quart);
           white-space: nowrap;
         }
-        .experiments__link:hover { color: var(--fg); }
+        .experiments__link:hover { color: var(--accent-bright); }
         @media (max-width: 720px) {
           .experiments__item { grid-template-columns: auto 1fr; }
           .experiments__links { grid-column: 1 / -1; flex-direction: row; align-items: baseline; gap: 1.25rem; }

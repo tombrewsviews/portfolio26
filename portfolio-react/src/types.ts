@@ -31,6 +31,10 @@ export type Shot = {
   captionB?: string;
   /** Show the "Under NDA" overlay + tint over the frame(s). Off by default. */
   nda?: boolean;
+  /** Video src for the (first) frame — renders an autoplaying, muted, looping
+   *  video instead of an image. `videoB` does the same for a `pair`'s second frame. */
+  video?: string;
+  videoB?: string;
 };
 
 export type Project = {
@@ -43,7 +47,7 @@ export type Project = {
   thumb: string;
   /** Optional video intro. Omit to skip the VideoIntro section entirely. */
   videoSrc?: string;
-  overview: { date: string; categories: string[] };
+  overview: { date: string; categories: string[]; roleLabel?: string };
   about: string;
   metrics: Metric[];
   role: string;

@@ -16,6 +16,12 @@
   --line: oklch(0.30 0.006 250);
   --line-strong: oklch(0.42 0.006 250);
 
+  /* Accent — desaturated teal (#3E8389), complementary-ish to the cool greys.
+     Used for the route-wipe panel, dither glyphs, and small interactive cues. */
+  --accent: oklch(0.58 0.08 190);
+  --accent-bright: oklch(0.7 0.09 190);
+  --accent-dim: oklch(0.42 0.06 190);
+
   --maxw: 88rem;
   --pad: clamp(1.25rem, 5vw, 5rem);
 
@@ -60,7 +66,7 @@ body {
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; height: auto; }
 button { font: inherit; }
-::selection { background: var(--fg); color: var(--bg); }
+::selection { background: var(--accent); color: var(--fg); }
 
 /* ---- Layout primitives ---- */
 .container {
@@ -98,6 +104,8 @@ button { font: inherit; }
 }
 
 /* ---- Case study editorial section: label left, content right ---- */
+/* Extra breathing room below the last section before the Next-project block. */
+.case-main { padding-bottom: clamp(4rem, 9vw, 8rem); }
 .case-sec { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 .case-sec__row {
   display: grid;

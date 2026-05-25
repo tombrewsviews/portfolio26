@@ -181,7 +181,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
           inset: 0;
           z-index: 100;
           display: none;
-          background: var(--bg-deep);
+          background: var(--accent);
           pointer-events: none;
           will-change: transform;
         }
