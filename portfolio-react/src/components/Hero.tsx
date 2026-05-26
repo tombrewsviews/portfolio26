@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 const LINES = ['I love building', 'while I'];
 const ROTATING = ['design', 'listen', 'brainstorm'];
 const ROTATE_INTERVAL = 2200; // ms each word stays before the next cycles in
-const SUBLINE = "I'm a hands-on player coach — prototyping, shipping, and listening to the customer.";
+const SUBLINE = "I'm a hands-on player coach — prototyping, shipping, and representing customer voice.";
 
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null);
