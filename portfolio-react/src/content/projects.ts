@@ -17,7 +17,7 @@ export const projects: Project[] = [
       'Adlook needed a single internal surface for deal teams to assemble, price, and track advertising deals. I designed the end-to-end flow and the component system that backs it.',
     metrics: [
       { value: '15x', label: 'faster deal assembly' },
-      { value: '100%', label: 'reduction of deal errors' },
+      { value: '0', label: 'validation errors' },
       { value: '97%', label: 'UX satisfaction' },
     ],
     role:
