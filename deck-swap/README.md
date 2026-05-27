@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# deck-swap
 
-## Getting Started
+Presenter-synced slide deck with per-slide design variants.
 
-First, run the development server:
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.local.example .env.local
+# Edit .env.local:
+#   PRESENTER_SECRET=$(openssl rand -hex 32)
+#   UPSTASH_REDIS_REST_URL=...    # from upstash.com
+#   UPSTASH_REDIS_REST_TOKEN=...
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` for the deck index.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Running a presentation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Get your presenter URL:
+   ```bash
+   pnpm token intro-talk
+   # → /p/intro-talk/a1b2c3d4e5f6g7h8
+   ```
+2. Open `http://localhost:3000/p/intro-talk/<token>` on your screen.
+3. Share `http://localhost:3000/v/intro-talk` (or your deployed URL) with viewers.
 
-## Learn More
+### Presenter keys
 
-To learn more about Next.js, take a look at the following resources:
+| Key | Action |
+|---|---|
+| `→` / `Space` | Advance slide |
+| `←` | Go back (must enable with `b` first) |
+| `b` | Toggle back-nav for this session |
+| `h` | Hide HUD |
+| `p` | Fullscreen presentation mode |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Viewer keys
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Key | Action |
+|---|---|
+| `←` | Previous slide (within slides already shown) |
+| `→` | Forward (capped at presenter's current slide) |
+| `l` | Jump to live |
 
-## Deploy on Vercel
+## Adding a deck
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/decks/<your-deck>/
+  deck.config.ts
+  slides/01-foo/{claude,design,stitch,hermes}.tsx
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Then register it in `src/app/page.tsx`, `.../p/[deckId]/[token]/page.tsx`, and `.../v/[deckId]/page.tsx` (the `DECKS` map in each). Run `pnpm gen`.
+
+## Deployment
+
+Vercel project rooted at `deck-swap/`. Set `PRESENTER_SECRET`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` for all three environments. The SSE route runs on Edge — no extra config needed.
