@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "token": "tsx scripts/print-token.ts"
+    "presenter-url": "tsx scripts/print-token.ts"
   },
   "dependencies": {
     "@upstash/redis": "^1.38.0",

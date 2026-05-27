@@ -20,7 +20,7 @@ Open `http://localhost:3000` for the deck index.
 
 1. Get your presenter URL:
    ```bash
-   pnpm token intro-talk
+   pnpm presenter-url intro-talk
    # → /p/intro-talk/a1b2c3d4e5f6g7h8
    ```
 2. Open `http://localhost:3000/p/intro-talk/<token>` on your screen.

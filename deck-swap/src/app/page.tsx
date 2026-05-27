@@ -18,7 +18,7 @@ export default function HomePage() {
                 <Link className="underline" href={`/v/${d.id}`}>/v/{d.id}</Link>
               </p>
               <p className="text-sm text-zinc-500">
-                Presenter URL: derive token with `pnpm token {d.id}` (see README).
+                Presenter URL: derive token with `pnpm presenter-url {d.id}` (see README).
               </p>
             </li>
           ))}

@@ -19,7 +19,7 @@ async function main(): Promise<void> {
   loadEnv();
   const deckId = process.argv[2];
   if (!deckId) {
-    console.error('usage: pnpm token <deckId>');
+    console.error('usage: pnpm presenter-url <deckId>');
     process.exit(1);
   }
   const secret = process.env.PRESENTER_SECRET;
