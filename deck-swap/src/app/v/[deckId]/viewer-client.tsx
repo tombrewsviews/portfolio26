@@ -5,18 +5,20 @@ import { SlideStage } from '@/lib/ui/SlideStage';
 import { ViewerOverlay } from '@/lib/ui/ViewerOverlay';
 import { useDeckState } from '@/hooks/useDeckState';
 import { useKeyboard } from '@/hooks/useKeyboard';
-import type { Deck, VariantKey } from '@/lib/types';
+import { getDeck } from '@/lib/decks';
+import type { VariantKey } from '@/lib/types';
 
 const VARIANT_STORAGE_KEY = 'deckSwap.variant';
 
 interface Props {
-  deck: Deck;
+  deckId: string;
 }
 
-export function ViewerClient({ deck }: Props) {
-  const { state } = useDeckState(deck.id);
+export function ViewerClient({ deckId }: Props) {
+  const deck = getDeck(deckId);
+  const { state } = useDeckState(deckId);
   const [viewerSlide, setViewerSlide] = useState(0);
-  const [variant, setVariant] = useState<VariantKey>(deck.defaultVariant);
+  const [variant, setVariant] = useState<VariantKey>(deck?.defaultVariant ?? 'claude');
   const prevLiveRef = useRef(0);
 
   useEffect(() => {
@@ -54,6 +56,8 @@ export function ViewerClient({ deck }: Props) {
       setViewerSlide(state.currentSlide);
     }
   });
+
+  if (!deck) return null;
 
   return (
     <main className="relative h-full w-full">

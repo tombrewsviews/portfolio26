@@ -4,22 +4,26 @@ import { useCallback, useEffect, useState } from 'react';
 import { SlideStage } from '@/lib/ui/SlideStage';
 import { PresenterHUD } from '@/lib/ui/PresenterHUD';
 import { useKeyboard } from '@/hooks/useKeyboard';
-import type { Deck } from '@/lib/types';
+import { getDeck } from '@/lib/decks';
 
 interface Props {
-  deck: Deck;
+  deckId: string;
   token: string;
 }
 
-export function PresenterClient({ deck, token }: Props) {
+export function PresenterClient({ deckId, token }: Props) {
+  const deck = getDeck(deckId);
   const [current, setCurrent] = useState(0);
   const [hidden, setHidden] = useState(false);
   const [connection, setConnection] = useState<'ok' | 'pending' | 'error'>('ok');
   const [allowBack, setAllowBack] = useState(false);
 
+  const slidesLength = deck?.slides.length ?? 0;
+
   const push = useCallback(
     async (next: number) => {
-      const clamped = Math.max(0, Math.min(deck.slides.length - 1, next));
+      if (!deck) return;
+      const clamped = Math.max(0, Math.min(slidesLength - 1, next));
       setCurrent(clamped);
       setConnection('pending');
       try {
@@ -33,7 +37,7 @@ export function PresenterClient({ deck, token }: Props) {
         setConnection('error');
       }
     },
-    [deck.id, deck.slides.length, token]
+    [deck, slidesLength, token]
   );
 
   useEffect(() => {
@@ -58,6 +62,8 @@ export function PresenterClient({ deck, token }: Props) {
       else document.documentElement.requestFullscreen();
     }
   });
+
+  if (!deck) return null;
 
   return (
     <main className="relative h-full w-full">

@@ -1,9 +1,7 @@
 import { notFound } from 'next/navigation';
-import { deck as introTalk } from '@/decks/intro-talk/deck.config';
+import { getDeck } from '@/lib/decks';
 import { deriveToken } from '@/lib/hmac';
 import { PresenterClient } from './presenter-client';
-
-const DECKS = { 'intro-talk': introTalk } as const;
 
 export default async function PresenterPage({
   params,
@@ -11,11 +9,10 @@ export default async function PresenterPage({
   params: Promise<{ deckId: string; token: string }>;
 }) {
   const { deckId, token } = await params;
-  const deck = DECKS[deckId as keyof typeof DECKS];
-  if (!deck) notFound();
+  if (!getDeck(deckId)) notFound();
 
   const expected = await deriveToken(deckId, process.env.PRESENTER_SECRET!);
   if (expected !== token) notFound();
 
-  return <PresenterClient deck={deck} token={token} />;
+  return <PresenterClient deckId={deckId} token={token} />;
 }
