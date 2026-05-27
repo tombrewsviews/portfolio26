@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+@source "../**/*.{ts,tsx,mdx}";
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+body {
+  margin: 0;
+  overflow: hidden;
+}
