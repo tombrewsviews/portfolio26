@@ -5,7 +5,7 @@ import { INITIAL_DECK_STATE, type DeckState } from '@/lib/types';
 
 export const runtime = 'edge';
 
-const SECRET = process.env.PRESENTER_SECRET!;
+const SECRET = process.env.PRESENTER_SECRET;
 
 function sseHeaders(): HeadersInit {
   return {
@@ -84,6 +84,7 @@ export async function POST(
     return new Response('bad request', { status: 400 });
   }
 
+  if (!SECRET) return new Response('server misconfigured', { status: 500 });
   const ok = await verifyToken(deckId, body.token, SECRET);
   if (!ok) return new Response('unauthorized', { status: 401 });
 
