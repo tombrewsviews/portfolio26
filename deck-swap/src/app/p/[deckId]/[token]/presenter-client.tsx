@@ -16,7 +16,6 @@ export function PresenterClient({ deckId, token }: Props) {
   const [current, setCurrent] = useState(0);
   const [hidden, setHidden] = useState(false);
   const [connection, setConnection] = useState<'ok' | 'pending' | 'error'>('ok');
-  const [allowBack, setAllowBack] = useState(false);
 
   const slidesLength = deck?.slides.length ?? 0;
 
@@ -50,13 +49,11 @@ export function PresenterClient({ deckId, token }: Props) {
     if (e.key === 'ArrowRight' || e.key === ' ') {
       e.preventDefault();
       void push(current + 1);
-    } else if (e.key === 'ArrowLeft' && allowBack) {
+    } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
       void push(current - 1);
     } else if (e.key === 'h') {
       setHidden((v) => !v);
-    } else if (e.key === 'b') {
-      setAllowBack((v) => !v);
     } else if (e.key === 'p') {
       if (document.fullscreenElement) document.exitFullscreen();
       else document.documentElement.requestFullscreen();
@@ -72,7 +69,7 @@ export function PresenterClient({ deckId, token }: Props) {
         deck={deck}
         current={current}
         connection={connection}
-        onPrev={() => allowBack && push(current - 1)}
+        onPrev={() => push(current - 1)}
         onNext={() => push(current + 1)}
         hidden={hidden}
       />

@@ -31,8 +31,7 @@ Open `http://localhost:3000` for the deck index.
 | Key | Action |
 |---|---|
 | `→` / `Space` | Advance slide |
-| `←` | Go back (must enable with `b` first) |
-| `b` | Toggle back-nav for this session |
+| `←` | Go back |
 | `h` | Hide HUD |
 | `p` | Fullscreen presentation mode |
 
