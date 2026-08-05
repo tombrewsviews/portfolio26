@@ -1,7 +1,7 @@
 // Companies / tools Tom has worked with or built on. Two rows that scroll
 // in opposite directions and pause on hover (reference interaction pattern).
 const ROW_A = [
-  'Adlook',
+  'AdTech',
   'Tessl',
   'Koyeb',
   'Qodo',

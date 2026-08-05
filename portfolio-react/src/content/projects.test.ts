@@ -4,7 +4,7 @@ import { projects } from './projects';
 describe('projects content', () => {
   it('has exactly 6 projects in newest-to-oldest order', () => {
     expect(projects.map((p) => p.slug)).toEqual([
-      'adlook', 'tessl', 'koyeb', 'qodo', 'neon', 'bnp-paribas',
+      'adtech', 'tessl', 'koyeb', 'qodo', 'neon', 'bnp-paribas',
     ]);
   });
 

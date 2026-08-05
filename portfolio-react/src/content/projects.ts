@@ -2,19 +2,19 @@ import type { Project } from '../types';
 
 export const projects: Project[] = [
   {
-    slug: 'adlook',
+    slug: 'adtech',
     projectNumber: '01',
-    title: 'Adlook',
+    title: 'AdTech',
     subtitle: 'Internal Deal Platform',
     year: '2026',
     disciplines: ['Solo Product Operator'],
-    thumb: '/media/adlook-deal-board.jpg',
+    thumb: '/media/adtech-deal-board.jpg',
     overview: {
       date: '2026',
       categories: ['AdTech/FinTech'],
     },
     about:
-      'Adlook needed a single internal surface for deal teams to assemble, price, and track advertising deals. I designed the end-to-end flow and the component system that backs it.',
+      'AdTech needed a single internal surface for deal teams to assemble, price, and track advertising deals. I designed the end-to-end flow and the component system that backs it.',
     metrics: [
       { value: '15x', label: 'faster deal assembly' },
       { value: '0', label: 'validation errors' },
@@ -30,7 +30,7 @@ export const projects: Project[] = [
       { heading: 'No dedicated team', body: 'There was no engineering or design team to lean on. I operated solo as the design engineer and product operator, owning every layer end to end.' },
     ],
     shots: [
-      { layout: 'bleed', ratio: '16 / 9', src: '/media/adlook-deal-board.jpg', marker: '[UP]', caption: 'Deal board', nda: true },
+      { layout: 'bleed', ratio: '16 / 9', src: '/media/adtech-deal-board.jpg', marker: '[UP]', caption: 'Deal board', nda: true },
     ],
   },
   {

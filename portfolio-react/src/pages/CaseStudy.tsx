@@ -34,7 +34,7 @@ const SLOT_ORDER: Slot[] = [
  * Different distributions per slug = different rhythm per case study.
  */
 const SHOT_SLOTS: Record<string, Slot[]> = {
-  adlook: ['after-video', 'after-metrics', 'after-role', 'after-challenges'],
+  adtech: ['after-video', 'after-metrics', 'after-role', 'after-challenges'],
   tessl: ['after-overview', 'after-metrics', 'after-role', 'after-challenges'],
   koyeb: ['after-video', 'after-overview', 'after-metrics', 'after-challenges'],
   qodo: ['after-overview', 'after-metrics', 'after-role', 'after-challenges'],
